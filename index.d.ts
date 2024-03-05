@@ -17,3 +17,10 @@ interface Post {
   creation_time: Date;
   modification_time: Date;
 }
+
+interface ValidateUser {
+  emailError?: string;
+  nicknameError?: string;
+  passwordError?: string;
+  codeError?: string;
+}
