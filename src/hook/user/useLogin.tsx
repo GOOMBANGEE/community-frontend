@@ -34,7 +34,7 @@ export default function useLogin() {
       getAccessToken(tokenState.accessToken);
       return true;
     } catch (error) {
-      handleAxiosError(globalState, setGlobalState, error);
+      handleAxiosError(error, globalState, setGlobalState);
       return false;
     }
   };

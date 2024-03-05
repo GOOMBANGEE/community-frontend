@@ -20,7 +20,7 @@ export default function useEmailSend() {
         modalMessage: "메일이 정상적으로 발송되었습니다.",
       });
     } catch (error) {
-      handleAxiosError(globalState, setGlobalState, error);
+      handleAxiosError(error, globalState, setGlobalState);
     }
   };
 

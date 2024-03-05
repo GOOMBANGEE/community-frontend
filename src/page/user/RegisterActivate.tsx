@@ -12,13 +12,13 @@ export default function RegisterActivate() {
   const { userState } = useUserStore();
   const [verificationCode, setVerificationCode] = useState<string>("");
 
-  const { checkCodeLength } = useValidateUser();
-  const { registerActivate } = useRegisterActivate();
-  const { emailSend } = useEmailSend();
-
   const [validateUser, setValidateUser] = useState<ValidateUser>({
     codeError: "",
   });
+
+  const { checkCodeLength } = useValidateUser();
+  const { registerActivate } = useRegisterActivate();
+  const { emailSend } = useEmailSend();
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();

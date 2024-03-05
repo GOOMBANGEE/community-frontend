@@ -5,7 +5,7 @@ import { useEnvStore } from "../../store/EnvStore.tsx";
 import { useGlobalStore } from "../../store/GlobalStore.tsx";
 import { useUserStore } from "../../store/UserStore.tsx";
 
-export default async function useRegister() {
+export default function useRegister() {
   const { globalState, setGlobalState } = useGlobalStore();
   const { envState } = useEnvStore();
   const { userState, setUserState } = useUserStore();
@@ -40,9 +40,9 @@ export default async function useRegister() {
         expires: new Date(expireDate),
       });
     } catch (error) {
-      handleAxiosError(globalState, setGlobalState, error);
+      handleAxiosError(error, globalState, setGlobalState);
     }
   };
-  
+
   return { register };
 }

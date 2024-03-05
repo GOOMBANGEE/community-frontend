@@ -34,7 +34,7 @@ export function useRegisterActivate() {
 
       return true;
     } catch (error) {
-      handleAxiosError(globalState, setGlobalState, error);
+      handleAxiosError(error, globalState, setGlobalState);
       props.setValidateUser({
         ...props.validateUser,
         codeError: "코드를 다시 한번 확인해 주세요",

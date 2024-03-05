@@ -8,6 +8,7 @@ import useRenderErrorMessage from "../../hook/user/useRenderErrorMessage.tsx";
 export default function RegisterForm() {
   const { globalState } = useGlobalStore();
   const { userState, setUserState } = useUserStore();
+
   const [validateUser, setValidateUser] = useState<ValidateUser>({
     emailError: "",
     nicknameError: "",
@@ -19,7 +20,7 @@ export default function RegisterForm() {
     isPasswordValid,
     isConfirmPasswordValid,
   } = useValidateUser();
-  const registerHook = useRegister();
+  const { register } = useRegister();
 
   // 유효성검사 + 회원가입 로직
   const handleRegister = async (e: FormEvent) => {
@@ -53,7 +54,6 @@ export default function RegisterForm() {
     ) {
       return;
     }
-    const { register } = await registerHook;
     await register();
   };
 

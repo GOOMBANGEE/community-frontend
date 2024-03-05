@@ -16,7 +16,7 @@ export function usePostList(communityId: number) {
       );
       setResult(response.data.items);
     } catch (error) {
-      handleAxiosError(globalState, setGlobalState, error);
+      handleAxiosError(error, globalState, setGlobalState);
     }
   }, [communityId, envState.communityUrl]);
 
