@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import axios from "axios";
-import { refreshAccessToken } from "../hook/useRefreshAcccessToken.tsx";
+import useRefreshAccessToken from "../hook/useRefreshAcccessToken.tsx";
 
 const JWT_EXPIRY_TIME = 24 * 3600 * 1000; // 24h
 
@@ -28,6 +28,6 @@ export const useTokenStore = create<TokenStore>((set) => ({
     }));
     axios.defaults.headers.common["Authorization"] =
       `Bearer ${responseAccessToken}`;
-    setTimeout(refreshAccessToken, JWT_EXPIRY_TIME - 60000);
+    setTimeout(useRefreshAccessToken, JWT_EXPIRY_TIME - 60000);
   },
 }));

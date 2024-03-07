@@ -31,7 +31,7 @@ export default function useLogin() {
         path: "/",
         expires: new Date(expireDate),
       });
-      getAccessToken(tokenState.accessToken);
+      getAccessToken(response.data.access_token);
       return true;
     } catch (error) {
       handleAxiosError(error, globalState, setGlobalState);
