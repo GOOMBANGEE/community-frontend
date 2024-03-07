@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import useTimeFormat from "../../hook/useTimeFormat.tsx";
+import useTimeFormat from "../../../hook/useTimeFormat.tsx";
 
 interface PostProps {
   communityId: string | undefined;
@@ -7,7 +7,7 @@ interface PostProps {
 }
 
 // 게시판내 게시글 하나씩 표시하는 컴포넌트
-export default function Post({ communityId, post }: PostProps) {
+export default function PostListPost({ communityId, post }: PostProps) {
   const navigate = useNavigate();
   const { formatTimeDifference } = useTimeFormat();
 
