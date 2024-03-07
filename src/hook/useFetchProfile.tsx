@@ -10,7 +10,6 @@ export default function useFetchProfile() {
   const fetchProfile = async () => {
     try {
       const response = await axios.get(`${envState.userUrl}/profile`);
-      console.log(response);
       const { id, email, nickname } = response.data;
       useUserStore.getState().setUserState({ id, email, nickname });
     } catch (error) {

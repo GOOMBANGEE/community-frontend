@@ -3,12 +3,12 @@ import { create } from "zustand";
 const BASE_URL_COMMUNITY = import.meta.env.VITE_BASE_URL_COMMUNITY;
 const BASE_URL_USER = import.meta.env.VITE_BASE_URL_USER;
 
-export interface EnvStore {
+interface EnvStore {
   envState: EnvState;
   setEnvState: (state: Partial<EnvState>) => void;
 }
 
-export interface EnvState {
+interface EnvState {
   userUrl: string;
   communityUrl: string;
 }
