@@ -14,12 +14,12 @@ export default function Register() {
       setUserState({ ...userState, email: getCookie("email") });
       setHasToken(true);
     }
-  }, [setUserState, userState]);
+  }, []);
   useEffect(() => {
     if (userState.token) {
       setHasToken(true);
     }
-  }, [userState.token]);
+  }, []);
 
   return (
     <div className="mx-auto pt-60 text-center md:p-16 dark:text-slate-200">

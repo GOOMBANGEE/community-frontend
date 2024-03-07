@@ -18,11 +18,11 @@ export function useCommunityList() {
     } catch (error) {
       handleAxiosError(error, globalState, setGlobalState);
     }
-  }, [envState.communityUrl, setGlobalState]);
+  }, [envState.communityUrl, globalState, setGlobalState]);
 
   useEffect(() => {
     void fetchCommunityList();
-  }, [fetchCommunityList]);
+  }, []);
 
   return result;
 }

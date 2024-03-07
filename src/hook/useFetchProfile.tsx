@@ -22,5 +22,5 @@ export default function useFetchProfile() {
     if (tokenState.accessToken) {
       void fetchProfile();
     }
-  }, [tokenState.accessToken]);
+  }, []);
 }
