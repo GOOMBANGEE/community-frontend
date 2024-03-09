@@ -1,7 +1,8 @@
 import { Route, Routes } from "react-router-dom";
 
-import PostList from "./PostList.tsx";
+import PostList from "./postList/PostList.tsx";
 import CommunityHeader from "./CommunityHeader.tsx";
+import PostDetail from "./postDetail/PostDetail.tsx";
 
 export default function Community() {
   return (
@@ -11,6 +12,10 @@ export default function Community() {
       </Routes>
       <Routes>
         <Route path="/:communityId/*" element={<PostList />} />
+        {/*  <Route path="/:communityId/editor" element={<PostEditor />} />*/}
+        <Route path="/:communityId/:postId/*" element={<PostDetail />} />
+        {/*<Route path="/:communityId/:postId/check" element={<PasswordCheck />} />*/}
+        {/*  <Route path="/:communityId/:postId/editor" element={<PostEditor />} />*/}
       </Routes>
     </>
   );

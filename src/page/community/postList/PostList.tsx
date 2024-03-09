@@ -15,9 +15,9 @@ export default function PostList() {
       {globalState.loading ? null : (
         <>
           <PostListHeader />
-          {data.map((post, index) => (
-            <div key={index}>
-              <PostListPost key={index} communityId={communityId} post={post} />
+          {data.map((post: Post) => (
+            <div key={post.id}>
+              <PostListPost communityId={communityId} post={post} />
               <div className="my-1 border-b-2 border-gray-700"></div>
             </div>
           ))}
