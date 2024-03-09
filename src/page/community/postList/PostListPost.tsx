@@ -7,7 +7,10 @@ interface PostProps {
 }
 
 // 게시판내 게시글 하나씩 표시하는 컴포넌트
-export default function PostListPost({ communityId, post }: PostProps) {
+export default function PostListPost({
+  communityId,
+  post,
+}: Readonly<PostProps>) {
   const navigate = useNavigate();
   const { formatTimeDifference } = useTimeFormat();
 
@@ -17,15 +20,16 @@ export default function PostListPost({ communityId, post }: PostProps) {
   };
 
   return (
-    <div
-      className="flex-row gap-2 px-3 text-base font-extralight text-white"
-      onClick={() => {
-        handleClickPost();
-      }}
-    >
+    <div className="flex-row gap-2 px-3 text-base font-extralight text-white">
       <div className="">
         <div className="mx-auto mr-2">
-          {post.title} <span>[{post.reply_count}]</span>
+          <button
+            onClick={() => {
+              handleClickPost();
+            }}
+          >
+            {post.title} <span>[{post.reply_count}]</span>
+          </button>
         </div>
       </div>
       <div className="flex text-sm">
@@ -40,6 +44,7 @@ export default function PostListPost({ communityId, post }: PostProps) {
           <div>추천</div>
         </div>
       </div>
+      <div className="my-1 border-b-2 border-gray-700"></div>
     </div>
   );
 }

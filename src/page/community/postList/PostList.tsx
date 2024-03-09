@@ -16,10 +16,7 @@ export default function PostList() {
         <>
           <PostListHeader />
           {data.map((post: Post) => (
-            <div key={post.id}>
-              <PostListPost communityId={communityId} post={post} />
-              <div className="my-1 border-b-2 border-gray-700"></div>
-            </div>
+            <PostListPost key={post.id} communityId={communityId} post={post} />
           ))}
           <PostListHeader />
         </>
