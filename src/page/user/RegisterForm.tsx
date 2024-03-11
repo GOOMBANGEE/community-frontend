@@ -9,7 +9,7 @@ export default function RegisterForm() {
   const { globalState } = useGlobalStore();
   const { userState, setUserState } = useUserStore();
 
-  const [validateUser, setValidateUser] = useState<ValidateUser>({
+  const [validateState, setValidateState] = useState<ValidateUser>({
     emailError: "",
     nicknameError: "",
     passwordError: "",
@@ -26,15 +26,19 @@ export default function RegisterForm() {
   const handleRegister = async (e: FormEvent) => {
     e.preventDefault();
     if (
-      !isEmailValid({ value: userState.email, validateUser, setValidateUser })
+      !isEmailValid({
+        value: userState.email,
+        validateState,
+        setValidateState,
+      })
     ) {
       return;
     }
     if (
       !isNicknameValid({
         value: userState.nickname,
-        validateUser,
-        setValidateUser,
+        validateState,
+        setValidateState,
       })
     ) {
       return;
@@ -42,14 +46,14 @@ export default function RegisterForm() {
     if (
       !isPasswordValid({
         value: userState.password,
-        validateUser,
-        setValidateUser,
+        validateState,
+        setValidateState,
       }) ||
       !isConfirmPasswordValid({
         password: userState.password,
         value: userState.confirmPassword,
-        validateUser,
-        setValidateUser,
+        validateState,
+        setValidateState,
       })
     ) {
       return;
@@ -72,8 +76,8 @@ export default function RegisterForm() {
                 ...userState,
                 email: e.target.value,
               });
-              setValidateUser({
-                ...validateUser,
+              setValidateState({
+                ...validateState,
                 emailError: "",
               });
             }}
@@ -87,8 +91,8 @@ export default function RegisterForm() {
                 ...userState,
                 nickname: e.target.value,
               });
-              setValidateUser({
-                ...validateUser,
+              setValidateState({
+                ...validateState,
                 nicknameError: "",
               });
             }}
@@ -103,8 +107,8 @@ export default function RegisterForm() {
                 ...userState,
                 password: e.target.value,
               });
-              setValidateUser({
-                ...validateUser,
+              setValidateState({
+                ...validateState,
                 passwordError: "",
               });
             }}
@@ -119,8 +123,8 @@ export default function RegisterForm() {
                 ...userState,
                 confirmPassword: e.target.value,
               });
-              setValidateUser({
-                ...validateUser,
+              setValidateState({
+                ...validateState,
                 passwordError: "",
               });
             }}
@@ -132,9 +136,9 @@ export default function RegisterForm() {
             가입
           </button>
 
-          {useRenderErrorMessage(validateUser.emailError)}
-          {useRenderErrorMessage(validateUser.nicknameError)}
-          {useRenderErrorMessage(validateUser.passwordError)}
+          {useRenderErrorMessage(validateState.emailError)}
+          {useRenderErrorMessage(validateState.nicknameError)}
+          {useRenderErrorMessage(validateState.passwordError)}
           {useRenderErrorMessage(globalState.errorMessage)}
 
           <div className="mx-auto mt-2 w-3/4 text-center text-sm text-gray-500">

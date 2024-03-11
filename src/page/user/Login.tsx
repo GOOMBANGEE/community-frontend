@@ -11,7 +11,7 @@ export default function Login() {
   const { globalState } = useGlobalStore();
   const { userState, setUserState } = useUserStore();
 
-  const [validateUser, setValidateUser] = useState<ValidateUser>({
+  const [validateState, setValidateState] = useState<ValidateUser>({
     emailError: "",
     nicknameError: "",
     passwordError: "",
@@ -26,15 +26,19 @@ export default function Login() {
     e.preventDefault();
 
     if (
-      !isEmailValid({ value: userState.email, validateUser, setValidateUser })
+      !isEmailValid({
+        value: userState.email,
+        validateState,
+        setValidateState,
+      })
     ) {
       return;
     }
     if (
       !isPasswordValid({
         value: userState.password,
-        validateUser,
-        setValidateUser,
+        validateState,
+        setValidateState,
       })
     ) {
       return;
@@ -46,6 +50,7 @@ export default function Login() {
     }
     setLoginFail(true);
   };
+
   return (
     <div>
       <div className="mx-auto pt-60 text-center md:p-16 dark:text-slate-200">
@@ -64,8 +69,8 @@ export default function Login() {
                     ...userState,
                     email: e.target.value,
                   });
-                  setValidateUser({
-                    ...validateUser,
+                  setValidateState({
+                    ...validateState,
                     emailError: "",
                   });
                   setLoginFail(false);
@@ -81,8 +86,8 @@ export default function Login() {
                     ...userState,
                     password: e.target.value,
                   });
-                  setValidateUser({
-                    ...validateUser,
+                  setValidateState({
+                    ...validateState,
                     passwordError: "",
                   });
                   setLoginFail(false);
@@ -94,8 +99,8 @@ export default function Login() {
               >
                 로그인
               </button>
-              {useRenderErrorMessage(validateUser.emailError)}
-              {useRenderErrorMessage(validateUser.passwordError)}
+              {useRenderErrorMessage(validateState.emailError)}
+              {useRenderErrorMessage(validateState.passwordError)}
               {loginFail ? (
                 <div className="mx-auto text-start text-base text-red-500">
                   이메일 또는 비밀번호를 확인해 주세요

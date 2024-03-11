@@ -18,9 +18,38 @@ interface Post {
   modification_time: Date;
 }
 
+interface Reply {
+  id: number;
+  nickname: string;
+  member_id: string;
+  content: string;
+  creation_time: Date;
+  modification_time: Date;
+}
+
+interface ValidationProps {
+  value: string;
+  validateState: typeof ValidateState;
+  setValidateState: (state: typeof ValidateState) => void;
+}
+
+type ValidationConfig = {
+  regex: RegExp;
+  errorField: typeof ValidateState;
+  errorMessage: string;
+  validateVariable: keyof ValidateState;
+};
+
 interface ValidateUser {
   emailError?: string;
   nicknameError?: string;
   passwordError?: string;
   codeError?: string;
+}
+
+interface ValidatePost {
+  titleError?: string;
+  nicknameError?: string;
+  passwordError?: string;
+  contentError?: string;
 }

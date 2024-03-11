@@ -6,8 +6,8 @@ import { handleAxiosError } from "../handleAxiosError.tsx";
 
 interface Props {
   verificationCode: string;
-  validateUser: ValidateUser;
-  setValidateUser: (state: ValidateUser) => void;
+  validateState: ValidateUser;
+  setValidateState: (state: ValidateUser) => void;
 }
 
 export function useRegisterActivate() {
@@ -35,8 +35,8 @@ export function useRegisterActivate() {
       return true;
     } catch (error) {
       handleAxiosError(error, globalState, setGlobalState);
-      props.setValidateUser({
-        ...props.validateUser,
+      props.setValidateState({
+        ...props.validateState,
         codeError: "코드를 다시 한번 확인해 주세요",
       });
       return false;
