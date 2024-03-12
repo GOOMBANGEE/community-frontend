@@ -1,22 +1,10 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { usePostStore } from "../../store/PostStore.tsx";
 import useRenderErrorMessage from "../../hook/user/useRenderErrorMessage.tsx";
 import useValidatePost from "../../hook/community/post/useValidatePost.tsx";
 import usePostUpdate from "../../hook/community/post/usePostUpdate.tsx";
 import usePostCreate from "../../hook/community/post/usePostCreate.tsx";
 import { useNavigate, useParams } from "react-router-dom";
-
-interface PostEditor {
-  isFocusTextEditor: boolean;
-  title: string;
-  content: string;
-  nickname: string;
-  password: string;
-  isTitleInvalid: boolean;
-  isNicknameInvalid: boolean;
-  isPasswordInvalid: boolean;
-  isContentInvalid: boolean;
-}
 
 export default function PostEditor() {
   const { postState, setPostState } = usePostStore();
@@ -28,10 +16,6 @@ export default function PostEditor() {
     passwordError: "",
     contentError: "",
   });
-
-  useEffect(() => {
-    console.log(postState);
-  }, [postState]);
 
   const navigate = useNavigate();
   const { communityId } = useParams();
@@ -83,6 +67,7 @@ export default function PostEditor() {
       return;
     }
     await postUpdate();
+    navigate(`/community/${communityId}/${postState.id}`);
   };
 
   return (
@@ -110,50 +95,53 @@ export default function PostEditor() {
               titleError: "",
             });
           }}
+          defaultValue={postState.title}
         />
       </div>
       <div className="mx-auto mb-2 w-full p-2 text-center">
         <div className="flex border-2 border-customGray">
           {postState.status !== "update" ? (
-            <div className="flex w-1/2">
-              <div className="h-fit w-12 bg-customGray p-1 px-2 text-sm font-light">
-                이름
+            <>
+              <div className="flex w-1/2">
+                <div className="h-fit w-12 bg-customGray p-1 px-2 text-sm font-light">
+                  이름
+                </div>
+                <input
+                  type="text"
+                  className="w-full bg-black px-2"
+                  onChange={(e) => {
+                    setPostState({
+                      ...postState,
+                      nickname: e.target.value,
+                    });
+                    setValidateState({
+                      ...validateState,
+                      nicknameError: "",
+                    });
+                  }}
+                />
               </div>
-              <input
-                type="text"
-                className="w-full bg-black px-2"
-                onChange={(e) => {
-                  setPostState({
-                    ...postState,
-                    nickname: e.target.value,
-                  });
-                  setValidateState({
-                    ...validateState,
-                    nicknameError: "",
-                  });
-                }}
-              />
-            </div>
+              <div className="flex w-1/2">
+                <div className="w-1/2 bg-customGray p-1 px-2 text-sm font-light">
+                  비밀번호
+                </div>
+                <input
+                  type="password"
+                  className="w-full bg-black px-2"
+                  onChange={(e) => {
+                    setPostState({
+                      ...postState,
+                      password: e.target.value,
+                    });
+                    setValidateState({
+                      ...validateState,
+                      passwordError: "",
+                    });
+                  }}
+                />
+              </div>
+            </>
           ) : null}
-          <div className="flex w-1/2">
-            <div className="w-1/2 bg-customGray p-1 px-2 text-sm font-light">
-              비밀번호
-            </div>
-            <input
-              type="password"
-              className="w-full bg-black px-2"
-              onChange={(e) => {
-                setPostState({
-                  ...postState,
-                  password: e.target.value,
-                });
-                setValidateState({
-                  ...validateState,
-                  passwordError: "",
-                });
-              }}
-            />
-          </div>
         </div>
       </div>
 
