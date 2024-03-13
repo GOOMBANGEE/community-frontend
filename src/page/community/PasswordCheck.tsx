@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { PostState, usePostStore } from "../../store/PostStore.tsx";
 import { ReplyState } from "../../store/ReplyStore.tsx";
 import usePasswordCheck from "../../hook/community/usePasswordCheck.tsx";
+import usePostDelete from "../../hook/community/post/usePostDelete.tsx";
 
 interface Props {
   prop: PostState | ReplyState;
@@ -14,6 +15,8 @@ export default function PasswordCheck({ prop }: Props) {
   const navigate = useNavigate();
 
   const { passwordCheckPost, passwordCheckReply } = usePasswordCheck();
+  const { postDelete } = usePostDelete();
+
   const { postState, setPostState } = usePostStore();
 
   const isPost = (state: PostState | ReplyState): state is PostState => {
@@ -33,8 +36,7 @@ export default function PasswordCheck({ prop }: Props) {
         navigate(`/community/${postState.communityId}/${postState.id}/editor`);
         return;
       }
-      // usePostDelete();
-      console.log("delete Post");
+      await postDelete(password);
       navigate(`/community/${postState.communityId}/`);
     }
     setIsPasswordInvalid(true);
