@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { PostState, usePostStore } from "../../store/PostStore.tsx";
-import { ReplyState } from "../../store/ReplyStore.tsx";
+import { ReplyState, useReplyStore } from "../../store/ReplyStore.tsx";
 import usePasswordCheck from "../../hook/community/usePasswordCheck.tsx";
 import usePostDelete from "../../hook/community/post/usePostDelete.tsx";
+import useReplyDelete from "../../hook/community/reply/useReplyDelete.tsx";
 
 interface Props {
   prop: PostState | ReplyState;
@@ -18,6 +19,7 @@ export default function PasswordCheck({ prop }: Props) {
   const { postDelete } = usePostDelete();
 
   const { postState, setPostState } = usePostStore();
+  const { replyState } = useReplyStore();
 
   const isPost = (state: PostState | ReplyState): state is PostState => {
     return "title" in state;
@@ -42,15 +44,17 @@ export default function PasswordCheck({ prop }: Props) {
     setIsPasswordInvalid(true);
   };
 
+  const { replyDelete } = useReplyDelete();
   const handleConfirmReply = async () => {
     if (
       isReply(prop) &&
       (await passwordCheckReply({ replyState: prop, password }))
     ) {
-      // useReplyDelete();
-      console.log("delete Reply");
+      await replyDelete(password);
+      navigate(`/community/${replyState.communityId}/${replyState.postId}`);
       return;
     }
+
     setIsPasswordInvalid(true);
   };
 

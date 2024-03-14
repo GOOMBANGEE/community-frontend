@@ -1,10 +1,15 @@
 import useFetchReplyList from "../../../hook/community/useFetchReplyList.tsx";
 import ReplyListReply from "./ReplyListReply.tsx";
 import { useParams } from "react-router-dom";
+import { useReplyStore } from "../../../store/ReplyStore.tsx";
+import ReplyEditor from "./ReplyEditor.tsx";
 
 export default function ReplyList() {
   const data = useFetchReplyList();
   const { communityId, postId } = useParams();
+
+  const { replyState } = useReplyStore();
+
   return (
     <div>
       <div className="flex p-2">
@@ -35,12 +40,16 @@ export default function ReplyList() {
         <div className="ml-1 text-xl font-extralight text-white">댓글</div>
       </div>
       {data.items.map((reply: Reply) => (
-        <ReplyListReply
-          key={reply.id}
-          communityId={communityId}
-          postId={postId}
-          reply={reply}
-        />
+        <div key={reply.id}>
+          <ReplyListReply
+            communityId={communityId}
+            postId={postId}
+            reply={reply}
+          />
+          {replyState.status === "update" && replyState.id === reply.id ? (
+            <ReplyEditor status={"update"} />
+          ) : null}
+        </div>
       ))}
 
       <div className="mb-6 border-b-2 border-customGray"></div>

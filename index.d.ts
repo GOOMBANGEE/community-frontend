@@ -53,3 +53,10 @@ interface ValidatePost {
   passwordError?: string;
   contentError?: string;
 }
+
+interface ValidateReply {
+  nicknameError?: string;
+  passwordError?: string;
+  contentError?: string;
+  invalidPasswordError?: string;
+}

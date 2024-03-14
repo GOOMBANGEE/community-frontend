@@ -2,7 +2,6 @@ import axios from "axios";
 import { useEnvStore } from "../../store/EnvStore.tsx";
 import { PostState } from "../../store/PostStore.tsx";
 import { ReplyState } from "../../store/ReplyStore.tsx";
-import { useNavigate } from "react-router-dom";
 
 interface checkPostProps {
   postState: PostState;
@@ -16,8 +15,6 @@ interface checkReplyProps {
 
 export default function usePasswordCheck() {
   const { envState } = useEnvStore();
-
-  const navigate = useNavigate();
 
   const passwordCheckPost = async ({ postState, password }: checkPostProps) => {
     try {
@@ -41,10 +38,9 @@ export default function usePasswordCheck() {
       await axios.get(
         `${envState.communityUrl}/${replyState.communityId}/${replyState.postId}/${replyState.id}/check?password=${password}`,
       );
-      navigate(`/community/${replyState.communityId}/${replyState.postId}/`);
+      return true;
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        console.log(error);
         return false;
       }
     }

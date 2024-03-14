@@ -6,10 +6,10 @@ interface ReplyStore {
   resetReplyState: () => void;
 }
 
-interface ReplyState {
+export interface ReplyState {
   communityId: string | undefined;
   postId: string | undefined;
-  replyId: number;
+  id: number;
   status: string;
   nickname: string;
   password: string;
@@ -19,7 +19,7 @@ interface ReplyState {
 const initialReplyState: ReplyState = {
   communityId: "",
   postId: "",
-  replyId: 0,
+  id: 0,
   status: "create",
   nickname: "",
   password: "",
