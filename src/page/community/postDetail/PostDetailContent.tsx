@@ -15,7 +15,10 @@ export default function PostDetailContent() {
         <div className="flex p-2 text-sm font-extralight">
           <div className="">{postState.nickname}</div>
           <div className="ml-auto flex flex-col">
-            <div>추천 | 비추천 | 댓글 {postState.reply_count} | 조회수</div>
+            <div>
+              추천 | 비추천 | 댓글 {postState.reply_count} | 조회수{" "}
+              {postState.view_count}
+            </div>
 
             {postState.creation_time !== postState.modification_time ? (
               <div className="">

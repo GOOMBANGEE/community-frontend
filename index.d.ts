@@ -10,6 +10,7 @@ interface Post {
   title: string;
   nickname: string;
   member_id: string;
+  view_count: number;
   content: string;
   reply_count: number;
   previous_id: number;

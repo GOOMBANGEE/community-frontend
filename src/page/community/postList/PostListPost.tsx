@@ -38,6 +38,7 @@ export default function PostListPost({
 
           <div>|</div>
           <div>조회</div>
+          <div>{post.view_count}</div>
 
           <div>|</div>
           <div>추천</div>
