@@ -4,9 +4,14 @@ import ReplyList from "../reply/ReplyList.tsx";
 import PostDetailButtons from "./PostDetailButtons.tsx";
 import PostDetailContent from "./PostDetailContent.tsx";
 import ReplyEditor from "../reply/ReplyEditor.tsx";
+import { useEffect } from "react";
 
 export default function PostDetail() {
-  useFetchPostDetail();
+  const { fetchPost } = useFetchPostDetail();
+
+  useEffect(() => {
+    void fetchPost();
+  }, []);
 
   return (
     <>

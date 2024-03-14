@@ -16,7 +16,6 @@ export default function PostListPost({
 
   const handleClickPost = () => {
     navigate(`/community/${communityId}/${post.id}`);
-    window.location.href = `/community/${communityId}/${post.id}`;
   };
 
   return (

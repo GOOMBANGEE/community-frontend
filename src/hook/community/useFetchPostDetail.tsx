@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import axios from "axios";
 import { useEnvStore } from "../../store/EnvStore.tsx";
 import { useParams } from "react-router-dom";
@@ -7,7 +6,7 @@ import { usePostStore } from "../../store/PostStore.tsx";
 export default function useFetchPostDetail() {
   const { communityId, postId } = useParams();
   const { envState } = useEnvStore();
-  const { postState, setPostState } = usePostStore();
+  const { setPostState } = usePostStore();
 
   const fetchPost = async () => {
     try {
@@ -22,8 +21,5 @@ export default function useFetchPostDetail() {
     }
   };
 
-  useEffect(() => {
-    void fetchPost();
-    setPostState({ ...postState, communityId: communityId });
-  }, []);
+  return { fetchPost };
 }
