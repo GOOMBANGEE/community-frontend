@@ -6,7 +6,7 @@ import { useGlobalStore } from "../../store/GlobalStore.tsx";
 import { useUserStore } from "../../store/UserStore.tsx";
 
 export default function useRegister() {
-  const { globalState, setGlobalState } = useGlobalStore();
+  const { setGlobalState } = useGlobalStore();
   const { envState } = useEnvStore();
   const { userState, setUserState } = useUserStore();
 
@@ -40,7 +40,7 @@ export default function useRegister() {
         expires: new Date(expireDate),
       });
     } catch (error) {
-      handleAxiosError(error, globalState, setGlobalState);
+      handleAxiosError(error, setGlobalState);
     }
   };
 

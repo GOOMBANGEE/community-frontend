@@ -7,7 +7,7 @@ import { handleAxiosError } from "../handleAxiosError.tsx";
 import { useUserStore } from "../../store/UserStore.tsx";
 
 export default function useLogin() {
-  const { globalState, setGlobalState } = useGlobalStore();
+  const { setGlobalState } = useGlobalStore();
   const { envState } = useEnvStore();
   const { tokenState, setTokenState, getAccessToken } = useTokenStore();
   const { userState } = useUserStore();
@@ -34,7 +34,7 @@ export default function useLogin() {
       getAccessToken(response.data.access_token);
       return true;
     } catch (error) {
-      handleAxiosError(error, globalState, setGlobalState);
+      handleAxiosError(error, setGlobalState);
       return false;
     }
   };

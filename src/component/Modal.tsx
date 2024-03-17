@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { useGlobalStore } from "../store/GlobalStore";
 
 export default function Modal() {
-  const { globalState, setGlobalState, resetGlobalState } = useGlobalStore();
+  const { globalState, resetGlobalState } = useGlobalStore();
   const navigate = useNavigate();
 
   return (
@@ -13,31 +13,21 @@ export default function Modal() {
           {globalState.modalMessage}
         </p>
 
-        {globalState.redirectUrl ? (
-          <div className="flex">
-            <button
-              className="mx-auto rounded bg-indigo-500 px-4 py-2 text-white"
-              onClick={(e) => {
-                e.preventDefault();
-                resetGlobalState();
-                navigate(`${globalState.redirectUrl}`);
-              }}
-            >
-              {globalState.redirectName}
-            </button>
-          </div>
-        ) : (
-          <div className="flex">
-            <button
-              className="mx-auto rounded bg-indigo-500 px-4 py-2 text-white"
-              onClick={() => {
-                setGlobalState({ ...globalState, modalMessage: "" });
-              }}
-            >
-              닫기
-            </button>
-          </div>
-        )}
+        <div className="flex">
+          <button
+            className="mx-auto rounded bg-indigo-500 px-4 py-2 text-white"
+            onClick={(e) => {
+              e.preventDefault();
+              globalState.redirectUrl
+                ? navigate(`${globalState.redirectUrl}`)
+                : null;
+
+              resetGlobalState();
+            }}
+          >
+            {globalState.redirectName ? globalState.redirectName : "닫기"}
+          </button>
+        </div>
       </div>
     </div>
   );

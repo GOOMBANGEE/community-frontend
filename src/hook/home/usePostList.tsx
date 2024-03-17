@@ -5,7 +5,7 @@ import axios from "axios";
 import { handleAxiosError } from "../handleAxiosError.tsx";
 
 export function usePostList(communityId: number) {
-  const { globalState, setGlobalState } = useGlobalStore();
+  const { setGlobalState } = useGlobalStore();
   const { envState } = useEnvStore();
   const [result, setResult] = useState<Post>();
 
@@ -16,7 +16,7 @@ export function usePostList(communityId: number) {
       );
       setResult(response.data.items);
     } catch (error) {
-      handleAxiosError(error, globalState, setGlobalState);
+      handleAxiosError(error, setGlobalState);
     }
   }, [communityId, envState.communityUrl]);
 

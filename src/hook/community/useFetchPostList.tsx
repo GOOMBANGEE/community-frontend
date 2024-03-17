@@ -7,7 +7,7 @@ import { handleAxiosError } from "../handleAxiosError.tsx";
 
 export default function useFetchPostList() {
   const { envState } = useEnvStore();
-  const { globalState, setGlobalState } = useGlobalStore();
+  const { setGlobalState } = useGlobalStore();
   const { communityId } = useParams();
   const [postList, setPostList] = useState({
     items: [],
@@ -31,11 +31,9 @@ export default function useFetchPostList() {
         prev: response.data.prev,
         next: response.data.next,
       });
-      setGlobalState({ ...globalState, loading: false });
+      setGlobalState({ loading: false });
     } catch (error) {
-      if (axios.isAxiosError(error)) {
-        handleAxiosError(error, globalState, setGlobalState);
-      }
+      handleAxiosError(error, setGlobalState);
     }
   };
 

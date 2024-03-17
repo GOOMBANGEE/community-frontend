@@ -5,9 +5,12 @@ import PostDetailButtons from "./PostDetailButtons.tsx";
 import PostDetailContent from "./PostDetailContent.tsx";
 import ReplyEditor from "../reply/ReplyEditor.tsx";
 import { useEffect } from "react";
+import { useGlobalStore } from "../../../store/GlobalStore.tsx";
+import Modal from "../../../component/Modal.tsx";
 
 export default function PostDetail() {
   const { fetchPost } = useFetchPostDetail();
+  const { globalState } = useGlobalStore();
 
   useEffect(() => {
     void fetchPost();
@@ -20,6 +23,8 @@ export default function PostDetail() {
       <ReplyList />
       <ReplyEditor status={"create"} />
       <PostList />
+
+      {globalState.modalMessage ? <Modal /> : null}
     </>
   );
 }

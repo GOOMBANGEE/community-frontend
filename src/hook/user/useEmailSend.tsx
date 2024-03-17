@@ -7,7 +7,7 @@ import { useUserStore } from "../../store/UserStore.tsx";
 // 메일 다시보내기
 export default function useEmailSend() {
   const { userState } = useUserStore();
-  const { globalState, setGlobalState } = useGlobalStore();
+  const { setGlobalState } = useGlobalStore();
   const { envState } = useEnvStore();
 
   const emailSend = async () => {
@@ -15,12 +15,9 @@ export default function useEmailSend() {
       await axios.post(`${envState.userUrl}/send`, {
         token: userState.token,
       });
-      setGlobalState({
-        ...globalState,
-        modalMessage: "메일이 정상적으로 발송되었습니다.",
-      });
+      setGlobalState({ modalMessage: "메일이 정상적으로 발송되었습니다." });
     } catch (error) {
-      handleAxiosError(error, globalState, setGlobalState);
+      handleAxiosError(error, setGlobalState);
     }
   };
 
