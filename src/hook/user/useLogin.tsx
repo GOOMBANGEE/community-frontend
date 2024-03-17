@@ -1,16 +1,16 @@
 import axios from "axios";
 import { setCookie } from "../../Cookie.tsx";
 import { useGlobalStore } from "../../store/GlobalStore.tsx";
-import { useTokenStore } from "../../store/TokenStore.tsx";
 import { useEnvStore } from "../../store/EnvStore.tsx";
 import { handleAxiosError } from "../handleAxiosError.tsx";
 import { useUserStore } from "../../store/UserStore.tsx";
+import useRefreshAccessToken from "../useRefreshAcccessToken.tsx";
 
 export default function useLogin() {
   const { setGlobalState } = useGlobalStore();
   const { envState } = useEnvStore();
-  const { tokenState, setTokenState, getAccessToken } = useTokenStore();
   const { userState } = useUserStore();
+  const { refreshAccessToken } = useRefreshAccessToken();
 
   const login = async () => {
     try {
@@ -19,19 +19,16 @@ export default function useLogin() {
         password: userState.password,
       });
 
-      setTokenState({
-        ...tokenState,
-        accessToken: response.data.access_token,
-      });
-
       const today = new Date();
       const expireDate = today.setDate(today.getDate() + 1);
-      setCookie("refresh_token", response.data.refresh_token, {
+      const refreshToken = response.data.refresh_token;
+      setCookie("refresh_token", refreshToken, {
         sameSite: "strict",
         path: "/",
         expires: new Date(expireDate),
       });
-      getAccessToken(response.data.access_token);
+
+      void refreshAccessToken(refreshToken);
       return true;
     } catch (error) {
       handleAxiosError(error, setGlobalState);

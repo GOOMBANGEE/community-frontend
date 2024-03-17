@@ -1,21 +1,21 @@
 import axios from "axios";
-import { deleteCookie, getCookie } from "../Cookie.tsx";
+import { deleteCookie } from "../Cookie.tsx";
 import { useEnvStore } from "../store/EnvStore.tsx";
-import { useEffect } from "react";
 import { useTokenStore } from "../store/TokenStore.tsx";
 
-const refreshToken = getCookie("refresh_token");
+const TOKEN_EXPIRE_TIME = import.meta.env.VITE_TOKEN_EXPIRE_TIME;
+
 export default function useRefreshAccessToken() {
   const { envState } = useEnvStore();
-  const { getAccessToken } = useTokenStore();
+  const { setHeaderAccessToken } = useTokenStore();
 
-  const refreshAccessToken = async () => {
+  const refreshAccessToken = async (refreshToken: string) => {
     try {
       // refreshtoken를 쿠키에서 가져와서 실행
       const response = await axios.post(`${envState.userUrl}/refresh`, {
         refresh_token: refreshToken,
       });
-      getAccessToken(response.data.access_token);
+      setHeaderAccessToken(response.data.access_token);
     } catch (error) {
       if (axios.isAxiosError(error)) {
         console.log(error.response?.data);
@@ -23,12 +23,12 @@ export default function useRefreshAccessToken() {
           deleteCookie("refresh_token");
         }
       }
+    } finally {
+      setTimeout(() => {
+        void refreshAccessToken(refreshToken);
+      }, TOKEN_EXPIRE_TIME);
     }
   };
 
-  useEffect(() => {
-    if (refreshToken) {
-      void refreshAccessToken();
-    }
-  }, []);
+  return { refreshAccessToken };
 }
