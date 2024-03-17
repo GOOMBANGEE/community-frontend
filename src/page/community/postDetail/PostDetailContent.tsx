@@ -1,9 +1,11 @@
 import { usePostStore } from "../../../store/PostStore.tsx";
 import useTimeFormat from "../../../hook/useTimeFormat.tsx";
+import usePostRate from "../../../hook/community/post/usePostRate.tsx";
 
 export default function PostDetailContent() {
   const { formatTime } = useTimeFormat();
   const { postState } = usePostStore();
+  const { postRate } = usePostRate();
 
   return (
     <>
@@ -44,12 +46,22 @@ export default function PostDetailContent() {
       </div>
 
       <div id="추천 비추천" className="mx-auto mt-8 flex w-1/2">
-        <div className="mx-auto w-2/5 rounded-lg border-2 border-customGray py-4 text-center font-extralight text-white">
+        <button
+          className="mx-auto w-2/5 rounded-lg border-2 border-customGray py-4 text-center font-extralight text-white"
+          onClick={() => {
+            void postRate(1);
+          }}
+        >
           추천! {postState.rate_plus}
-        </div>
-        <div className="mx-auto w-2/5 rounded-lg border-2 border-customGray py-4 text-center font-extralight text-white">
+        </button>
+        <button
+          className="mx-auto w-2/5 rounded-lg border-2 border-customGray py-4 text-center font-extralight text-white"
+          onClick={() => {
+            void postRate(0);
+          }}
+        >
           비추! {postState.rate_minus}
-        </div>
+        </button>
       </div>
 
       <div className="my-4 border-b-2 border-customGray"></div>
