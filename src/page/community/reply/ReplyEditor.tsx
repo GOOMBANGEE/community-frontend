@@ -75,7 +75,7 @@ export default function ReplyEditor(prop: Props) {
 
   return (
     <>
-      <div className="mx-2 rounded border-2 border-customGray">
+      <div className="mx-2 mb-6 rounded border-2 border-customGray">
         <div className="flex border-b-2 border-customGray">
           <input
             type="text"

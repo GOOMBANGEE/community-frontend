@@ -26,11 +26,11 @@ export default function PostPreview({
         clickPost();
       }}
     >
-      <div className="col-start-1 col-end-12 mx-auto mr-2">
+      <div className="mx-auto">
         {post.title} <span>[{post.reply_count}]</span>
       </div>
 
-      <div className="col-start-12 mt-1 h-fit items-center rounded bg-gray-700 px-1 text-center text-sm opacity-70">
+      <div className="mt-1 h-fit w-fit items-center rounded bg-gray-700 px-1 text-center text-sm opacity-70">
         {formatTimeDifference(post.creation_time)}
       </div>
     </button>
