@@ -6,10 +6,20 @@ import Header from "./component/Header.tsx";
 import useFetchProfile from "./hook/useFetchProfile.tsx";
 import useRefreshAccessToken from "./hook/useRefreshAcccessToken.tsx";
 import Community from "./page/community/Community.tsx";
+import { useEffect } from "react";
+import { useTokenStore } from "./store/TokenStore.tsx";
 
 export default function App() {
+  const { tokenState } = useTokenStore();
+  const { fetchProfile } = useFetchProfile();
+
   useRefreshAccessToken();
-  useFetchProfile();
+
+  useEffect(() => {
+    if (tokenState.accessToken) {
+      void fetchProfile();
+    }
+  }, [tokenState.accessToken]);
 
   return (
     <>
