@@ -42,6 +42,7 @@ export default function PostListPost({
 
           <div>|</div>
           <div>추천</div>
+          <div>{post.rate_plus - post.rate_minus}</div>
         </div>
       </div>
       <div className="my-1 border-b-2 border-gray-700"></div>

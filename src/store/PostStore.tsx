@@ -15,6 +15,8 @@ export interface PostState {
   creator: string;
   content: string;
   view_count: number;
+  rate_plus: number;
+  rate_minus: number;
   reply_count: number;
   previous_id: number | null;
   next_id: number | null;
@@ -32,6 +34,8 @@ const initialPostState: PostState = {
   creator: "",
   content: "",
   view_count: 0,
+  rate_plus: 0,
+  rate_minus: 0,
   reply_count: 0,
   previous_id: 0,
   next_id: 0,

@@ -11,6 +11,8 @@ interface Post {
   nickname: string;
   member_id: string;
   view_count: number;
+  rate_plus: number;
+  rate_minus: number;
   content: string;
   reply_count: number;
   previous_id: number;
