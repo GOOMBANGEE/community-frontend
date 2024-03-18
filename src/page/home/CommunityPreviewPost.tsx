@@ -21,16 +21,16 @@ export default function CommunityPreviewPost({
 
   return (
     <button
-      className="mb-1 grid grid-cols-2 gap-2 text-base font-extralight"
+      className="mb-1 grid w-full grid-cols-2 gap-2 text-base font-extralight"
       onClick={() => {
         clickPost();
       }}
     >
-      <div className="mx-auto">
+      <div className="text-left">
         {post.title} <span>[{post.reply_count}]</span>
       </div>
 
-      <div className="mt-1 h-fit w-fit items-center rounded bg-gray-700 px-1 text-center text-sm opacity-70">
+      <div className="ml-auto mt-1 h-fit w-fit items-center rounded bg-gray-700 px-1 text-center text-sm opacity-70">
         {formatTimeDifference(post.creation_time)}
       </div>
     </button>
