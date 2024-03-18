@@ -58,7 +58,7 @@ export default function RegisterForm() {
     ) {
       return;
     }
-    await register();
+    void register();
   };
 
   return (

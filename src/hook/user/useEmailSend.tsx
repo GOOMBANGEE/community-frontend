@@ -12,7 +12,8 @@ export default function useEmailSend() {
 
   const emailSend = async () => {
     try {
-      await axios.post(`${envState.userUrl}/send`, {
+      await axios.post(`${envState.userUrl}/email/send`, {
+        email: userState.email,
         token: userState.token,
       });
       setGlobalState({ modalMessage: "메일이 정상적으로 발송되었습니다." });

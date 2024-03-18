@@ -11,7 +11,11 @@ export default function Register() {
   // 페이지 로딩될때 토큰있는지 한번 검사
   useEffect(() => {
     if (getCookie("token")) {
-      setUserState({ ...userState, email: getCookie("email") });
+      setUserState({
+        ...userState,
+        email: getCookie("email"),
+        token: getCookie("token"),
+      });
       setHasToken(true);
     }
   }, []);
@@ -19,7 +23,7 @@ export default function Register() {
     if (userState.token) {
       setHasToken(true);
     }
-  }, []);
+  }, [userState.token]);
 
   return (
     <div className="mx-auto pt-60 text-center md:p-16 dark:text-slate-200">

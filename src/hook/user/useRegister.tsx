@@ -27,7 +27,6 @@ export default function useRegister() {
       // 응답들어오면 토큰 state와 쿠키에 저장
       // email token제외 모두 초기화
       const today = new Date();
-
       const expireDate = today.setDate(today.getDate() + 1);
       setCookie("email", userState.email, {
         sameSite: "strict",
@@ -38,6 +37,10 @@ export default function useRegister() {
         sameSite: "strict",
         path: "/",
         expires: new Date(expireDate),
+      });
+      axios.post(`${envState.userUrl}/email/send`, {
+        email: userState.email,
+        token: userState.token,
       });
     } catch (error) {
       handleAxiosError(error, setGlobalState);

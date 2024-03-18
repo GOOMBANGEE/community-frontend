@@ -20,7 +20,7 @@ export function useRegisterActivate() {
     try {
       await axios.post(`${envState.userUrl}/email/activate`, {
         token: token,
-        verification_code: props.verificationCode,
+        code: props.verificationCode,
       });
       setGlobalState({
         modalMessage: "가입이 완료되었습니다",

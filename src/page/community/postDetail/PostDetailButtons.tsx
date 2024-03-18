@@ -1,8 +1,9 @@
 import { usePostStore } from "../../../store/PostStore.tsx";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 export default function PostDetailButtons() {
   const navigate = useNavigate();
+  const { communityId, postId } = useParams();
 
   const { postState, setPostState } = usePostStore();
 
@@ -16,9 +17,7 @@ export default function PostDetailButtons() {
               ...postState,
               status: "delete",
             });
-            navigate(
-              `/community/${postState.communityId}/${postState.id}/check`,
-            );
+            navigate(`/community/${communityId}/${postId}/check`);
           }}
         >
           삭제
@@ -32,9 +31,7 @@ export default function PostDetailButtons() {
               ...postState,
               status: "update",
             });
-            navigate(
-              `/community/${postState.communityId}/${postState.id}/check`,
-            );
+            navigate(`/community/${communityId}/${postId}/check`);
           }}
         >
           수정

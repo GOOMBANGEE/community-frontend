@@ -48,7 +48,7 @@ export default function useValidateUser() {
 
   const checkCodeLength = (props: ValidationProps & { length: number }) => {
     const validationConfig: ValidationConfig = {
-      regex: new RegExp(`^.${length}$`),
+      regex: new RegExp(`^.{${props.length}}$`),
       errorField: "codeError",
       errorMessage: "코드를 다시 한번 확인해 주세요",
       validateVariable: "user",

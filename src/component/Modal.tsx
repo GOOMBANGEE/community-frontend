@@ -34,7 +34,9 @@ export default function Modal() {
                 navigate(`${globalState.redirectUrl}`);
                 resetGlobalState();
               }}
-            ></button>
+            >
+              {globalState.redirectName}
+            </button>
           ) : null}
         </div>
       </div>

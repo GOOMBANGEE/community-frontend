@@ -95,7 +95,7 @@ export default function RegisterActivate() {
           {useRenderErrorMessage(validateState.codeError)}
           {useRenderErrorMessage(globalState.errorMessage)}
 
-          {globalState.modalMessage && <Modal />}
+          {globalState.modalMessage ? <Modal /> : null}
         </form>
       </div>
     </div>

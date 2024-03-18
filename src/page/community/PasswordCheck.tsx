@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { PostState, usePostStore } from "../../store/PostStore.tsx";
 import { ReplyState, useReplyStore } from "../../store/ReplyStore.tsx";
 import usePasswordCheck from "../../hook/community/usePasswordCheck.tsx";
@@ -14,6 +14,7 @@ export default function PasswordCheck({ prop }: Props) {
   const [password, setPassword] = useState<string>("");
   const [isPasswordInvalid, setIsPasswordInvalid] = useState<boolean>(false);
   const navigate = useNavigate();
+  const { communityId } = useParams();
 
   const { passwordCheckPost, passwordCheckReply } = usePasswordCheck();
   const { postDelete } = usePostDelete();
@@ -35,11 +36,11 @@ export default function PasswordCheck({ prop }: Props) {
     ) {
       if (prop.status === "update") {
         setPostState({ ...postState, password: password });
-        navigate(`/community/${postState.communityId}/${postState.id}/editor`);
+        navigate(`/community/${communityId}/${postState.id}/editor`);
         return;
       }
       await postDelete(password);
-      navigate(`/community/${postState.communityId}/`);
+      navigate(`/community/${communityId}/`);
     }
     setIsPasswordInvalid(true);
   };
@@ -51,7 +52,7 @@ export default function PasswordCheck({ prop }: Props) {
       (await passwordCheckReply({ replyState: prop, password }))
     ) {
       await replyDelete(password);
-      navigate(`/community/${replyState.communityId}/${replyState.postId}`);
+      navigate(`/community/${communityId}/${replyState.postId}`);
       return;
     }
 
