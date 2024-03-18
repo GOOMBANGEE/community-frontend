@@ -5,12 +5,16 @@ import useValidateReply from "../../../hook/community/reply/useValidateReply.tsx
 import useReplyCreate from "../../../hook/community/reply/useReplyCreate.tsx";
 import usePasswordCheck from "../../../hook/community/usePasswordCheck.tsx";
 import useReplyUpdate from "../../../hook/community/reply/useReplyUpdate.tsx";
+import { useTokenStore } from "../../../store/TokenStore.tsx";
+import { useUserStore } from "../../../store/UserStore.tsx";
 
 interface Props {
   status: string;
 }
 
 export default function ReplyEditor(prop: Props) {
+  const { tokenState } = useTokenStore();
+  const { userState } = useUserStore();
   const { replyState, setReplyState } = useReplyStore();
   const { isNicknameValid, isPasswordValid, isContentValid } =
     useValidateReply();
@@ -27,6 +31,7 @@ export default function ReplyEditor(prop: Props) {
   const { passwordCheckReply } = usePasswordCheck();
   const handleReplyButton = async () => {
     if (
+      !tokenState.accessToken &&
       prop.status === "create" &&
       !isNicknameValid({
         value: replyState.nickname,
@@ -37,6 +42,7 @@ export default function ReplyEditor(prop: Props) {
       return;
     }
     if (
+      !tokenState.accessToken &&
       !isPasswordValid({
         value: replyState.password,
         validateState,
@@ -76,39 +82,50 @@ export default function ReplyEditor(prop: Props) {
   return (
     <>
       <div className="mx-2 mb-6 rounded border-2 border-customGray">
-        <div className="flex border-b-2 border-customGray">
-          <input
-            type="text"
-            placeholder="닉네임"
-            className="border-r-2 border-customGray bg-transparent p-2 text-sm font-light text-white"
-            onChange={(e) => {
-              setReplyState({
-                ...replyState,
-                nickname: e.target.value,
-              });
-              setValidateState({
-                ...validateState,
-                nicknameError: "",
-              });
-            }}
-            defaultValue={prop.status === "update" ? replyState.nickname : ""}
-            readOnly={prop.status === "update"}
-          />
-          <input
-            type="password"
-            placeholder="비밀번호"
-            className="w-full bg-transparent p-2 text-sm font-light text-white"
-            onChange={(e) => {
-              setReplyState({
-                ...replyState,
-                password: e.target.value,
-              });
-              setValidateState({
-                ...validateState,
-                passwordError: "",
-              });
-            }}
-          />
+        <div className="flex items-center border-b-2 border-customGray text-white">
+          <div className="text-extralight border-r-2 border-customGray p-2 text-xs">
+            댓글 작성
+          </div>
+          {tokenState.accessToken ? (
+            <div className="p-2 text-gray-400">{userState.nickname}</div>
+          ) : (
+            <div className="flex">
+              <input
+                type="text"
+                placeholder="닉네임"
+                className="border-r-2 border-customGray bg-transparent p-2 text-sm font-light text-white"
+                onChange={(e) => {
+                  setReplyState({
+                    ...replyState,
+                    nickname: e.target.value,
+                  });
+                  setValidateState({
+                    ...validateState,
+                    nicknameError: "",
+                  });
+                }}
+                defaultValue={
+                  prop.status === "update" ? replyState.nickname : ""
+                }
+                readOnly={prop.status === "update"}
+              />
+              <input
+                type="password"
+                placeholder="비밀번호"
+                className="w-full bg-transparent p-2 text-sm font-light text-white"
+                onChange={(e) => {
+                  setReplyState({
+                    ...replyState,
+                    password: e.target.value,
+                  });
+                  setValidateState({
+                    ...validateState,
+                    passwordError: "",
+                  });
+                }}
+              />
+            </div>
+          )}
         </div>
 
         <textarea

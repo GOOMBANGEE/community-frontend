@@ -2,9 +2,12 @@ import axios from "axios";
 import { usePostStore } from "../../../store/PostStore.tsx";
 import { useEnvStore } from "../../../store/EnvStore.tsx";
 import { useParams } from "react-router-dom";
+import { handleAxiosError } from "../../handleAxiosError.tsx";
+import { useGlobalStore } from "../../../store/GlobalStore.tsx";
 
 export default function usePostCreate() {
   const { envState } = useEnvStore();
+  const { setGlobalState } = useGlobalStore();
   const { postState, resetPostState } = usePostStore();
   const { communityId } = useParams();
 
@@ -17,10 +20,9 @@ export default function usePostCreate() {
         password: postState.password,
       });
       resetPostState();
+      return true;
     } catch (error) {
-      if (axios.isAxiosError(error)) {
-        console.log(error);
-      }
+      handleAxiosError(error, setGlobalState);
     }
   };
 

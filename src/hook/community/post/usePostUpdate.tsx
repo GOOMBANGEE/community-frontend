@@ -2,9 +2,12 @@ import axios from "axios";
 import { useEnvStore } from "../../../store/EnvStore.tsx";
 import { usePostStore } from "../../../store/PostStore.tsx";
 import { useParams } from "react-router-dom";
+import { handleAxiosError } from "../../handleAxiosError.tsx";
+import { useGlobalStore } from "../../../store/GlobalStore.tsx";
 
 export default function usePostUpdate() {
   const { envState } = useEnvStore();
+  const { setGlobalState } = useGlobalStore();
   const { postState, resetPostState } = usePostStore();
   const { communityId, postId } = useParams();
 
@@ -19,9 +22,10 @@ export default function usePostUpdate() {
         },
       );
       resetPostState();
+      return true;
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        console.log(error);
+        handleAxiosError(error, setGlobalState);
       }
     }
   };

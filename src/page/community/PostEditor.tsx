@@ -5,8 +5,14 @@ import useValidatePost from "../../hook/community/post/useValidatePost.tsx";
 import usePostUpdate from "../../hook/community/post/usePostUpdate.tsx";
 import usePostCreate from "../../hook/community/post/usePostCreate.tsx";
 import { useNavigate, useParams } from "react-router-dom";
+import { useTokenStore } from "../../store/TokenStore.tsx";
+import { useGlobalStore } from "../../store/GlobalStore.tsx";
+import Modal from "../../component/Modal.tsx";
 
 export default function PostEditor() {
+  const { tokenState } = useTokenStore();
+  const { globalState } = useGlobalStore();
+
   const { postState, setPostState } = usePostStore();
   const { isTitleValid, isNicknameValid, isPasswordValid, isContentValid } =
     useValidatePost();
@@ -34,6 +40,7 @@ export default function PostEditor() {
     }
     if (
       postState.status === "create" &&
+      !tokenState.accessToken &&
       !isNicknameValid({
         value: postState.nickname,
         validateState,
@@ -43,6 +50,7 @@ export default function PostEditor() {
       return;
     }
     if (
+      !tokenState.accessToken &&
       !isPasswordValid({
         value: postState.password,
         validateState,
@@ -62,12 +70,17 @@ export default function PostEditor() {
     }
 
     if (postState.status !== "update") {
-      await postCreate();
-      navigate(`/community/${communityId}`);
-      return;
+      if (await postCreate()) {
+        navigate(`/community/${communityId}`);
+        return;
+      }
     }
-    await postUpdate();
-    navigate(`/community/${communityId}/${postState.id}`);
+    if (postState.status === "update") {
+      if (await postUpdate()) {
+        navigate(`/community/${communityId}/${postState.id}`);
+        return;
+      }
+    }
   };
 
   return (
@@ -100,7 +113,7 @@ export default function PostEditor() {
       </div>
       <div className="mx-auto mb-2 w-full p-2 text-center">
         <div className="flex border-2 border-customGray">
-          {postState.status !== "update" ? (
+          {postState.status !== "update" && !tokenState.accessToken ? (
             <>
               <div className="flex w-1/2">
                 <div className="h-fit w-12 bg-customGray p-1 px-2 text-sm font-light">
@@ -167,7 +180,7 @@ export default function PostEditor() {
       {useRenderErrorMessage(validateState.nicknameError)}
       {useRenderErrorMessage(validateState.passwordError)}
       {useRenderErrorMessage(validateState.contentError)}
-
+      {globalState.modalMessage ? <Modal /> : null}
       <button
         className="justify-item-end mb-2 ml-auto mr-2 flex rounded border-2 border-customGray p-1 px-4 font-extralight"
         onClick={() => {
