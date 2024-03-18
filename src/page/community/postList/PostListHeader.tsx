@@ -1,7 +1,9 @@
 import { useNavigate, useParams } from "react-router-dom";
+import { usePostStore } from "../../../store/PostStore.tsx";
 
 export default function PostListHeader() {
   const { communityId } = useParams();
+  const { resetPostState } = usePostStore();
   const navigate = useNavigate();
 
   const handleClickPostList = () => {
@@ -29,6 +31,7 @@ export default function PostListHeader() {
           className="ml-auto border-2 border-customGray bg-black p-1"
           onClick={() => {
             navigate(`/community/${communityId}/editor`);
+            resetPostState();
           }}
         >
           글쓰기
