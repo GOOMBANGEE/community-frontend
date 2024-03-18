@@ -9,7 +9,7 @@ interface Post {
   id: number;
   title: string;
   nickname: string;
-  member_id: string;
+  creator: string;
   view_count: number;
   rate_plus: number;
   rate_minus: number;
@@ -24,7 +24,7 @@ interface Post {
 interface Reply {
   id: number;
   nickname: string;
-  member_id: string;
+  creator: string;
   content: string;
   creation_time: Date;
   modification_time: Date;
