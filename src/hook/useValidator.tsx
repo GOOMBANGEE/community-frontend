@@ -5,7 +5,6 @@ export default function useValidator() {
     }
 
     props.setValidateState({
-      ...props.validateState,
       [props.errorField]: props.errorMessage,
     });
 

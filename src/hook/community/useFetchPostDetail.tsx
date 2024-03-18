@@ -2,11 +2,14 @@ import axios from "axios";
 import { useEnvStore } from "../../store/EnvStore.tsx";
 import { useParams } from "react-router-dom";
 import { usePostStore } from "../../store/PostStore.tsx";
+import { useGlobalStore } from "../../store/GlobalStore.tsx";
+import { handleAxiosError } from "../handleAxiosError.tsx";
 
 export default function useFetchPostDetail() {
-  const { communityId, postId } = useParams();
   const { envState } = useEnvStore();
+  const { setGlobalState } = useGlobalStore();
   const { setPostState } = usePostStore();
+  const { communityId, postId } = useParams();
 
   const fetchPost = async () => {
     try {
@@ -15,9 +18,7 @@ export default function useFetchPostDetail() {
       );
       setPostState(response.data);
     } catch (error) {
-      if (axios.isAxiosError(error)) {
-        console.log(error);
-      }
+      handleAxiosError(error, setGlobalState);
     }
   };
 

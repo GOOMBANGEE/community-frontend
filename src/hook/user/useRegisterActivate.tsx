@@ -5,8 +5,7 @@ import { useEnvStore } from "../../store/EnvStore.tsx";
 import { handleAxiosError } from "../handleAxiosError.tsx";
 
 interface Props {
-  verificationCode: string;
-  validateState: ValidateUser;
+  code: string;
   setValidateState: (state: ValidateUser) => void;
 }
 
@@ -20,7 +19,7 @@ export function useRegisterActivate() {
     try {
       await axios.post(`${envState.userUrl}/email/activate`, {
         token: token,
-        code: props.verificationCode,
+        code: props.code,
       });
       setGlobalState({
         modalMessage: "가입이 완료되었습니다",
@@ -33,7 +32,6 @@ export function useRegisterActivate() {
     } catch (error) {
       handleAxiosError(error, setGlobalState);
       props.setValidateState({
-        ...props.validateState,
         codeError: "코드를 다시 한번 확인해 주세요",
       });
       return false;

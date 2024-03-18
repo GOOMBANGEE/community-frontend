@@ -7,8 +7,11 @@ import PostEditor from "./PostEditor.tsx";
 import PasswordCheck from "./PasswordCheck.tsx";
 import { useReplyStore } from "../../store/ReplyStore.tsx";
 import { usePostStore } from "../../store/PostStore.tsx";
+import { useGlobalStore } from "../../store/GlobalStore.tsx";
+import Modal from "../../component/Modal.tsx";
 
 export default function Community() {
+  const { globalState } = useGlobalStore();
   const { postState } = usePostStore();
   const { replyState } = useReplyStore();
 
@@ -31,6 +34,7 @@ export default function Community() {
           element={<PasswordCheck prop={replyState} />}
         />
       </Routes>
+      {globalState.modalMessage ? <Modal /> : null}
     </>
   );
 }

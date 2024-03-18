@@ -1,6 +1,4 @@
 import { FormEvent, useState } from "react";
-import { useGlobalStore } from "../../store/GlobalStore.tsx";
-import Modal from "../../component/Modal.tsx";
 import { useNavigate } from "react-router-dom";
 import { useUserStore } from "../../store/UserStore.tsx";
 import useValidateUser from "../../hook/user/useValidateUser.tsx";
@@ -8,7 +6,6 @@ import useRenderErrorMessage from "../../hook/user/useRenderErrorMessage.tsx";
 import useLogin from "../../hook/user/useLogin.tsx";
 
 export default function Login() {
-  const { globalState } = useGlobalStore();
   const { userState, setUserState } = useUserStore();
 
   const [validateState, setValidateState] = useState<ValidateUser>({
@@ -28,7 +25,6 @@ export default function Login() {
     if (
       !isEmailValid({
         value: userState.email,
-        validateState,
         setValidateState,
       })
     ) {
@@ -37,7 +33,6 @@ export default function Login() {
     if (
       !isPasswordValid({
         value: userState.password,
-        validateState,
         setValidateState,
       })
     ) {
@@ -119,7 +114,6 @@ export default function Login() {
             </div>
             <div className="my-4">또는 다음을 사용하여 계속하기</div>
             <div>oauth list</div>
-            {globalState.modalMessage ? <Modal /> : null}
           </div>
         </div>
       </div>

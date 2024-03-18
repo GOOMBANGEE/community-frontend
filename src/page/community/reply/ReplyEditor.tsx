@@ -12,7 +12,7 @@ interface Props {
   status: string;
 }
 
-export default function ReplyEditor(prop: Props) {
+export default function ReplyEditor(prop: Readonly<Props>) {
   const { tokenState } = useTokenStore();
   const { userState } = useUserStore();
   const { replyState, setReplyState } = useReplyStore();
@@ -35,7 +35,6 @@ export default function ReplyEditor(prop: Props) {
       prop.status === "create" &&
       !isNicknameValid({
         value: replyState.nickname,
-        validateState,
         setValidateState,
       })
     ) {
@@ -45,7 +44,6 @@ export default function ReplyEditor(prop: Props) {
       !tokenState.accessToken &&
       !isPasswordValid({
         value: replyState.password,
-        validateState,
         setValidateState,
       })
     ) {
@@ -54,7 +52,6 @@ export default function ReplyEditor(prop: Props) {
     if (
       !isContentValid({
         value: replyState.content,
-        validateState,
         setValidateState,
       })
     ) {

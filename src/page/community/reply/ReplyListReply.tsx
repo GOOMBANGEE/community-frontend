@@ -2,7 +2,7 @@ import useTimeFormat from "../../../hook/useTimeFormat.tsx";
 import { useNavigate } from "react-router-dom";
 import { useReplyStore } from "../../../store/ReplyStore.tsx";
 
-interface ReplyProps {
+interface Props {
   communityId: string | undefined;
   postId: string | undefined;
   reply: Reply;
@@ -12,7 +12,7 @@ export default function ReplyListReply({
   communityId,
   postId,
   reply,
-}: Readonly<ReplyProps>) {
+}: Readonly<Props>) {
   const navigate = useNavigate();
   const { replyState, setReplyState, resetReplyState } = useReplyStore();
   const { formatTime } = useTimeFormat();

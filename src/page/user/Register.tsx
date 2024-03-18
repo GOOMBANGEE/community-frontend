@@ -19,6 +19,7 @@ export default function Register() {
       setHasToken(true);
     }
   }, []);
+
   useEffect(() => {
     if (userState.token) {
       setHasToken(true);

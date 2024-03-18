@@ -6,12 +6,9 @@ import usePostUpdate from "../../hook/community/post/usePostUpdate.tsx";
 import usePostCreate from "../../hook/community/post/usePostCreate.tsx";
 import { useNavigate, useParams } from "react-router-dom";
 import { useTokenStore } from "../../store/TokenStore.tsx";
-import { useGlobalStore } from "../../store/GlobalStore.tsx";
-import Modal from "../../component/Modal.tsx";
 
 export default function PostEditor() {
   const { tokenState } = useTokenStore();
-  const { globalState } = useGlobalStore();
 
   const { postState, setPostState } = usePostStore();
   const { isTitleValid, isNicknameValid, isPasswordValid, isContentValid } =
@@ -32,7 +29,6 @@ export default function PostEditor() {
     if (
       !isTitleValid({
         value: postState.title,
-        validateState,
         setValidateState,
       })
     ) {
@@ -43,7 +39,6 @@ export default function PostEditor() {
       !tokenState.accessToken &&
       !isNicknameValid({
         value: postState.nickname,
-        validateState,
         setValidateState,
       })
     ) {
@@ -53,7 +48,6 @@ export default function PostEditor() {
       !tokenState.accessToken &&
       !isPasswordValid({
         value: postState.password,
-        validateState,
         setValidateState,
       })
     ) {
@@ -62,7 +56,6 @@ export default function PostEditor() {
     if (
       !isContentValid({
         value: postState.content,
-        validateState,
         setValidateState,
       })
     ) {
@@ -180,7 +173,7 @@ export default function PostEditor() {
       {useRenderErrorMessage(validateState.nicknameError)}
       {useRenderErrorMessage(validateState.passwordError)}
       {useRenderErrorMessage(validateState.contentError)}
-      {globalState.modalMessage ? <Modal /> : null}
+
       <button
         className="justify-item-end mb-2 ml-auto mr-2 flex rounded border-2 border-customGray p-1 px-4 font-extralight"
         onClick={() => {

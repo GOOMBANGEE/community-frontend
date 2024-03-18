@@ -1,4 +1,3 @@
-import Modal from "../../component/Modal.tsx";
 import { useRegisterActivate } from "../../hook/user/useRegisterActivate.tsx";
 import { FormEvent, useState } from "react";
 import { useGlobalStore } from "../../store/GlobalStore.tsx";
@@ -10,7 +9,7 @@ import useRenderErrorMessage from "../../hook/user/useRenderErrorMessage.tsx";
 export default function RegisterActivate() {
   const { globalState } = useGlobalStore();
   const { userState } = useUserStore();
-  const [verificationCode, setVerificationCode] = useState<string>("");
+  const [code, setCode] = useState<string>("");
 
   const [validateState, setValidateState] = useState<ValidateUser>({
     codeError: "",
@@ -25,9 +24,8 @@ export default function RegisterActivate() {
 
     if (
       !checkCodeLength({
-        value: verificationCode,
+        value: code,
         length: 6,
-        validateState,
         setValidateState,
       })
     ) {
@@ -36,8 +34,7 @@ export default function RegisterActivate() {
 
     if (
       !(await registerActivate({
-        verificationCode,
-        validateState,
+        code: code,
         setValidateState,
       }))
     ) {
@@ -69,7 +66,7 @@ export default function RegisterActivate() {
             placeholder="코드 입력"
             className="mx-auto mb-2 w-full border-2 border-gray-500 bg-black p-2 focus:bg-indigo-100 focus:text-black focus:opacity-90"
             onChange={(e) => {
-              setVerificationCode(e.target.value);
+              setCode(e.target.value);
               setValidateState({
                 ...validateState,
                 codeError: "",
@@ -94,8 +91,6 @@ export default function RegisterActivate() {
 
           {useRenderErrorMessage(validateState.codeError)}
           {useRenderErrorMessage(globalState.errorMessage)}
-
-          {globalState.modalMessage ? <Modal /> : null}
         </form>
       </div>
     </div>

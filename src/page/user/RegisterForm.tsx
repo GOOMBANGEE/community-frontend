@@ -28,7 +28,6 @@ export default function RegisterForm() {
     if (
       !isEmailValid({
         value: userState.email,
-        validateState,
         setValidateState,
       })
     ) {
@@ -37,7 +36,6 @@ export default function RegisterForm() {
     if (
       !isNicknameValid({
         value: userState.nickname,
-        validateState,
         setValidateState,
       })
     ) {
@@ -46,13 +44,11 @@ export default function RegisterForm() {
     if (
       !isPasswordValid({
         value: userState.password,
-        validateState,
         setValidateState,
       }) ||
       !isConfirmPasswordValid({
         password: userState.password,
         value: userState.confirmPassword,
-        validateState,
         setValidateState,
       })
     ) {

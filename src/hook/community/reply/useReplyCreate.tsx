@@ -2,9 +2,12 @@ import axios from "axios";
 import { useEnvStore } from "../../../store/EnvStore.tsx";
 import { useReplyStore } from "../../../store/ReplyStore.tsx";
 import { useParams } from "react-router-dom";
+import { handleAxiosError } from "../../handleAxiosError.tsx";
+import { useGlobalStore } from "../../../store/GlobalStore.tsx";
 
 export default function useReplyCreate() {
   const { envState } = useEnvStore();
+  const { setGlobalState } = useGlobalStore();
   const { replyState } = useReplyStore();
   const { communityId, postId } = useParams();
   const replyCreate = async () => {
@@ -18,9 +21,7 @@ export default function useReplyCreate() {
         },
       );
     } catch (error) {
-      if (axios.isAxiosError(error)) {
-        console.log(error);
-      }
+      handleAxiosError(error, setGlobalState);
     }
   };
 

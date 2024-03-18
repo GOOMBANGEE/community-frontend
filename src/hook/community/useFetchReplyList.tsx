@@ -2,10 +2,13 @@ import { useEffect, useState } from "react";
 import { useEnvStore } from "../../store/EnvStore.tsx";
 import axios from "axios";
 import { useParams } from "react-router-dom";
+import { handleAxiosError } from "../handleAxiosError.tsx";
+import { useGlobalStore } from "../../store/GlobalStore.tsx";
 
 export default function useFetchReplyList() {
-  const { communityId, postId } = useParams();
   const { envState } = useEnvStore();
+  const { setGlobalState } = useGlobalStore();
+  const { communityId, postId } = useParams();
   const [replyList, setReplyList] = useState({
     items: [],
     page: 0,
@@ -31,9 +34,7 @@ export default function useFetchReplyList() {
         next: response.data.next,
       });
     } catch (error) {
-      if (axios.isAxiosError(error)) {
-        console.log(error);
-      }
+      handleAxiosError(error, setGlobalState);
     }
   };
 

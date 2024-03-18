@@ -24,9 +24,7 @@ export default function usePostUpdate() {
       resetPostState();
       return true;
     } catch (error) {
-      if (axios.isAxiosError(error)) {
-        handleAxiosError(error, setGlobalState);
-      }
+      handleAxiosError(error, setGlobalState);
     }
   };
 

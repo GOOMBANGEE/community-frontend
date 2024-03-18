@@ -32,7 +32,6 @@ interface Reply {
 
 interface ValidationProps {
   value: string;
-  validateState: typeof ValidateState;
   setValidateState: (state: typeof ValidateState) => void;
 }
 

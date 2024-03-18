@@ -1,15 +1,13 @@
 import { useNavigate } from "react-router-dom";
 import { usePostList } from "../../hook/home/usePostList.tsx";
-import PostPreview from "./PostPreview.tsx";
+import CommunityPreviewPost from "./CommunityPreviewPost.tsx";
 
-interface CommunityPreviewProp {
+interface Props {
   community: Community;
 }
 
 // 게시판 하나씩 표시하는 컴포넌트
-export default function CommunityPreview({
-  community,
-}: Readonly<CommunityPreviewProp>) {
+export default function CommunityPreview({ community }: Readonly<Props>) {
   const navigate = useNavigate();
   const data = usePostList(community.id);
 
@@ -26,10 +24,14 @@ export default function CommunityPreview({
 
       {Array.isArray(data) &&
         data.map((post) => (
-          <PostPreview key={post.id} communityId={community.id} post={post} />
+          <CommunityPreviewPost
+            key={post.id}
+            communityId={community.id}
+            post={post}
+          />
         ))}
 
-      <div className="border-customGray my-4 border-b-2" />
+      <div className="my-4 border-b-2 border-customGray" />
     </div>
   );
 }

@@ -2,9 +2,12 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useEnvStore } from "../../store/EnvStore.tsx";
 import { useParams } from "react-router-dom";
+import { handleAxiosError } from "../handleAxiosError.tsx";
+import { useGlobalStore } from "../../store/GlobalStore.tsx";
 
 export default function useFetchCommunityDetail() {
   const { envState } = useEnvStore();
+  const { setGlobalState } = useGlobalStore();
   const { communityId } = useParams();
 
   const [community, setCommunity] = useState<Community>({
@@ -27,9 +30,7 @@ export default function useFetchCommunityDetail() {
         thumbnail: response.data.thumbnail,
       });
     } catch (error) {
-      if (axios.isAxiosError(error)) {
-        console.log(error);
-      }
+      handleAxiosError(error, setGlobalState);
     }
   };
 

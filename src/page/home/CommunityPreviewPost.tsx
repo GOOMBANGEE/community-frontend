@@ -1,16 +1,16 @@
 import { useNavigate } from "react-router-dom";
 import useTimeFormat from "../../hook/useTimeFormat.tsx";
 
-interface PostPreviewProp {
+interface Props {
   communityId: number;
   post: Post;
 }
 
 // 게시판내 게시글 하나씩 표시하는 컴포넌트
-export default function PostPreview({
+export default function CommunityPreviewPost({
   communityId,
   post,
-}: Readonly<PostPreviewProp>) {
+}: Readonly<Props>) {
   const navigate = useNavigate();
   const { formatTimeDifference } = useTimeFormat();
 

@@ -2,9 +2,12 @@ import axios from "axios";
 import { useEnvStore } from "../../../store/EnvStore.tsx";
 import { useParams } from "react-router-dom";
 import { useReplyStore } from "../../../store/ReplyStore.tsx";
+import { handleAxiosError } from "../../handleAxiosError.tsx";
+import { useGlobalStore } from "../../../store/GlobalStore.tsx";
 
 export default function useReplyDelete() {
   const { envState } = useEnvStore();
+  const { setGlobalState } = useGlobalStore();
   const { resetReplyState } = useReplyStore();
   const { communityId, postId, replyId } = useParams();
 
@@ -15,9 +18,7 @@ export default function useReplyDelete() {
       );
       resetReplyState();
     } catch (error) {
-      if (axios.isAxiosError(error)) {
-        console.log(error);
-      }
+      handleAxiosError(error, setGlobalState);
     }
   };
 

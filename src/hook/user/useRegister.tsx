@@ -40,7 +40,7 @@ export default function useRegister() {
       });
       axios.post(`${envState.userUrl}/email/send`, {
         email: userState.email,
-        token: userState.token,
+        token: response.data.token,
       });
     } catch (error) {
       handleAxiosError(error, setGlobalState);
