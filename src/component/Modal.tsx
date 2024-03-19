@@ -31,8 +31,17 @@ export default function Modal() {
               className="mx-auto flex rounded bg-indigo-500 px-4 py-2 text-white"
               onClick={(e) => {
                 e.preventDefault();
-                navigate(`${globalState.redirectUrl}`);
                 resetGlobalState();
+                if (globalState.redirectUrl === "reload") {
+                  window.location.reload();
+                  return;
+                }
+                if (globalState.redirectUrl === "reloadHome") {
+                  navigate("/");
+                  window.location.reload();
+                  return;
+                }
+                navigate(`${globalState.redirectUrl}`);
               }}
             >
               {globalState.redirectName}

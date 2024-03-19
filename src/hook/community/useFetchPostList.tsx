@@ -30,7 +30,6 @@ export default function useFetchPostList() {
         prev: response.data.prev,
         next: response.data.next,
       });
-      console.log(response.data);
       setGlobalState({ loading: false });
       return;
     } catch (error) {

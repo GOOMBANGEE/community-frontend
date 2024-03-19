@@ -23,7 +23,7 @@ export default function RegisterActivate() {
     e.preventDefault();
 
     if (
-      !checkCodeLength({
+      checkCodeLength({
         value: code,
         length: 6,
         setValidateState,
