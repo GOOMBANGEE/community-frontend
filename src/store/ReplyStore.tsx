@@ -11,6 +11,7 @@ export interface ReplyState {
   postId: string | undefined;
   id: number;
   status: string;
+  creator: string;
   nickname: string;
   password: string;
   content: string;
@@ -21,6 +22,7 @@ const initialReplyState: ReplyState = {
   postId: "",
   id: 0,
   status: "create",
+  creator: "",
   nickname: "",
   password: "",
   content: "",

@@ -9,12 +9,12 @@ export default function useReplyUpdate() {
   const { envState } = useEnvStore();
   const { setGlobalState } = useGlobalStore();
   const { replyState } = useReplyStore();
-  const { communityId, postId, replyId } = useParams();
+  const { communityId, postId } = useParams();
 
   const replyUpdate = async () => {
     try {
       await axios.post(
-        `${envState.communityUrl}/${communityId}/${postId}/${replyId}/update`,
+        `${envState.communityUrl}/${communityId}/${postId}/${replyState.id}/update`,
         {
           content: replyState.content,
           nickname: replyState.nickname,

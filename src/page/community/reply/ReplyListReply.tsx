@@ -26,6 +26,7 @@ export default function ReplyListReply({
       communityId: communityId,
       postId: postId,
       id: reply.id,
+      creator: reply.creator,
       content: reply.content,
       status: "delete",
     });
@@ -42,6 +43,7 @@ export default function ReplyListReply({
         communityId: communityId,
         postId: postId,
         id: reply.id,
+        creator: reply.creator,
         nickname: reply.nickname,
         content: reply.content,
         status: "update",

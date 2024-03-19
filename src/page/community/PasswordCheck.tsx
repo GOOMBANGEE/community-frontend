@@ -5,6 +5,7 @@ import { ReplyState, useReplyStore } from "../../store/ReplyStore.tsx";
 import usePasswordCheck from "../../hook/community/usePasswordCheck.tsx";
 import usePostDelete from "../../hook/community/post/usePostDelete.tsx";
 import useReplyDelete from "../../hook/community/reply/useReplyDelete.tsx";
+import { useUserStore } from "../../store/UserStore.tsx";
 
 interface Props {
   prop: PostState | ReplyState;
@@ -14,13 +15,14 @@ export default function PasswordCheck({ prop }: Props) {
   const [password, setPassword] = useState<string>("");
   const [isPasswordInvalid, setIsPasswordInvalid] = useState<boolean>(false);
   const navigate = useNavigate();
-  const { communityId } = useParams();
+  const { communityId, replyId } = useParams();
 
   const { passwordCheckPost, passwordCheckReply } = usePasswordCheck();
   const { postDelete } = usePostDelete();
 
   const { postState, setPostState } = usePostStore();
   const { replyState } = useReplyStore();
+  const { userState } = useUserStore();
 
   const isPost = (state: PostState | ReplyState): state is PostState => {
     return "title" in state;
@@ -30,32 +32,42 @@ export default function PasswordCheck({ prop }: Props) {
   };
 
   const handleConfirmPost = async () => {
-    if (
-      isPost(prop) &&
-      (await passwordCheckPost({ postState: prop, password }))
-    ) {
-      if (prop.status === "update") {
-        setPostState({ ...postState, password: password });
-        navigate(`/community/${communityId}/${postState.id}/editor`);
+    if (isPost(prop)) {
+      if (postState.creator === userState.id) {
+        await postDelete(password);
+        navigate(`/community/${communityId}/`);
         return;
       }
-      await postDelete(password);
-      navigate(`/community/${communityId}/`);
+
+      if (await passwordCheckPost({ postState: prop, password })) {
+        if (prop.status === "update") {
+          setPostState({ ...postState, password: password });
+          navigate(`/community/${communityId}/${postState.id}/editor`);
+          return;
+        }
+        await postDelete(password);
+        navigate(`/community/${communityId}/`);
+        return;
+      }
     }
     setIsPasswordInvalid(true);
   };
 
   const { replyDelete } = useReplyDelete();
   const handleConfirmReply = async () => {
-    if (
-      isReply(prop) &&
-      (await passwordCheckReply({ replyState: prop, password }))
-    ) {
-      await replyDelete(password);
-      navigate(`/community/${communityId}/${replyState.postId}`);
-      return;
+    if (isReply(prop)) {
+      if (
+        replyState.creator === userState.id ||
+        (await passwordCheckReply({
+          replyState: prop,
+          password,
+        }))
+      ) {
+        await replyDelete(password);
+        navigate(`/community/${communityId}/${replyState.postId}`);
+        return;
+      }
     }
-
     setIsPasswordInvalid(true);
   };
 
@@ -81,25 +93,30 @@ export default function PasswordCheck({ prop }: Props) {
           </>
         ) : null}
 
-        <div className="mb-4">비밀번호를 입력해주세요</div>
+        {(!replyId && postState.creator === userState.id) ||
+        replyState.creator === userState.id ? null : (
+          <>
+            <div className="mb-4">비밀번호를 입력해주세요</div>
 
-        <div className="mb-4 flex items-center">
-          <div className="mx-4 mr-8">비밀번호</div>
-          <input
-            type="password"
-            className="w-2/3 border-2 border-customGray bg-black p-1"
-            onChange={(e) => {
-              setPassword(e.target.value);
-              setIsPasswordInvalid(false);
-            }}
-          />
-        </div>
+            <div className="mb-4 flex items-center">
+              <div className="mx-4 mr-8">비밀번호</div>
+              <input
+                type="password"
+                className="w-2/3 border-2 border-customGray bg-black p-1"
+                onChange={(e) => {
+                  setPassword(e.target.value);
+                  setIsPasswordInvalid(false);
+                }}
+              />
+            </div>
 
-        {isPasswordInvalid ? (
-          <div className="mx-auto mt-2 text-center text-sm text-red-500">
-            비밀번호가 일치하지 않습니다.
-          </div>
-        ) : null}
+            {isPasswordInvalid ? (
+              <div className="mx-auto mt-2 text-center text-sm text-red-500">
+                비밀번호가 일치하지 않습니다.
+              </div>
+            ) : null}
+          </>
+        )}
 
         <button
           className="ml-auto mr-6 flex w-fit bg-blue-600 p-2 px-3 text-white"

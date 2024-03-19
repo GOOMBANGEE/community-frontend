@@ -53,7 +53,7 @@ export default function PostDetailContent() {
               {postState.reply_count} | 조회수 {postState.view_count}
             </div>
 
-            {postState.creation_time !== postState.modification_time ? (
+            {postState.creation_time === postState.modification_time ? (
               <div className="">
                 작성일 {formatTime(postState.creation_time)}
               </div>

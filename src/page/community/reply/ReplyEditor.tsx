@@ -64,7 +64,8 @@ export default function ReplyEditor(prop: Readonly<Props>) {
       return;
     }
     if (
-      await passwordCheckReply({ replyState, password: replyState.password })
+      replyState.creator === userState.id ||
+      (await passwordCheckReply({ replyState, password: replyState.password }))
     ) {
       await replyUpdate();
       window.location.reload();

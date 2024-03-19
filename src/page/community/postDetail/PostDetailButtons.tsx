@@ -9,6 +9,26 @@ export default function PostDetailButtons() {
   const { postState, setPostState } = usePostStore();
   const { userState } = useUserStore();
 
+  const handleDeleteButton = async () => {
+    setPostState({
+      ...postState,
+      status: "delete",
+    });
+    navigate(`/community/${communityId}/${postId}/check`);
+  };
+  const handleUpdateButton = () => {
+    setPostState({
+      ...postState,
+      status: "update",
+    });
+
+    if (postState.creator === userState.id) {
+      navigate(`/community/${communityId}/${postState.id}/editor`);
+      return;
+    }
+    navigate(`/community/${communityId}/${postId}/check`);
+  };
+
   return (
     <>
       {(postState.creator && postState.creator === userState.id) ||
@@ -18,11 +38,7 @@ export default function PostDetailButtons() {
           <div className="mb-2 ml-auto mr-4 flex text-sm font-light">
             <button
               onClick={() => {
-                setPostState({
-                  ...postState,
-                  status: "delete",
-                });
-                navigate(`/community/${communityId}/${postId}/check`);
+                void handleDeleteButton();
               }}
             >
               삭제
@@ -32,11 +48,7 @@ export default function PostDetailButtons() {
 
             <button
               onClick={() => {
-                setPostState({
-                  ...postState,
-                  status: "update",
-                });
-                navigate(`/community/${communityId}/${postId}/check`);
+                void handleUpdateButton();
               }}
             >
               수정
