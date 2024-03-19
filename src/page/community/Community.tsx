@@ -22,6 +22,7 @@ export default function Community() {
       </Routes>
       <Routes>
         <Route path="/:communityId/*" element={<PostList />} />
+        <Route path="/:communityId/best" element={<PostList best={true} />} />
         <Route path="/:communityId/editor" element={<PostEditor />} />
         <Route path="/:communityId/:postId/*" element={<PostDetail />} />
         <Route

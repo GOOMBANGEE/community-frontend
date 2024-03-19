@@ -8,7 +8,7 @@ import { useEffect } from "react";
 
 export default function PostDetail() {
   const { fetchPost } = useFetchPostDetail();
-  
+
   useEffect(() => {
     void fetchPost();
   }, []);

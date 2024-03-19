@@ -4,17 +4,42 @@ import useFetchPostList from "../../../hook/community/useFetchPostList.tsx";
 import PostListPost from "./PostListPost.tsx";
 import PostListHeader from "./PostListHeader.tsx";
 import { usePostStore } from "../../../store/PostStore.tsx";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
-export default function PostList() {
+export interface PostList {
+  items: Post[];
+  page: number;
+  page_size: number;
+  total_page: number;
+  prev: number;
+  next: number;
+}
+
+export default function PostList({ best = false }: { best?: boolean }) {
   const { globalState } = useGlobalStore();
   const { communityId } = useParams();
   const { resetPostState } = usePostStore();
+  const { fetchPostList } = useFetchPostList();
 
-  const data = useFetchPostList();
+  const [postList, setPostList] = useState<PostList>({
+    items: [],
+    page: 0,
+    page_size: 0,
+    total_page: 0,
+    prev: 0,
+    next: 0,
+  });
+  const data = postList.items.sort(
+    (a: { id: number }, b: { id: number }) => b.id - a.id,
+  );
 
   useEffect(() => {
     resetPostState();
+    if (best) {
+      void fetchPostList({ best, setPostList });
+      return;
+    }
+    void fetchPostList({ best, setPostList });
   }, []);
 
   return (

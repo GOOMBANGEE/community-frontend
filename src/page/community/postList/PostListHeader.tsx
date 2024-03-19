@@ -11,23 +11,33 @@ export default function PostListHeader() {
     window.location.href = `/community/${communityId}`;
   };
 
+  const handleClickBest = () => {
+    navigate(`/community/${communityId}/best`);
+    window.location.href = `/community/${communityId}/best`;
+  };
+
   return (
     <>
       <div className="mx-2 mb-4 flex text-sm font-light text-white">
         <div className="flex">
-          <div
+          <button
             className="border-2 border-customGray bg-black p-1"
             onClick={() => {
               handleClickPostList();
             }}
           >
             전체글
-          </div>
-          <div className="border-y-2 border-r-2 border-customGray bg-red-600 p-1 ">
+          </button>
+          <button
+            className="border-y-2 border-r-2 border-customGray bg-red-600 p-1 "
+            onClick={() => {
+              handleClickBest();
+            }}
+          >
             개념글
-          </div>
+          </button>
         </div>
-        <div
+        <button
           className="ml-auto border-2 border-customGray bg-black p-1"
           onClick={() => {
             navigate(`/community/${communityId}/editor`);
@@ -35,7 +45,7 @@ export default function PostListHeader() {
           }}
         >
           글쓰기
-        </div>
+        </button>
       </div>
     </>
   );

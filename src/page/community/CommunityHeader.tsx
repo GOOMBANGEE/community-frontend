@@ -8,6 +8,7 @@ export default function CommunityHeader() {
   const data = useFetchCommunityDetail();
   const handleClickCommunityHeader = () => {
     navigate(`/community/${communityId}`);
+    window.location.href = `/community/${communityId}`;
   };
 
   return (
