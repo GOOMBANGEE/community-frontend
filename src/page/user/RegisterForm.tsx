@@ -15,10 +15,10 @@ export default function RegisterForm() {
     passwordError: "",
   });
   const {
-    isEmailValid,
-    isNicknameValid,
-    isPasswordValid,
-    isConfirmPasswordValid,
+    isInvalidEmail,
+    isInvalidNickname,
+    isInvalidPassword,
+    isInvalidConfirmPassword,
   } = useValidateUser();
   const { register } = useRegister();
 
@@ -26,7 +26,7 @@ export default function RegisterForm() {
   const handleRegister = async (e: FormEvent) => {
     e.preventDefault();
     if (
-      !isEmailValid({
+      isInvalidEmail({
         value: userState.email,
         setValidateState,
       })
@@ -34,7 +34,7 @@ export default function RegisterForm() {
       return;
     }
     if (
-      !isNicknameValid({
+      isInvalidNickname({
         value: userState.nickname,
         setValidateState,
       })
@@ -42,11 +42,11 @@ export default function RegisterForm() {
       return;
     }
     if (
-      !isPasswordValid({
+      isInvalidPassword({
         value: userState.password,
         setValidateState,
       }) ||
-      !isConfirmPasswordValid({
+      isInvalidConfirmPassword({
         password: userState.password,
         value: userState.confirmPassword,
         setValidateState,

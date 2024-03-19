@@ -14,7 +14,7 @@ export default function Login() {
     passwordError: "",
   });
 
-  const { isEmailValid, isPasswordValid } = useValidateUser();
+  const { isInvalidEmail, isInvalidPassword } = useValidateUser();
   const { login } = useLogin();
   const navigate = useNavigate();
   const [loginFail, setLoginFail] = useState(false);
@@ -23,7 +23,7 @@ export default function Login() {
     e.preventDefault();
 
     if (
-      !isEmailValid({
+      isInvalidEmail({
         value: userState.email,
         setValidateState,
       })
@@ -31,7 +31,7 @@ export default function Login() {
       return;
     }
     if (
-      !isPasswordValid({
+      isInvalidPassword({
         value: userState.password,
         setValidateState,
       })

@@ -11,8 +11,12 @@ export default function PostEditor() {
   const { tokenState } = useTokenStore();
 
   const { postState, setPostState } = usePostStore();
-  const { isTitleValid, isNicknameValid, isPasswordValid, isContentValid } =
-    useValidatePost();
+  const {
+    isInvalidTitle,
+    isInvalidNickname,
+    isInvalidPassword,
+    isInvalidContent,
+  } = useValidatePost();
   const [validateState, setValidateState] = useState<ValidatePost>({
     titleError: "",
     nicknameError: "",
@@ -27,7 +31,7 @@ export default function PostEditor() {
 
   const handlePostButton = async () => {
     if (
-      !isTitleValid({
+      isInvalidTitle({
         value: postState.title,
         setValidateState,
       })
@@ -37,7 +41,7 @@ export default function PostEditor() {
     if (
       postState.status === "create" &&
       !tokenState.accessToken &&
-      !isNicknameValid({
+      isInvalidNickname({
         value: postState.nickname,
         setValidateState,
       })
@@ -46,7 +50,7 @@ export default function PostEditor() {
     }
     if (
       !tokenState.accessToken &&
-      !isPasswordValid({
+      isInvalidPassword({
         value: postState.password,
         setValidateState,
       })
@@ -54,7 +58,7 @@ export default function PostEditor() {
       return;
     }
     if (
-      !isContentValid({
+      isInvalidContent({
         value: postState.content,
         setValidateState,
       })

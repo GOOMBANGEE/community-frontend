@@ -3,7 +3,7 @@ import useValidator from "../useValidator.tsx";
 export default function useValidateUser() {
   const { validator } = useValidator();
 
-  const isEmailValid = (props: ValidationProps) => {
+  const isInvalidEmail = (props: ValidationProps) => {
     const validationConfig: ValidationConfig = {
       regex:
         /^[A-Za-z0-9]([-_.]?[A-Za-z0-9])*@[A-Za-z0-9]([-_.]?[A-Za-z0-9])*\.[A-Za-z]{2,3}$/,
@@ -14,7 +14,7 @@ export default function useValidateUser() {
     return validator({ ...props, ...validationConfig });
   };
 
-  const isNicknameValid = (props: ValidationProps) => {
+  const isInvalidNickname = (props: ValidationProps) => {
     const validationConfig: ValidationConfig = {
       regex: /^[a-zA-Z0-9]{2,20}$/,
       errorField: "nicknameError",
@@ -24,7 +24,7 @@ export default function useValidateUser() {
     return validator({ ...props, ...validationConfig });
   };
 
-  const isPasswordValid = (props: ValidationProps) => {
+  const isInvalidPassword = (props: ValidationProps) => {
     const validationConfig: ValidationConfig = {
       regex: /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*\d).{8,20}$/,
       errorField: "passwordError",
@@ -34,7 +34,7 @@ export default function useValidateUser() {
     return validator({ ...props, ...validationConfig });
   };
 
-  const isConfirmPasswordValid = (
+  const isInvalidConfirmPassword = (
     props: ValidationProps & { password: string },
   ) => {
     const validationConfig: ValidationConfig = {
@@ -57,10 +57,10 @@ export default function useValidateUser() {
   };
 
   return {
-    isEmailValid,
-    isNicknameValid,
-    isPasswordValid,
-    isConfirmPasswordValid,
+    isInvalidEmail,
+    isInvalidNickname,
+    isInvalidPassword,
+    isInvalidConfirmPassword,
     checkCodeLength,
   };
 }

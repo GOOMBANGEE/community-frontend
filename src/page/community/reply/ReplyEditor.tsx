@@ -16,7 +16,7 @@ export default function ReplyEditor(prop: Readonly<Props>) {
   const { tokenState } = useTokenStore();
   const { userState } = useUserStore();
   const { replyState, setReplyState } = useReplyStore();
-  const { isNicknameValid, isPasswordValid, isContentValid } =
+  const { isInvalidNickname, isInvalidPassword, isInvalidContent } =
     useValidateReply();
   const [isFocusTextArea, setIsFocusTextArea] = useState<boolean>(false);
   const [validateState, setValidateState] = useState<ValidateReply>({
@@ -33,7 +33,7 @@ export default function ReplyEditor(prop: Readonly<Props>) {
     if (
       !tokenState.accessToken &&
       prop.status === "create" &&
-      !isNicknameValid({
+      isInvalidNickname({
         value: replyState.nickname,
         setValidateState,
       })
@@ -42,7 +42,7 @@ export default function ReplyEditor(prop: Readonly<Props>) {
     }
     if (
       !tokenState.accessToken &&
-      !isPasswordValid({
+      isInvalidPassword({
         value: replyState.password,
         setValidateState,
       })
@@ -50,7 +50,7 @@ export default function ReplyEditor(prop: Readonly<Props>) {
       return;
     }
     if (
-      !isContentValid({
+      isInvalidContent({
         value: replyState.content,
         setValidateState,
       })

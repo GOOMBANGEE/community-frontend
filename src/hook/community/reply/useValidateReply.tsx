@@ -3,7 +3,7 @@ import useValidator from "../../useValidator.tsx";
 export default function useValidateReply() {
   const { validator } = useValidator();
 
-  const isNicknameValid = (props: ValidationProps) => {
+  const isInvalidNickname = (props: ValidationProps) => {
     const validationConfig: ValidationConfig = {
       regex: /^.{2,20}$/,
       errorField: "nicknameError",
@@ -13,7 +13,7 @@ export default function useValidateReply() {
     return validator({ ...props, ...validationConfig });
   };
 
-  const isPasswordValid = (props: ValidationProps) => {
+  const isInvalidPassword = (props: ValidationProps) => {
     const validationConfig: ValidationConfig = {
       regex: /^.{4,20}$/,
       errorField: "passwordError",
@@ -23,7 +23,7 @@ export default function useValidateReply() {
     return validator({ ...props, ...validationConfig });
   };
 
-  const isContentValid = (props: ValidationProps) => {
+  const isInvalidContent = (props: ValidationProps) => {
     const validationConfig: ValidationConfig = {
       regex: /^.+$/,
       errorField: "contentError",
@@ -34,8 +34,8 @@ export default function useValidateReply() {
   };
 
   return {
-    isNicknameValid,
-    isPasswordValid,
-    isContentValid,
+    isInvalidNickname,
+    isInvalidPassword,
+    isInvalidContent,
   };
 }

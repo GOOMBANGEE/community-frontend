@@ -3,7 +3,7 @@ import useValidator from "../../useValidator.tsx";
 export default function useValidatePost() {
   const { validator } = useValidator();
 
-  const isTitleValid = (props: ValidationProps) => {
+  const isInvalidTitle = (props: ValidationProps) => {
     const validationConfig: ValidationConfig = {
       regex: /^.{2,50}$/,
       errorField: "titleError",
@@ -13,7 +13,7 @@ export default function useValidatePost() {
     return validator({ ...props, ...validationConfig });
   };
 
-  const isNicknameValid = (props: ValidationProps) => {
+  const isInvalidNickname = (props: ValidationProps) => {
     const validationConfig: ValidationConfig = {
       regex: /^.{2,20}$/,
       errorField: "nicknameError",
@@ -23,7 +23,7 @@ export default function useValidatePost() {
     return validator({ ...props, ...validationConfig });
   };
 
-  const isPasswordValid = (props: ValidationProps) => {
+  const isInvalidPassword = (props: ValidationProps) => {
     const validationConfig: ValidationConfig = {
       regex: /^.{4,20}$/,
       errorField: "passwordError",
@@ -33,7 +33,7 @@ export default function useValidatePost() {
     return validator({ ...props, ...validationConfig });
   };
 
-  const isContentValid = (props: ValidationProps) => {
+  const isInvalidContent = (props: ValidationProps) => {
     const validationConfig: ValidationConfig = {
       regex: /^.+$/,
       errorField: "contentError",
@@ -44,9 +44,9 @@ export default function useValidatePost() {
   };
 
   return {
-    isTitleValid,
-    isNicknameValid,
-    isPasswordValid,
-    isContentValid,
+    isInvalidTitle,
+    isInvalidNickname,
+    isInvalidPassword,
+    isInvalidContent,
   };
 }
