@@ -1,9 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useTokenStore } from "../store/TokenStore";
 import { useState } from "react";
-import { deleteCookie } from "../Cookie";
-
-import { useUserStore } from "../store/UserStore.tsx";
+import HeaderDropdown from "./HeaderDropdown.tsx";
 
 export default function Header() {
   const navigate = useNavigate();
@@ -90,36 +88,7 @@ export default function Header() {
         </button>
       </div>
 
-      {isDropdown && <Dropdown />}
+      {isDropdown && <HeaderDropdown />}
     </div>
   );
 }
-
-const Dropdown = () => {
-  const handleLogout = () => {
-    // 페이지 리로드 + 쿠키삭제
-    deleteCookie("refresh_token");
-    window.location.reload();
-  };
-  const { userState } = useUserStore();
-  return (
-    <div className="absolute right-2 top-12 z-10 flex border-2 border-gray-500 bg-customGray">
-      <div className="flex-col">
-        <div className="p-4 pr-8 text-xl font-semibold">
-          {userState.nickname}
-        </div>
-        <div className="w-full border-b-2 border-gray-500"></div>
-        <div className="p-4 pr-8">설정</div>
-        <div className="w-full border-b-2 border-gray-500"></div>
-        <button
-          className="p-4 pr-8"
-          onClick={() => {
-            handleLogout();
-          }}
-        >
-          로그아웃
-        </button>
-      </div>
-    </div>
-  );
-};

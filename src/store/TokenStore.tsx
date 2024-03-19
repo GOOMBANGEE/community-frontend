@@ -12,11 +12,13 @@ interface TokenState {
   refreshToken: string;
 }
 
+const initialTokenState: TokenState = {
+  accessToken: "",
+  refreshToken: "",
+};
+
 export const useTokenStore = create<TokenStore>((set) => ({
-  tokenState: {
-    accessToken: "",
-    refreshToken: "",
-  },
+  tokenState: initialTokenState,
   setTokenState: (state) =>
     set((prev) => ({ tokenState: { ...prev.tokenState, ...state } })),
   setHeaderAccessToken: (accessToken) => {
