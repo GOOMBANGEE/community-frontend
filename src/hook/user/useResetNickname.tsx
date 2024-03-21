@@ -2,7 +2,7 @@ import axios from "axios";
 import { useGlobalStore } from "../../store/GlobalStore.tsx";
 import { useEnvStore } from "../../store/EnvStore.tsx";
 import { useUserStore } from "../../store/UserStore.tsx";
-import { handleAxiosError } from "../handleAxiosError.tsx";
+import { handleAxiosErrorModal } from "../handleAxiosErrorModal.tsx";
 
 export default function useResetNickname() {
   const { setGlobalState } = useGlobalStore();
@@ -23,7 +23,7 @@ export default function useResetNickname() {
         setGlobalState({ modalMessage: "" });
       }, 3000);
     } catch (error) {
-      handleAxiosError(error, setGlobalState);
+      handleAxiosErrorModal(error, setGlobalState);
     }
   };
 

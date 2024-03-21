@@ -2,7 +2,7 @@ import axios from "axios";
 import { useEnvStore } from "../../../store/EnvStore.tsx";
 import { useReplyStore } from "../../../store/ReplyStore.tsx";
 import { useParams } from "react-router-dom";
-import { handleAxiosError } from "../../handleAxiosError.tsx";
+import { handleAxiosErrorModal } from "../../handleAxiosErrorModal.tsx";
 import { useGlobalStore } from "../../../store/GlobalStore.tsx";
 
 export default function useReplyCreate() {
@@ -21,7 +21,7 @@ export default function useReplyCreate() {
         },
       );
     } catch (error) {
-      handleAxiosError(error, setGlobalState);
+      handleAxiosErrorModal(error, setGlobalState);
     }
   };
 

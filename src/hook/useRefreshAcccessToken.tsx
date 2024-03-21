@@ -3,7 +3,7 @@ import { deleteCookie } from "../Cookie.tsx";
 import { useEnvStore } from "../store/EnvStore.tsx";
 import { useTokenStore } from "../store/TokenStore.tsx";
 import { useGlobalStore } from "../store/GlobalStore.tsx";
-import { handleAxiosError } from "./handleAxiosError.tsx";
+import { handleAxiosErrorModal } from "./handleAxiosErrorModal.tsx";
 
 const TOKEN_EXPIRE_TIME = import.meta.env.VITE_TOKEN_EXPIRE_TIME;
 
@@ -22,7 +22,7 @@ export default function useRefreshAccessToken() {
     } catch (error) {
       if (axios.isAxiosError(error)) {
         console.log(error.response?.data);
-        handleAxiosError(error, setGlobalState);
+        handleAxiosErrorModal(error, setGlobalState);
         if (error.response?.data.id === "USER:TOKEN_INVALID") {
           deleteCookie("refresh_token");
         }

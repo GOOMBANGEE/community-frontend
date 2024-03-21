@@ -2,7 +2,7 @@ import axios from "axios";
 import { useEnvStore } from "../../../store/EnvStore.tsx";
 import { usePostStore } from "../../../store/PostStore.tsx";
 import { useParams } from "react-router-dom";
-import { handleAxiosError } from "../../handleAxiosError.tsx";
+import { handleAxiosErrorModal } from "../../handleAxiosErrorModal.tsx";
 import { useGlobalStore } from "../../../store/GlobalStore.tsx";
 
 export default function usePostUpdate() {
@@ -24,7 +24,7 @@ export default function usePostUpdate() {
       resetPostState();
       return true;
     } catch (error) {
-      handleAxiosError(error, setGlobalState);
+      handleAxiosErrorModal(error, setGlobalState);
     }
   };
 

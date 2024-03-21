@@ -1,7 +1,7 @@
 import { useGlobalStore } from "../../store/GlobalStore.tsx";
 import { useEnvStore } from "../../store/EnvStore.tsx";
 import axios from "axios";
-import { handleAxiosError } from "../handleAxiosError.tsx";
+import { handleAxiosErrorModal } from "../handleAxiosErrorModal.tsx";
 import { deleteCookie } from "../../Cookie.tsx";
 
 export default function useUserDelete() {
@@ -18,7 +18,7 @@ export default function useUserDelete() {
       });
       deleteCookie("refresh_token");
     } catch (error) {
-      handleAxiosError(error, setGlobalState);
+      handleAxiosErrorModal(error, setGlobalState);
     }
   };
 

@@ -2,7 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useEnvStore } from "../../store/EnvStore.tsx";
 import { useParams } from "react-router-dom";
-import { handleAxiosError } from "../handleAxiosError.tsx";
+import { handleAxiosErrorModal } from "../handleAxiosErrorModal.tsx";
 import { useGlobalStore } from "../../store/GlobalStore.tsx";
 
 export default function useFetchCommunityDetail() {
@@ -30,7 +30,7 @@ export default function useFetchCommunityDetail() {
         thumbnail: response.data.thumbnail,
       });
     } catch (error) {
-      handleAxiosError(error, setGlobalState);
+      handleAxiosErrorModal(error, setGlobalState);
     }
   };
 

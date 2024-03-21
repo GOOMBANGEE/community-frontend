@@ -2,7 +2,7 @@ import axios from "axios";
 import { useGlobalStore } from "../../store/GlobalStore.tsx";
 import { useEnvStore } from "../../store/EnvStore.tsx";
 import { useUserStore } from "../../store/UserStore.tsx";
-import { handleAxiosError } from "../handleAxiosError.tsx";
+import { handleAxiosErrorModal } from "../handleAxiosErrorModal.tsx";
 
 export default function useResetPassword() {
   const { setGlobalState } = useGlobalStore();
@@ -15,7 +15,7 @@ export default function useResetPassword() {
         prev_password: userState.prevPassword,
         password: userState.password,
       });
-      void resetUserState();
+      resetUserState();
       setGlobalState({
         modalMessage: "비밀번호가 변경되었습니다",
         redirectName: "닫기",
@@ -26,7 +26,7 @@ export default function useResetPassword() {
       }, 3000);
       return true;
     } catch (error) {
-      handleAxiosError(error, setGlobalState);
+      handleAxiosErrorModal(error, setGlobalState);
     }
   };
 

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useEnvStore } from "../../store/EnvStore.tsx";
 import axios from "axios";
 import { useParams } from "react-router-dom";
-import { handleAxiosError } from "../handleAxiosError.tsx";
+import { handleAxiosErrorModal } from "../handleAxiosErrorModal.tsx";
 import { useGlobalStore } from "../../store/GlobalStore.tsx";
 
 export default function useFetchReplyList() {
@@ -34,7 +34,7 @@ export default function useFetchReplyList() {
         next: response.data.next,
       });
     } catch (error) {
-      handleAxiosError(error, setGlobalState);
+      handleAxiosErrorModal(error, setGlobalState);
     }
   };
 

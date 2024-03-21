@@ -2,7 +2,7 @@ import { useGlobalStore } from "../../store/GlobalStore.tsx";
 import { useEnvStore } from "../../store/EnvStore.tsx";
 import { useCallback, useEffect, useState } from "react";
 import axios from "axios";
-import { handleAxiosError } from "../handleAxiosError.tsx";
+import { handleAxiosErrorModal } from "../handleAxiosErrorModal.tsx";
 
 export function useCommunityList() {
   const { setGlobalState } = useGlobalStore();
@@ -16,7 +16,7 @@ export function useCommunityList() {
       );
       setResult(response.data.items);
     } catch (error) {
-      handleAxiosError(error, setGlobalState);
+      handleAxiosErrorModal(error, setGlobalState);
     }
   }, [envState.communityUrl, setGlobalState]);
 

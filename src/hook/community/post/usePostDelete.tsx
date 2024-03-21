@@ -3,7 +3,7 @@ import { useEnvStore } from "../../../store/EnvStore.tsx";
 import { usePostStore } from "../../../store/PostStore.tsx";
 import { useParams } from "react-router-dom";
 import { useGlobalStore } from "../../../store/GlobalStore.tsx";
-import { handleAxiosError } from "../../handleAxiosError.tsx";
+import { handleAxiosErrorModal } from "../../handleAxiosErrorModal.tsx";
 
 export default function usePostDelete() {
   const { envState } = useEnvStore();
@@ -18,7 +18,7 @@ export default function usePostDelete() {
       );
       resetPostState();
     } catch (error) {
-      handleAxiosError(error, setGlobalState);
+      handleAxiosErrorModal(error, setGlobalState);
     }
   };
 

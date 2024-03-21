@@ -2,7 +2,7 @@ import axios from "axios";
 import { useEnvStore } from "../../../store/EnvStore.tsx";
 import { useParams } from "react-router-dom";
 import { useReplyStore } from "../../../store/ReplyStore.tsx";
-import { handleAxiosError } from "../../handleAxiosError.tsx";
+import { handleAxiosErrorModal } from "../../handleAxiosErrorModal.tsx";
 import { useGlobalStore } from "../../../store/GlobalStore.tsx";
 
 export default function useReplyDelete() {
@@ -18,7 +18,7 @@ export default function useReplyDelete() {
       );
       resetReplyState();
     } catch (error) {
-      handleAxiosError(error, setGlobalState);
+      handleAxiosErrorModal(error, setGlobalState);
     }
   };
 
