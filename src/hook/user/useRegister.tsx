@@ -1,6 +1,6 @@
 import axios from "axios";
 import { setCookie } from "../../Cookie.tsx";
-import { handleAxiosError } from "../handleAxiosError.tsx";
+import { handleAxiosErrorModal } from "../handleAxiosErrorModal.tsx";
 import { useEnvStore } from "../../store/EnvStore.tsx";
 import { useGlobalStore } from "../../store/GlobalStore.tsx";
 import { useUserStore } from "../../store/UserStore.tsx";
@@ -38,12 +38,8 @@ export default function useRegister() {
         path: "/",
         expires: new Date(expireDate),
       });
-      axios.post(`${envState.userUrl}/email/send`, {
-        email: userState.email,
-        token: response.data.token,
-      });
     } catch (error) {
-      handleAxiosError(error, setGlobalState);
+      handleAxiosErrorModal(error, setGlobalState);
     }
   };
 

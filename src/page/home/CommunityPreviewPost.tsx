@@ -21,12 +21,12 @@ export default function CommunityPreviewPost({
 
   return (
     <button
-      className="mb-1 grid w-full grid-cols-2 gap-2 text-base font-extralight"
+      className="mb-1 flex w-full text-base font-extralight"
       onClick={() => {
         clickPost();
       }}
     >
-      <div className="text-left">
+      <div className="w-fit text-left">
         {post.title} <span>[{post.reply_count}]</span>
       </div>
 
