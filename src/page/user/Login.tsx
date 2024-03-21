@@ -104,7 +104,7 @@ export default function Login() {
             </form>
 
             <div className="mx-auto flex ">
-              <a href="/user/helppw" className="my-4 text-blue-400">
+              <a href="/user/recover" className="my-4 text-blue-400">
                 로그인할 수 없습니까?
               </a>
               <div className="mx-2 my-4">|</div>
