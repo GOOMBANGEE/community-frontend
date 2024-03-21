@@ -3,7 +3,7 @@ import { useEnvStore } from "../../store/EnvStore.tsx";
 import { useParams } from "react-router-dom";
 import { usePostStore } from "../../store/PostStore.tsx";
 import { useGlobalStore } from "../../store/GlobalStore.tsx";
-import { handleAxiosError } from "../handleAxiosError.tsx";
+import { handleAxiosErrorModal } from "../handleAxiosErrorModal.tsx";
 
 export default function useFetchPostDetail() {
   const { envState } = useEnvStore();
@@ -18,7 +18,7 @@ export default function useFetchPostDetail() {
       );
       setPostState(response.data);
     } catch (error) {
-      handleAxiosError(error, setGlobalState);
+      handleAxiosErrorModal(error, setGlobalState);
     }
   };
 

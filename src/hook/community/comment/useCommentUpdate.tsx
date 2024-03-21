@@ -3,7 +3,7 @@ import { useEnvStore } from "../../../store/EnvStore.tsx";
 import { useCommentStore } from "../../../store/CommentStore.tsx";
 import { useParams } from "react-router-dom";
 import { useGlobalStore } from "../../../store/GlobalStore.tsx";
-import { handleAxiosError } from "../../handleAxiosError.tsx";
+import { handleAxiosErrorModal } from "../../handleAxiosErrorModal.tsx";
 
 export default function useCommentUpdate() {
   const { envState } = useEnvStore();
@@ -22,7 +22,7 @@ export default function useCommentUpdate() {
         },
       );
     } catch (error) {
-      handleAxiosError(error, setGlobalState);
+      handleAxiosErrorModal(error, setGlobalState);
     }
   };
 

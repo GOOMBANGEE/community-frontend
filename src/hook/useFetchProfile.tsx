@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useEnvStore } from "../store/EnvStore.tsx";
 import { useUserStore } from "../store/UserStore.tsx";
-import { handleAxiosError } from "./handleAxiosError.tsx";
+import { handleAxiosErrorModal } from "./handleAxiosErrorModal.tsx";
 import { useGlobalStore } from "../store/GlobalStore.tsx";
 
 export default function useFetchProfile() {
@@ -14,7 +14,7 @@ export default function useFetchProfile() {
       const { id, email, nickname } = response.data;
       setUserState({ id, email, nickname });
     } catch (error) {
-      handleAxiosError(error, setGlobalState);
+      handleAxiosErrorModal(error, setGlobalState);
     }
   };
 

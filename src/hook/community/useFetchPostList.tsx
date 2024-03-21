@@ -2,7 +2,7 @@ import { useParams, useSearchParams } from "react-router-dom";
 import axios from "axios";
 import { useEnvStore } from "../../store/EnvStore.tsx";
 import { useGlobalStore } from "../../store/GlobalStore.tsx";
-import { handleAxiosError } from "../handleAxiosError.tsx";
+import { handleAxiosErrorModal } from "../handleAxiosErrorModal.tsx";
 import { PostList } from "../../page/community/postList/PostList.tsx";
 
 interface Props {
@@ -45,7 +45,7 @@ export default function useFetchPostList() {
       setGlobalState({ loading: false });
       return;
     } catch (error) {
-      handleAxiosError(error, setGlobalState);
+      handleAxiosErrorModal(error, setGlobalState);
     }
   };
 

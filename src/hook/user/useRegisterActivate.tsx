@@ -2,7 +2,7 @@ import { useGlobalStore } from "../../store/GlobalStore.tsx";
 import { deleteCookie, getCookie } from "../../Cookie.tsx";
 import axios from "axios";
 import { useEnvStore } from "../../store/EnvStore.tsx";
-import { handleAxiosError } from "../handleAxiosError.tsx";
+import { handleAxiosErrorModal } from "../handleAxiosErrorModal.tsx";
 
 interface Props {
   code: string;
@@ -30,7 +30,7 @@ export function useRegisterActivate() {
       deleteCookie("email");
       return true;
     } catch (error) {
-      handleAxiosError(error, setGlobalState);
+      handleAxiosErrorModal(error, setGlobalState);
       props.setValidateState({
         codeError: "코드를 다시 한번 확인해 주세요",
       });

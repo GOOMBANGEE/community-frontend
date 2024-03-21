@@ -2,7 +2,7 @@ import { useEnvStore } from "../../../store/EnvStore.tsx";
 import axios from "axios";
 import { usePostStore } from "../../../store/PostStore.tsx";
 import { useParams } from "react-router-dom";
-import { handleAxiosError } from "../../handleAxiosError.tsx";
+import { handleAxiosErrorModal } from "../../handleAxiosErrorModal.tsx";
 import { useGlobalStore } from "../../../store/GlobalStore.tsx";
 
 export default function usePostRate() {
@@ -25,7 +25,7 @@ export default function usePostRate() {
       }
       setPostState({ ...postState, rate_minus: postState.rate_minus + 1 });
     } catch (error) {
-      handleAxiosError(error, setGlobalState);
+      handleAxiosErrorModal(error, setGlobalState);
     }
   };
 

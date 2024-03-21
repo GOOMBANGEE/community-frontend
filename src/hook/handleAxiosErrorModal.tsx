@@ -1,7 +1,7 @@
 import axios from "axios";
 import { GlobalStore } from "../store/GlobalStore.tsx";
 
-export function handleAxiosError(
+export function handleAxiosErrorModal(
   error: unknown,
   setGlobalState: GlobalStore["setGlobalState"],
 ) {

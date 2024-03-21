@@ -2,7 +2,7 @@ import axios from "axios";
 import { usePostStore } from "../../../store/PostStore.tsx";
 import { useEnvStore } from "../../../store/EnvStore.tsx";
 import { useParams } from "react-router-dom";
-import { handleAxiosError } from "../../handleAxiosError.tsx";
+import { handleAxiosErrorModal } from "../../handleAxiosErrorModal.tsx";
 import { useGlobalStore } from "../../../store/GlobalStore.tsx";
 
 export default function usePostCreate() {
@@ -26,7 +26,7 @@ export default function usePostCreate() {
 
       return response.data.id;
     } catch (error) {
-      handleAxiosError(error, setGlobalState);
+      handleAxiosErrorModal(error, setGlobalState);
     }
   };
 

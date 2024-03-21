@@ -2,7 +2,7 @@ import axios from "axios";
 import { setCookie } from "../../Cookie.tsx";
 import { useGlobalStore } from "../../store/GlobalStore.tsx";
 import { useEnvStore } from "../../store/EnvStore.tsx";
-import { handleAxiosError } from "../handleAxiosError.tsx";
+import { handleAxiosErrorModal } from "../handleAxiosErrorModal.tsx";
 import { useUserStore } from "../../store/UserStore.tsx";
 import useRefreshAccessToken from "../useRefreshAcccessToken.tsx";
 
@@ -31,7 +31,7 @@ export default function useLogin() {
       void refreshAccessToken(refreshToken);
       return true;
     } catch (error) {
-      handleAxiosError(error, setGlobalState);
+      handleAxiosErrorModal(error, setGlobalState);
       return false;
     }
   };
