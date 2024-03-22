@@ -46,7 +46,7 @@ export default function PostListSearchBar() {
         onChange={(e) => setKeyword(e.target.value)}
       />
       <button
-        className="w-10 bg-gray-800 p-1"
+        className="bg-buttonBlack ml-auto w-10 p-1"
         onClick={() => {
           handleSearchButton();
         }}

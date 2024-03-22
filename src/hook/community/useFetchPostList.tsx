@@ -17,14 +17,20 @@ export default function useFetchPostList() {
   const target = searchParams.get("target");
   const keyword = searchParams.get("keyword");
   const mode = searchParams.get("mode");
+  const page = searchParams.get("p");
   const fetchPostList = async (prop: Props) => {
     let apiUrl = `${envState.communityUrl}/${communityId}`;
+    const queryParams = [];
     if (mode) {
-      apiUrl += `?mode=${mode}`;
+      queryParams.push(`mode=${mode}`);
     }
     if (target && keyword) {
-      apiUrl += `${apiUrl.includes("?") ? "&" : "?"}target=${target}&keyword=${keyword}`;
+      queryParams.push(`target=${target}&keyword=${keyword}`);
     }
+    apiUrl +=
+      queryParams.length > 0
+        ? `?${queryParams.join("&")}&p=${page}`
+        : `?p=${page}`;
 
     try {
       const response = await axios.get(apiUrl);

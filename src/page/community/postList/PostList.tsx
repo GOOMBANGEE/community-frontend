@@ -6,6 +6,7 @@ import PostListHeader from "./PostListHeader.tsx";
 import { usePostStore } from "../../../store/PostStore.tsx";
 import { useEffect, useState } from "react";
 import PostListSearchBar from "./PostListSearchBar.tsx";
+import PaginationBar from "../PaginationBar.tsx";
 
 export interface PostList {
   items: Post[];
@@ -24,6 +25,7 @@ export default function PostList() {
   const [searchParams] = useSearchParams();
   const target = searchParams.get("target");
   const keyword = searchParams.get("keyword");
+  const page = searchParams.get("p");
 
   const [postList, setPostList] = useState<PostList>({
     items: [],
@@ -37,10 +39,16 @@ export default function PostList() {
     (a: { id: number }, b: { id: number }) => b.id - a.id,
   );
 
+  const paginationProps = {
+    currentPage: postList.page,
+    totalPage: postList.total_page,
+    prev: postList.prev,
+    next: postList.next,
+  };
   useEffect(() => {
     resetPostState();
     void fetchPostList({ setPostList });
-  }, [target, keyword]);
+  }, [target, keyword, page]);
 
   return (
     <>
@@ -53,6 +61,7 @@ export default function PostList() {
           <PostListHeader />
 
           <PostListSearchBar />
+          <PaginationBar {...paginationProps} />
         </>
       )}
     </>

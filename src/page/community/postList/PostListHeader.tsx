@@ -7,15 +7,15 @@ export default function PostListHeader() {
   const navigate = useNavigate();
 
   const handleClickPostList = () => {
-    window.location.href = `/community/${communityId}`;
+    window.location.href = `/community/${communityId}?p=1`;
   };
 
   const handleClickBest = () => {
-    window.location.href = `/community/${communityId}/?mode=best`;
+    window.location.href = `/community/${communityId}/?mode=best&p=1`;
   };
 
   return (
-    <div className="mx-2 mb-4 flex text-sm font-light text-white">
+    <div className="mx-2 my-4 flex text-sm font-light text-white">
       <div className="flex">
         <button
           className="border-2 border-customGray bg-black p-1"
@@ -35,7 +35,7 @@ export default function PostListHeader() {
         </button>
       </div>
       <button
-        className="ml-auto border-2 border-customGray bg-black p-1"
+        className="bg-buttonBlack ml-auto border-2 border-customGray p-1"
         onClick={() => {
           navigate(`/community/${communityId}/editor`);
           resetPostState();

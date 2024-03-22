@@ -5,6 +5,7 @@ export default {
     extend: {
       colors: {
         customGray: "#333333",
+        buttonBlack: "#222",
       },
     },
   },

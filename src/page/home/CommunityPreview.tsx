@@ -16,7 +16,7 @@ export default function CommunityPreview({ community }: Readonly<Props>) {
       <button
         className="mb-3 w-fit border-b-4 border-emerald-700 text-xl font-extralight"
         onClick={() => {
-          navigate(`/community/${community.id}`);
+          navigate(`/community/${community.id}?p=1`);
         }}
       >
         {community.title}
