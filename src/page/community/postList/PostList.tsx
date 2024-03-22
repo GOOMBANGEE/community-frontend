@@ -1,10 +1,11 @@
-import { useParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import { useGlobalStore } from "../../../store/GlobalStore.tsx";
 import useFetchPostList from "../../../hook/community/useFetchPostList.tsx";
 import PostListPost from "./PostListPost.tsx";
 import PostListHeader from "./PostListHeader.tsx";
 import { usePostStore } from "../../../store/PostStore.tsx";
 import { useEffect, useState } from "react";
+import PostListSearchBar from "./PostListSearchBar.tsx";
 
 export interface PostList {
   items: Post[];
@@ -15,11 +16,14 @@ export interface PostList {
   next: number;
 }
 
-export default function PostList({ best = false }: { best?: boolean }) {
+export default function PostList() {
   const { globalState } = useGlobalStore();
   const { communityId } = useParams();
   const { resetPostState } = usePostStore();
   const { fetchPostList } = useFetchPostList();
+  const [searchParams] = useSearchParams();
+  const target = searchParams.get("target");
+  const keyword = searchParams.get("keyword");
 
   const [postList, setPostList] = useState<PostList>({
     items: [],
@@ -35,12 +39,8 @@ export default function PostList({ best = false }: { best?: boolean }) {
 
   useEffect(() => {
     resetPostState();
-    if (best) {
-      void fetchPostList({ best, setPostList });
-      return;
-    }
-    void fetchPostList({ best, setPostList });
-  }, []);
+    void fetchPostList({ setPostList });
+  }, [target, keyword]);
 
   return (
     <>
@@ -51,6 +51,8 @@ export default function PostList({ best = false }: { best?: boolean }) {
             <PostListPost key={post.id} communityId={communityId} post={post} />
           ))}
           <PostListHeader />
+
+          <PostListSearchBar />
         </>
       )}
     </>
