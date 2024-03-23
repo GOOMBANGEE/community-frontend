@@ -4,7 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import axios from "axios";
 import { handleAxiosError } from "../handleAxiosError.tsx";
 
-export function usePostList(communityId: number) {
+export function useFetchCommunityPreviewPostList(communityId: number) {
   const { setGlobalState } = useGlobalStore();
   const { envState } = useEnvStore();
   const [result, setResult] = useState<Post>();
@@ -12,7 +12,7 @@ export function usePostList(communityId: number) {
   const fetchPostList = useCallback(async () => {
     try {
       const response = await axios.get(
-        `${envState.communityUrl}/${communityId}`,
+        `${envState.communityUrl}/${communityId}?p=1&size=10`,
       );
       setResult(response.data.items);
     } catch (error) {

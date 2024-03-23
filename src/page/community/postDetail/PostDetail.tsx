@@ -1,9 +1,9 @@
 import useFetchPostDetail from "../../../hook/community/useFetchPostDetail.tsx";
 import PostList from "../postList/PostList.tsx";
-import ReplyList from "../reply/ReplyList.tsx";
+import CommentList from "../comment/CommentList.tsx";
 import PostDetailButtons from "./PostDetailButtons.tsx";
 import PostDetailContent from "./PostDetailContent.tsx";
-import ReplyEditor from "../reply/ReplyEditor.tsx";
+import CommentEditor from "../comment/CommentEditor.tsx";
 import { useEffect } from "react";
 
 export default function PostDetail() {
@@ -17,8 +17,8 @@ export default function PostDetail() {
     <>
       <PostDetailButtons />
       <PostDetailContent />
-      <ReplyList />
-      <ReplyEditor status={"create"} />
+      <CommentList />
+      <CommentEditor status={"create"} />
       <PostList />
     </>
   );

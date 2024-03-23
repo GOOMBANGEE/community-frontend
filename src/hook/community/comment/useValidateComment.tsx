@@ -1,6 +1,6 @@
 import useValidator from "../../useValidator.tsx";
 
-export default function useValidateReply() {
+export default function useValidateComment() {
   const { validator } = useValidator();
 
   const isInvalidNickname = (props: ValidationProps) => {
@@ -8,7 +8,7 @@ export default function useValidateReply() {
       regex: /^.{2,20}$/,
       errorField: "nicknameError",
       errorMessage: "닉네임은 2자 이상 20자 이하로 작성해주세요",
-      validateVariable: "reply",
+      validateVariable: "comment",
     };
     return validator({ ...props, ...validationConfig });
   };
@@ -18,7 +18,7 @@ export default function useValidateReply() {
       regex: /^.{4,20}$/,
       errorField: "passwordError",
       errorMessage: "비밀번호는 4자 이상 20자 이하로 작성해주세요",
-      validateVariable: "reply",
+      validateVariable: "comment",
     };
     return validator({ ...props, ...validationConfig });
   };
@@ -28,7 +28,7 @@ export default function useValidateReply() {
       regex: /^.+$/,
       errorField: "contentError",
       errorMessage: "내용이 비어있습니다",
-      validateVariable: "reply",
+      validateVariable: "comment",
     };
     return validator({ ...props, ...validationConfig });
   };

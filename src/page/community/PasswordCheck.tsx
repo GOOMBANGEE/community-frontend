@@ -1,33 +1,35 @@
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { PostState, usePostStore } from "../../store/PostStore.tsx";
-import { ReplyState, useReplyStore } from "../../store/ReplyStore.tsx";
+import { CommentState, useCommentStore } from "../../store/CommentStore.tsx";
 import usePasswordCheck from "../../hook/community/usePasswordCheck.tsx";
 import usePostDelete from "../../hook/community/post/usePostDelete.tsx";
-import useReplyDelete from "../../hook/community/reply/useReplyDelete.tsx";
+import useCommentDelete from "../../hook/community/comment/useCommentDelete.tsx";
 import { useUserStore } from "../../store/UserStore.tsx";
 
 interface Props {
-  prop: PostState | ReplyState;
+  prop: PostState | CommentState;
 }
 
 export default function PasswordCheck({ prop }: Readonly<Props>) {
   const [password, setPassword] = useState<string>("");
   const [isPasswordInvalid, setIsPasswordInvalid] = useState<boolean>(false);
   const navigate = useNavigate();
-  const { communityId, replyId } = useParams();
+  const { communityId, commentId } = useParams();
 
-  const { passwordCheckPost, passwordCheckReply } = usePasswordCheck();
+  const { passwordCheckPost, passwordCheckComment } = usePasswordCheck();
   const { postDelete } = usePostDelete();
 
   const { postState, setPostState } = usePostStore();
-  const { replyState } = useReplyStore();
+  const { commentState } = useCommentStore();
   const { userState } = useUserStore();
 
-  const isPost = (state: PostState | ReplyState): state is PostState => {
+  const isPost = (state: PostState | CommentState): state is PostState => {
     return "title" in state;
   };
-  const isReply = (state: PostState | ReplyState): state is ReplyState => {
+  const isComment = (
+    state: PostState | CommentState,
+  ): state is CommentState => {
     return !("title" in state);
   };
 
@@ -53,18 +55,18 @@ export default function PasswordCheck({ prop }: Readonly<Props>) {
     setIsPasswordInvalid(true);
   };
 
-  const { replyDelete } = useReplyDelete();
-  const handleConfirmReply = async () => {
-    if (isReply(prop)) {
+  const { commentDelete } = useCommentDelete();
+  const handleConfirmComment = async () => {
+    if (isComment(prop)) {
       if (
-        replyState.creator === userState.id ||
-        (await passwordCheckReply({
-          replyState: prop,
+        commentState.creator === userState.id ||
+        (await passwordCheckComment({
+          commentState: prop,
           password,
         }))
       ) {
-        await replyDelete(password);
-        navigate(`/community/${communityId}/${replyState.postId}`);
+        await commentDelete(password);
+        navigate(`/community/${communityId}/${commentState.postId}`);
         return;
       }
     }
@@ -85,15 +87,15 @@ export default function PasswordCheck({ prop }: Readonly<Props>) {
         </>
       ) : null}
 
-      {isReply(prop) ? (
+      {isComment(prop) ? (
         <>
           <div className="mb-2 text-xl font-semibold">댓글 삭제</div>
           <div className="mb-4">삭제된 댓글은 복구할 수 없습니다.</div>
         </>
       ) : null}
 
-      {(!replyId && postState.creator === userState.id) ||
-      (replyId && replyState.creator === userState.id) ? null : (
+      {(!commentId && postState.creator === userState.id) ||
+      (commentId && commentState.creator === userState.id) ? null : (
         <>
           <div className="mb-4">비밀번호를 입력해주세요</div>
 
@@ -124,8 +126,8 @@ export default function PasswordCheck({ prop }: Readonly<Props>) {
             void handleConfirmPost();
             return;
           }
-          if (isReply(prop)) {
-            void handleConfirmReply();
+          if (isComment(prop)) {
+            void handleConfirmComment();
           }
         }}
       >

@@ -27,7 +27,7 @@ export default function CommunityPreviewPost({
       }}
     >
       <div className="text-left">
-        {post.title} <span>[{post.reply_count}]</span>
+        {post.title} <span>[{post.comment_count}]</span>
       </div>
 
       <div className="ml-auto mt-1 h-fit w-fit items-center rounded bg-gray-700 px-1 text-center text-sm opacity-70">

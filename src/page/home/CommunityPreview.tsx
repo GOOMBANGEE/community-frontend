@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { usePostList } from "../../hook/home/usePostList.tsx";
+import { useFetchCommunityPreviewPostList } from "../../hook/home/useFetchCommunityPreviewPostList.tsx";
 import CommunityPreviewPost from "./CommunityPreviewPost.tsx";
 
 interface Props {
@@ -9,7 +9,7 @@ interface Props {
 // 게시판 하나씩 표시하는 컴포넌트
 export default function CommunityPreview({ community }: Readonly<Props>) {
   const navigate = useNavigate();
-  const data = usePostList(community.id);
+  const data = useFetchCommunityPreviewPostList(community.id);
 
   return (
     <div>

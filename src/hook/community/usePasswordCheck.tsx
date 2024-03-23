@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useEnvStore } from "../../store/EnvStore.tsx";
 import { PostState } from "../../store/PostStore.tsx";
-import { ReplyState } from "../../store/ReplyStore.tsx";
+import { CommentState } from "../../store/CommentStore.tsx";
 import { useParams } from "react-router-dom";
 
 interface checkPostProps {
@@ -9,8 +9,8 @@ interface checkPostProps {
   password: string;
 }
 
-interface checkReplyProps {
-  replyState: ReplyState;
+interface checkCommentProps {
+  commentState: CommentState;
   password: string;
 }
 
@@ -32,13 +32,13 @@ export default function usePasswordCheck() {
     }
   };
 
-  const passwordCheckReply = async ({
-    replyState,
+  const passwordCheckComment = async ({
+    commentState,
     password,
-  }: checkReplyProps) => {
+  }: checkCommentProps) => {
     try {
       await axios.get(
-        `${envState.communityUrl}/${communityId}/${replyState.postId}/${replyState.id}/check?password=${password}`,
+        `${envState.communityUrl}/${communityId}/${commentState.postId}/${commentState.id}/check?password=${password}`,
       );
       return true;
     } catch (error) {
@@ -48,5 +48,5 @@ export default function usePasswordCheck() {
     }
   };
 
-  return { passwordCheckPost, passwordCheckReply };
+  return { passwordCheckPost, passwordCheckComment };
 }

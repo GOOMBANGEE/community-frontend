@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import useTimeFormat from "../../../hook/useTimeFormat.tsx";
 
 interface Props {
@@ -10,9 +10,27 @@ interface Props {
 export default function PostListPost({ communityId, post }: Readonly<Props>) {
   const navigate = useNavigate();
   const { formatTimeDifference } = useTimeFormat();
+  const [searchParams] = useSearchParams();
+  const mode = searchParams.get("mode");
+  const target = searchParams.get("target");
+  const keyword = searchParams.get("keyword");
+  const page = searchParams.get("p");
+
+  let url = `/community/${communityId}/${post.id}`;
+  const queryParams = [];
+  if (mode) {
+    queryParams.push(`mode=${mode}`);
+  }
+  if (target && keyword) {
+    queryParams.push(`target=${target}&keyword=${keyword}`);
+  }
+  url +=
+    queryParams.length > 0
+      ? `?${queryParams.join("&")}&p=${page}`
+      : `?p=${page}`;
 
   const handleClickPost = () => {
-    navigate(`/community/${communityId}/${post.id}`);
+    navigate(url);
   };
 
   return (
@@ -25,7 +43,7 @@ export default function PostListPost({ communityId, post }: Readonly<Props>) {
                 handleClickPost();
               }}
             >
-              {post.title} <span>[{post.reply_count}]</span>
+              {post.title} <span>[{post.comment_count}]</span>
             </button>
           </div>
         </div>

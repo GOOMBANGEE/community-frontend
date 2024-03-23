@@ -1,14 +1,14 @@
-import useFetchReplyList from "../../../hook/community/useFetchReplyList.tsx";
-import ReplyListReply from "./ReplyListReply.tsx";
+import useFetchCommentList from "../../../hook/community/useFetchCommentList.tsx";
+import CommentListComment from "./CommentListComment.tsx";
 import { useParams } from "react-router-dom";
-import { useReplyStore } from "../../../store/ReplyStore.tsx";
-import ReplyEditor from "./ReplyEditor.tsx";
+import { useCommentStore } from "../../../store/CommentStore.tsx";
+import CommentEditor from "./CommentEditor.tsx";
 
-export default function ReplyList() {
-  const data = useFetchReplyList();
+export default function CommentList() {
+  const data = useFetchCommentList();
   const { communityId, postId } = useParams();
 
-  const { replyState } = useReplyStore();
+  const { commentState } = useCommentStore();
 
   return (
     <div>
@@ -39,15 +39,16 @@ export default function ReplyList() {
         </svg>
         <div className="ml-1 text-xl font-extralight text-white">댓글</div>
       </div>
-      {data.items.map((reply: Reply) => (
-        <div key={reply.id}>
-          <ReplyListReply
+      {data.items.map((comment: Comment) => (
+        <div key={comment.id}>
+          <CommentListComment
             communityId={communityId}
             postId={postId}
-            reply={reply}
+            comment={comment}
           />
-          {replyState.status === "update" && replyState.id === reply.id ? (
-            <ReplyEditor status={"update"} />
+          {commentState.status === "update" &&
+          commentState.id === comment.id ? (
+            <CommentEditor status={"update"} />
           ) : null}
         </div>
       ))}

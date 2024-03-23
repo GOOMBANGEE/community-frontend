@@ -5,7 +5,7 @@ import CommunityHeader from "./CommunityHeader.tsx";
 import PostDetail from "./postDetail/PostDetail.tsx";
 import PostEditor from "./PostEditor.tsx";
 import PasswordCheck from "./PasswordCheck.tsx";
-import { useReplyStore } from "../../store/ReplyStore.tsx";
+import { useCommentStore } from "../../store/CommentStore.tsx";
 import { usePostStore } from "../../store/PostStore.tsx";
 import { useGlobalStore } from "../../store/GlobalStore.tsx";
 import Modal from "../../component/Modal.tsx";
@@ -13,7 +13,7 @@ import Modal from "../../component/Modal.tsx";
 export default function Community() {
   const { globalState } = useGlobalStore();
   const { postState } = usePostStore();
-  const { replyState } = useReplyStore();
+  const { commentState } = useCommentStore();
 
   return (
     <>
@@ -30,8 +30,8 @@ export default function Community() {
         />
         <Route path="/:communityId/:postId/editor" element={<PostEditor />} />
         <Route
-          path="/:communityId/:postId/:replyId/check"
-          element={<PasswordCheck prop={replyState} />}
+          path="/:communityId/:postId/:commentId/check"
+          element={<PasswordCheck prop={commentState} />}
         />
       </Routes>
       {globalState.modalMessage ? <Modal /> : null}

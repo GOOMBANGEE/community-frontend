@@ -1,23 +1,23 @@
 import axios from "axios";
 import { useEnvStore } from "../../../store/EnvStore.tsx";
-import { useReplyStore } from "../../../store/ReplyStore.tsx";
+import { useCommentStore } from "../../../store/CommentStore.tsx";
 import { useParams } from "react-router-dom";
 import { handleAxiosError } from "../../handleAxiosError.tsx";
 import { useGlobalStore } from "../../../store/GlobalStore.tsx";
 
-export default function useReplyCreate() {
+export default function useCommentCreate() {
   const { envState } = useEnvStore();
   const { setGlobalState } = useGlobalStore();
-  const { replyState } = useReplyStore();
+  const { commentState } = useCommentStore();
   const { communityId, postId } = useParams();
-  const replyCreate = async () => {
+  const commentCreate = async () => {
     try {
       await axios.post(
         `${envState.communityUrl}/${communityId}/${postId}/create`,
         {
-          content: replyState.content,
-          nickname: replyState.nickname,
-          password: replyState.password,
+          content: commentState.content,
+          nickname: commentState.nickname,
+          password: commentState.password,
         },
       );
     } catch (error) {
@@ -25,5 +25,5 @@ export default function useReplyCreate() {
     }
   };
 
-  return { replyCreate };
+  return { commentCreate };
 }

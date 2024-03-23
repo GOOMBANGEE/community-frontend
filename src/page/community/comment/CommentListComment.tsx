@@ -1,51 +1,52 @@
 import useTimeFormat from "../../../hook/useTimeFormat.tsx";
 import { useNavigate } from "react-router-dom";
-import { useReplyStore } from "../../../store/ReplyStore.tsx";
+import { useCommentStore } from "../../../store/CommentStore.tsx";
 import { useUserStore } from "../../../store/UserStore.tsx";
 
 interface Props {
   communityId: string | undefined;
   postId: string | undefined;
-  reply: Reply;
+  comment: Comment;
 }
 
-export default function ReplyListReply({
+export default function CommentListComment({
   communityId,
   postId,
-  reply,
+  comment,
 }: Readonly<Props>) {
   const navigate = useNavigate();
-  const { replyState, setReplyState, resetReplyState } = useReplyStore();
+  const { commentState, setCommentState, resetCommentState } =
+    useCommentStore();
   const { userState } = useUserStore();
   const { formatTime } = useTimeFormat();
 
   // 삭제는 비밀번호 체크페이지로 이동
   const handleDeleteButton = () => {
-    setReplyState({
-      ...replyState,
+    setCommentState({
+      ...commentState,
       communityId: communityId,
       postId: postId,
-      id: reply.id,
-      creator: reply.creator,
-      content: reply.content,
+      id: comment.id,
+      creator: comment.creator,
+      content: comment.content,
       status: "delete",
     });
-    navigate(`/community/${communityId}/${postId}/${reply.id}/check`);
+    navigate(`/community/${communityId}/${postId}/${comment.id}/check`);
   };
 
-  // 수정은 페이지이동하지않고 replyEditor 사용
+  // 수정은 페이지이동하지않고 commentEditor 사용
   const handleEditButton = () => {
-    if (replyState.status === "update" && replyState.id === reply.id) {
-      resetReplyState();
+    if (commentState.status === "update" && commentState.id === comment.id) {
+      resetCommentState();
     } else {
-      setReplyState({
-        ...replyState,
+      setCommentState({
+        ...commentState,
         communityId: communityId,
         postId: postId,
-        id: reply.id,
-        creator: reply.creator,
-        nickname: reply.nickname,
-        content: reply.content,
+        id: comment.id,
+        creator: comment.creator,
+        nickname: comment.nickname,
+        content: comment.content,
         status: "update",
       });
     }
@@ -56,8 +57,8 @@ export default function ReplyListReply({
       <div className="mx-2 my-3 border-2 border-customGray text-sm font-extralight text-white">
         <div className="flex bg-customGray px-2 py-1">
           <div className="flex items-center">
-            {reply.nickname}
-            {reply.creator ? (
+            {comment.nickname}
+            {comment.creator ? (
               <svg
                 className="ml-1"
                 width="16px"
@@ -86,9 +87,9 @@ export default function ReplyListReply({
             ) : null}
           </div>
           <div className="ml-auto flex items-center text-xs">
-            <div>{formatTime(reply.creation_time)}</div>
-            {(reply.creator && reply.creator === userState.id) ||
-            reply.creator === null ? (
+            <div>{formatTime(comment.creation_time)}</div>
+            {(comment.creator && comment.creator === userState.id) ||
+            comment.creator === null ? (
               <>
                 <div className="mx-2">|</div>
                 <button
@@ -111,12 +112,12 @@ export default function ReplyListReply({
           </div>
         </div>
         {/*작성시간과 수정시간이 다른경우 수정됨 표시*/}
-        {reply.creation_time === reply.modification_time ? (
-          <div className="p-2 text-white">{reply.content}</div>
+        {comment.creation_time === comment.modification_time ? (
+          <div className="p-2 text-white">{comment.content}</div>
         ) : (
           <div className="p-2 text-white">
             <span className="mr-1 text-xs">*수정됨</span>
-            {reply.content}
+            {comment.content}
           </div>
         )}
       </div>

@@ -1,10 +1,10 @@
 import { useState } from "react";
-import { useReplyStore } from "../../../store/ReplyStore.tsx";
+import { useCommentStore } from "../../../store/CommentStore.tsx";
 import useRenderErrorMessage from "../../../hook/user/useRenderErrorMessage.tsx";
-import useValidateReply from "../../../hook/community/reply/useValidateReply.tsx";
-import useReplyCreate from "../../../hook/community/reply/useReplyCreate.tsx";
+import useValidateComment from "../../../hook/community/comment/useValidateComment.tsx";
+import useCommentCreate from "../../../hook/community/comment/useCommentCreate.tsx";
 import usePasswordCheck from "../../../hook/community/usePasswordCheck.tsx";
-import useReplyUpdate from "../../../hook/community/reply/useReplyUpdate.tsx";
+import useCommentUpdate from "../../../hook/community/comment/useCommentUpdate.tsx";
 import { useTokenStore } from "../../../store/TokenStore.tsx";
 import { useUserStore } from "../../../store/UserStore.tsx";
 
@@ -12,29 +12,29 @@ interface Props {
   status: string;
 }
 
-export default function ReplyEditor(prop: Readonly<Props>) {
+export default function CommentEditor(prop: Readonly<Props>) {
   const { tokenState } = useTokenStore();
   const { userState } = useUserStore();
-  const { replyState, setReplyState } = useReplyStore();
+  const { commentState, setCommentState } = useCommentStore();
   const { isInvalidNickname, isInvalidPassword, isInvalidContent } =
-    useValidateReply();
+    useValidateComment();
   const [isFocusTextArea, setIsFocusTextArea] = useState<boolean>(false);
-  const [validateState, setValidateState] = useState<ValidateReply>({
+  const [validateState, setValidateState] = useState<ValidateComment>({
     nicknameError: "",
     passwordError: "",
     contentError: "",
     invalidPasswordError: "",
   });
 
-  const { replyCreate } = useReplyCreate();
-  const { replyUpdate } = useReplyUpdate();
-  const { passwordCheckReply } = usePasswordCheck();
-  const handleReplyButton = async () => {
+  const { commentCreate } = useCommentCreate();
+  const { commentUpdate } = useCommentUpdate();
+  const { passwordCheckComment } = usePasswordCheck();
+  const handleCommentButton = async () => {
     if (
       !tokenState.accessToken &&
       prop.status === "create" &&
       isInvalidNickname({
-        value: replyState.nickname,
+        value: commentState.nickname,
         setValidateState,
       })
     ) {
@@ -43,7 +43,7 @@ export default function ReplyEditor(prop: Readonly<Props>) {
     if (
       !tokenState.accessToken &&
       isInvalidPassword({
-        value: replyState.password,
+        value: commentState.password,
         setValidateState,
       })
     ) {
@@ -51,7 +51,7 @@ export default function ReplyEditor(prop: Readonly<Props>) {
     }
     if (
       isInvalidContent({
-        value: replyState.content,
+        value: commentState.content,
         setValidateState,
       })
     ) {
@@ -59,15 +59,18 @@ export default function ReplyEditor(prop: Readonly<Props>) {
     }
 
     if (prop.status !== "update") {
-      await replyCreate();
+      await commentCreate();
       window.location.reload();
       return;
     }
     if (
-      replyState.creator === userState.id ||
-      (await passwordCheckReply({ replyState, password: replyState.password }))
+      commentState.creator === userState.id ||
+      (await passwordCheckComment({
+        commentState: commentState,
+        password: commentState.password,
+      }))
     ) {
-      await replyUpdate();
+      await commentUpdate();
       window.location.reload();
       return;
     }
@@ -93,8 +96,8 @@ export default function ReplyEditor(prop: Readonly<Props>) {
                 placeholder="닉네임"
                 className="border-r-2 border-customGray bg-transparent p-2 text-sm font-light text-white"
                 onChange={(e) => {
-                  setReplyState({
-                    ...replyState,
+                  setCommentState({
+                    ...commentState,
                     nickname: e.target.value,
                   });
                   setValidateState({
@@ -103,7 +106,7 @@ export default function ReplyEditor(prop: Readonly<Props>) {
                   });
                 }}
                 defaultValue={
-                  prop.status === "update" ? replyState.nickname : ""
+                  prop.status === "update" ? commentState.nickname : ""
                 }
                 readOnly={prop.status === "update"}
               />
@@ -112,8 +115,8 @@ export default function ReplyEditor(prop: Readonly<Props>) {
                 placeholder="비밀번호"
                 className="w-full bg-transparent p-2 text-sm font-light text-white"
                 onChange={(e) => {
-                  setReplyState({
-                    ...replyState,
+                  setCommentState({
+                    ...commentState,
                     password: e.target.value,
                   });
                   setValidateState({
@@ -132,8 +135,8 @@ export default function ReplyEditor(prop: Readonly<Props>) {
             setIsFocusTextArea(true);
           }}
           onChange={(e) => {
-            setReplyState({
-              ...replyState,
+            setCommentState({
+              ...commentState,
               content: e.target.value,
             });
             setValidateState({
@@ -141,14 +144,14 @@ export default function ReplyEditor(prop: Readonly<Props>) {
               contentError: "",
             });
           }}
-          defaultValue={prop.status === "update" ? replyState.content : ""}
+          defaultValue={prop.status === "update" ? commentState.content : ""}
           style={{ outline: "none" }}
         ></textarea>
         {isFocusTextArea ? (
           <button
             className="justify-item-end mb-2 ml-auto mr-2 flex rounded border-2 border-customGray p-1 px-6 font-extralight text-white"
             onClick={() => {
-              void handleReplyButton();
+              void handleCommentButton();
             }}
           >
             작성

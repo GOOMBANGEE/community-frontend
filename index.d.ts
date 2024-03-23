@@ -14,14 +14,14 @@ interface Post {
   rate_plus: number;
   rate_minus: number;
   content: string;
-  reply_count: number;
+  comment_count: number;
   previous_id: number;
   next_id: number;
   creation_time: Date;
   modification_time: Date;
 }
 
-interface Reply {
+interface Comment {
   id: number;
   nickname: string;
   creator: string;
@@ -56,7 +56,7 @@ interface ValidatePost {
   contentError?: string;
 }
 
-interface ValidateReply {
+interface ValidateComment {
   nicknameError?: string;
   passwordError?: string;
   contentError?: string;
