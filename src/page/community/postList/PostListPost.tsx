@@ -29,6 +29,10 @@ export default function PostListPost({ communityId, post }: Readonly<Props>) {
       ? `?${queryParams.join("&")}&p=${page}`
       : `?p=${page}`;
 
+  if (post.comment_count > 1) {
+    const commentPage = Math.ceil(post.comment_count / 10);
+    url += `&cp=${commentPage}`;
+  }
   const handleClickPost = () => {
     navigate(url);
   };

@@ -1,5 +1,5 @@
 import { usePostStore } from "../../../store/PostStore.tsx";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { useUserStore } from "../../../store/UserStore.tsx";
 
 export default function PostDetailButtons() {
@@ -8,6 +8,13 @@ export default function PostDetailButtons() {
 
   const { postState, setPostState } = usePostStore();
   const { userState } = useUserStore();
+
+  const [searchParams] = useSearchParams();
+  const mode = searchParams.get("mode");
+  const target = searchParams.get("target");
+  const keyword = searchParams.get("keyword");
+  const page = searchParams.get("p");
+  const commentPage = searchParams.get("cp");
 
   const handleDeleteButton = async () => {
     setPostState({
@@ -20,6 +27,11 @@ export default function PostDetailButtons() {
     setPostState({
       ...postState,
       status: "update",
+      mode: mode,
+      target: target,
+      keyword: keyword,
+      page: page,
+      commentPage: commentPage,
     });
 
     if (postState.creator === userState.id) {

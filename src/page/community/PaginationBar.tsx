@@ -1,23 +1,28 @@
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
+import { usePostStore } from "../../store/PostStore.tsx";
 
 interface Props {
+  type: string;
   currentPage: number;
   totalPage: number;
-  prev: number;
-  next: number;
 }
 
 export default function PaginationBar(prop: Props) {
   const { currentPage, totalPage } = prop;
+  const { postState } = usePostStore();
   const navigate = useNavigate();
   const { communityId } = useParams();
   const [searchParams] = useSearchParams();
   const target = searchParams.get("target");
   const keyword = searchParams.get("keyword");
   const mode = searchParams.get("mode");
-
+  const page = searchParams.get("p");
   let url = `/community/${communityId}`;
+  if (prop.type === "comment") {
+    url += `/${postState.id}`;
+  }
   const queryParams = [];
+
   if (mode) {
     queryParams.push(`mode=${mode}`);
   }
@@ -25,6 +30,10 @@ export default function PaginationBar(prop: Props) {
     queryParams.push(`target=${target}&keyword=${keyword}`);
   }
   url += queryParams.length > 0 ? `?${queryParams.join("&")}&p=` : "?p=";
+
+  if (prop.type === "comment") {
+    url += `${page}&cp=`;
+  }
 
   const renderPageNumbers = () => {
     let minPage, maxPage;
@@ -83,7 +92,9 @@ export default function PaginationBar(prop: Props) {
               <button
                 className="border-2 border-customGray px-1"
                 onClick={() => {
-                  navigate(`${url}${currentPage - 5}`);
+                  navigate(
+                    `${url}${currentPage >= totalPage - 5 ? totalPage - 10 : currentPage - 5}`,
+                  );
                 }}
               >
                 〈
@@ -98,9 +109,7 @@ export default function PaginationBar(prop: Props) {
               <button
                 className="border-2 border-customGray px-1"
                 onClick={() => {
-                  navigate(
-                    `${url}${currentPage <= 5 ? currentPage : currentPage + 6}`,
-                  );
+                  navigate(`${url}${currentPage <= 5 ? 11 : currentPage + 6}`);
                 }}
               >
                 〉

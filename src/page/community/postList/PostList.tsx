@@ -40,11 +40,11 @@ export default function PostList() {
   );
 
   const paginationProps = {
+    type: "post",
     currentPage: postList.page,
     totalPage: postList.total_page,
-    prev: postList.prev,
-    next: postList.next,
   };
+
   useEffect(() => {
     resetPostState();
     void fetchPostList({ setPostList });

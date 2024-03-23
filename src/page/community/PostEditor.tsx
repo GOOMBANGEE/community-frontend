@@ -29,6 +29,23 @@ export default function PostEditor() {
   const { postCreate } = usePostCreate();
   const { postUpdate } = usePostUpdate();
 
+  let url = `/community/${communityId}/${postState.id}`;
+  const queryParams = [];
+  if (postState.mode) {
+    queryParams.push(`mode=${postState.mode}`);
+  }
+  if (postState.target && postState.keyword) {
+    queryParams.push(`target=${postState.target}&keyword=${postState.keyword}`);
+  }
+  url +=
+    queryParams.length > 0
+      ? `?${queryParams.join("&")}&p=${postState.page}`
+      : `?p=${postState.page}`;
+
+  if (postState.commentPage) {
+    url += `&cp=${postState.commentPage}`;
+  }
+
   const handlePostButton = async () => {
     if (
       isInvalidTitle({
@@ -74,7 +91,7 @@ export default function PostEditor() {
     }
     if (postState.status === "update") {
       if (await postUpdate()) {
-        navigate(`/community/${communityId}/${postState.id}`);
+        navigate(url);
         return;
       }
     }

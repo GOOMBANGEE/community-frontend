@@ -23,6 +23,11 @@ export interface PostState {
   creation_time: Date;
   modification_time: Date;
   password: string;
+  mode: string | null;
+  target: string | null;
+  keyword: string | null;
+  page: string | null;
+  commentPage: string | null;
 }
 
 const initialPostState: PostState = {
@@ -42,6 +47,11 @@ const initialPostState: PostState = {
   creation_time: new Date(0),
   modification_time: new Date(0),
   password: "",
+  mode: "",
+  target: "",
+  keyword: "",
+  page: "",
+  commentPage: "",
 };
 
 export const usePostStore = create<PostStore>((set) => ({

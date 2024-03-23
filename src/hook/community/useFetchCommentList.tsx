@@ -1,9 +1,13 @@
-import { useEffect, useState } from "react";
 import { useEnvStore } from "../../store/EnvStore.tsx";
 import axios from "axios";
 import { useParams, useSearchParams } from "react-router-dom";
 import { handleAxiosError } from "../handleAxiosError.tsx";
 import { useGlobalStore } from "../../store/GlobalStore.tsx";
+import { CommentList } from "../../page/community/comment/CommentList.tsx";
+
+interface Props {
+  setCommentList: (state: CommentList) => void;
+}
 
 export default function useFetchCommentList() {
   const { envState } = useEnvStore();
@@ -12,21 +16,16 @@ export default function useFetchCommentList() {
   const [searchParams] = useSearchParams();
   const commentPage = searchParams.get("cp");
 
-  const [commentList, setCommentList] = useState({
-    items: [],
-    page: 0,
-    page_size: 0,
-    total_page: 0,
-    prev: 0,
-    next: 0,
-  });
+  const fetchCommentList = async (prop: Props) => {
+    let apiUrl = `${envState.communityUrl}/${communityId}/${postId}/comment`;
 
-  const fetchCommentList = async () => {
+    if (commentPage) {
+      apiUrl += `?cp=${commentPage}`;
+    }
+
     try {
-      const response = await axios.get(
-        `${envState.communityUrl}/${communityId}/${postId}/comment?cp=${commentPage}`,
-      );
-      setCommentList({
+      const response = await axios.get(apiUrl);
+      prop.setCommentList({
         items: response.data.items,
         page: response.data.page,
         page_size: response.data.page_size,
@@ -39,9 +38,5 @@ export default function useFetchCommentList() {
     }
   };
 
-  useEffect(() => {
-    void fetchCommentList();
-  }, []);
-
-  return commentList;
+  return { fetchCommentList };
 }
