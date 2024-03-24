@@ -25,7 +25,7 @@ export default function CommunityPreviewPost({
 
   return (
     <button
-      className="mb-1 grid w-full grid-cols-2 gap-2 text-base font-extralight"
+      className="mb-1 flex w-full text-base font-extralight"
       onClick={() => {
         handleClickPost();
       }}

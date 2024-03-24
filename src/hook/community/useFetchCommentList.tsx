@@ -1,7 +1,7 @@
 import { useEnvStore } from "../../store/EnvStore.tsx";
 import axios from "axios";
 import { useParams, useSearchParams } from "react-router-dom";
-import { handleAxiosError } from "../handleAxiosError.tsx";
+import { handleAxiosErrorModal } from "../handleAxiosErrorModal.tsx";
 import { useGlobalStore } from "../../store/GlobalStore.tsx";
 import { CommentList } from "../../page/community/comment/CommentList.tsx";
 
@@ -34,7 +34,7 @@ export default function useFetchCommentList() {
         next: response.data.next,
       });
     } catch (error) {
-      handleAxiosError(error, setGlobalState);
+      handleAxiosErrorModal(error, setGlobalState);
     }
   };
 

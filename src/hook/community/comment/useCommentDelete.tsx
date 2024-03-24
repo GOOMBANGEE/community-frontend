@@ -1,8 +1,9 @@
 import axios from "axios";
 import { useEnvStore } from "../../../store/EnvStore.tsx";
 import { useParams } from "react-router-dom";
+import { useReplyStore } from "../../../store/ReplyStore.tsx";
+import { handleAxiosErrorModal } from "../../handleAxiosErrorModal.tsx";
 import { useCommentStore } from "../../../store/CommentStore.tsx";
-import { handleAxiosError } from "../../handleAxiosError.tsx";
 import { useGlobalStore } from "../../../store/GlobalStore.tsx";
 
 export default function useCommentDelete() {
@@ -18,7 +19,7 @@ export default function useCommentDelete() {
       );
       resetCommentState();
     } catch (error) {
-      handleAxiosError(error, setGlobalState);
+      handleAxiosErrorModal(error, setGlobalState);
     }
   };
 
