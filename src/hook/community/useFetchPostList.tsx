@@ -18,7 +18,21 @@ export default function useFetchPostList() {
   const keyword = searchParams.get("keyword");
   const mode = searchParams.get("mode");
   const page = searchParams.get("p");
-  const fetchPostList = async (prop: Props) => {
+
+  const fetchPostList = async (props: Props) => {
+    const apiUrl = createApiUrl();
+
+    try {
+      const response = await axios.get(apiUrl);
+      props.setPostList(response.data);
+      setGlobalState({ loading: false });
+      return;
+    } catch (error) {
+      handleAxiosErrorModal(error, setGlobalState);
+    }
+  };
+
+  const createApiUrl = () => {
     let apiUrl = `${envState.communityUrl}/${communityId}`;
     const queryParams = [];
     if (mode) {
@@ -31,22 +45,7 @@ export default function useFetchPostList() {
       queryParams.length > 0
         ? `?${queryParams.join("&")}&p=${page}`
         : `?p=${page}`;
-
-    try {
-      const response = await axios.get(apiUrl);
-      prop.setPostList({
-        items: response.data.items,
-        page: response.data.page,
-        page_size: response.data.page_size,
-        total_page: response.data.total_page,
-        prev: response.data.prev,
-        next: response.data.next,
-      });
-      setGlobalState({ loading: false });
-      return;
-    } catch (error) {
-      handleAxiosErrorModal(error, setGlobalState);
-    }
+    return apiUrl;
   };
 
   return { fetchPostList };

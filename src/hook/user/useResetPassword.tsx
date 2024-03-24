@@ -5,9 +5,9 @@ import { useUserStore } from "../../store/UserStore.tsx";
 import { handleAxiosErrorModal } from "../handleAxiosErrorModal.tsx";
 
 export default function useResetPassword() {
-  const { setGlobalState } = useGlobalStore();
-  const { envState } = useEnvStore();
   const { userState, resetUserState } = useUserStore();
+  const { envState } = useEnvStore();
+  const { setGlobalState } = useGlobalStore();
 
   const resetPassword = async () => {
     try {
@@ -21,9 +21,6 @@ export default function useResetPassword() {
         redirectName: "닫기",
         redirectUrl: "reload",
       });
-      setTimeout(() => {
-        setGlobalState({ modalMessage: "" });
-      }, 3000);
       return true;
     } catch (error) {
       handleAxiosErrorModal(error, setGlobalState);

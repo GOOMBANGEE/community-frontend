@@ -8,16 +8,16 @@ import { FormEvent, useState } from "react";
 import useRecoverPassword from "../../hook/user/useRecoverPassword.tsx";
 
 export default function RecoverPassword() {
-  const { globalState } = useGlobalStore();
+  const isValidToken = useRecoverCheck();
+  const { recoverPassword } = useRecoverPassword();
+  const { isInvalidPassword, isInvalidConfirmPassword } = useValidateUser();
+
   const { userState, setUserState } = useUserStore();
+  const { globalState } = useGlobalStore();
   const [validateState, setValidateState] = useState<ValidateUser>({
     nicknameError: "",
     passwordError: "",
   });
-
-  const { isInvalidPassword, isInvalidConfirmPassword } = useValidateUser();
-  const isValidToken = useRecoverCheck();
-  const { recoverPassword } = useRecoverPassword();
 
   const handleRecoverPassword = async (e: FormEvent) => {
     e.preventDefault();
@@ -37,6 +37,7 @@ export default function RecoverPassword() {
 
     void recoverPassword();
   };
+
   return (
     <>
       {!globalState.loading ? (

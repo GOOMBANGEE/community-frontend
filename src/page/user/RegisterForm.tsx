@@ -6,21 +6,22 @@ import useValidateUser from "../../hook/user/useValidateUser.tsx";
 import useRenderErrorMessage from "../../hook/user/useRenderErrorMessage.tsx";
 
 export default function RegisterForm() {
-  const { globalState } = useGlobalStore();
-  const { userState, setUserState } = useUserStore();
-
-  const [validateState, setValidateState] = useState<ValidateUser>({
-    emailError: "",
-    nicknameError: "",
-    passwordError: "",
-  });
+  const { register } = useRegister();
   const {
     isInvalidEmail,
     isInvalidNickname,
     isInvalidPassword,
     isInvalidConfirmPassword,
   } = useValidateUser();
-  const { register } = useRegister();
+
+  const { userState, setUserState } = useUserStore();
+  const { globalState } = useGlobalStore();
+
+  const [validateState, setValidateState] = useState<ValidateUser>({
+    emailError: "",
+    nicknameError: "",
+    passwordError: "",
+  });
 
   // 유효성검사 + 회원가입 로직
   const handleRegister = async (e: FormEvent) => {
@@ -54,6 +55,7 @@ export default function RegisterForm() {
     ) {
       return;
     }
+
     void register();
   };
 

@@ -7,21 +7,20 @@ import useEmailSend from "../../hook/user/useEmailSend.tsx";
 import useRenderErrorMessage from "../../hook/user/useRenderErrorMessage.tsx";
 
 export default function RegisterActivate() {
-  const { globalState } = useGlobalStore();
-  const { userState } = useUserStore();
-  const [code, setCode] = useState<string>("");
+  const { registerActivate } = useRegisterActivate();
+  const { emailSend } = useEmailSend();
+  const { checkCodeLength } = useValidateUser();
 
+  const { userState } = useUserStore();
+  const { globalState } = useGlobalStore();
+
+  const [code, setCode] = useState<string>("");
   const [validateState, setValidateState] = useState<ValidateUser>({
     codeError: "",
   });
 
-  const { checkCodeLength } = useValidateUser();
-  const { registerActivate } = useRegisterActivate();
-  const { emailSend } = useEmailSend();
-
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-
     if (
       checkCodeLength({
         value: code,

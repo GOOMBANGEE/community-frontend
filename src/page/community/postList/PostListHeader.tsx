@@ -2,9 +2,9 @@ import { useNavigate, useParams } from "react-router-dom";
 import { usePostStore } from "../../../store/PostStore.tsx";
 
 export default function PostListHeader() {
-  const { communityId } = useParams();
   const { resetPostState } = usePostStore();
   const navigate = useNavigate();
+  const { communityId } = useParams();
 
   const handleClickPostList = () => {
     window.location.href = `/community/${communityId}?p=1`;

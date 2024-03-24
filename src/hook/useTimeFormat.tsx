@@ -1,15 +1,19 @@
+interface Props {
+  time: Date;
+}
+
 export default function useTimeFormat() {
-  const formatTime = (time: Date) => {
-    const formattedTime = new Date(time)
+  const formatTime = (props: Props) => {
+    const formattedTime = new Date(props.time)
       .toISOString()
       .replace("T", " ")
       .slice(0, -5);
     return `${formattedTime}`;
   };
 
-  const formatDate = (time: Date) => {
+  const formatDate = (props: Props) => {
     const today = new Date();
-    const postDate = new Date(time);
+    const postDate = new Date(props.time);
 
     if (
       today.getDate() === postDate.getDate() &&
@@ -31,9 +35,9 @@ export default function useTimeFormat() {
 
   // 시간 차이를 표시하는 함수
   // n 초전,  n 분전, n 시간전, n 일전
-  const formatTimeDifference = (time: Date) => {
+  const formatTimeDifference = (props: Props) => {
     const now = new Date();
-    const postTime = new Date(time);
+    const postTime = new Date(props.time);
     const differenceInSeconds = Math.floor(
       (now.getTime() - postTime.getTime()) / 1000,
     );

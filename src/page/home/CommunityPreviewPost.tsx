@@ -7,18 +7,16 @@ interface Props {
 }
 
 // 게시판내 게시글 하나씩 표시하는 컴포넌트
-export default function CommunityPreviewPost({
-  communityId,
-  post,
-}: Readonly<Props>) {
-  const navigate = useNavigate();
+export default function CommunityPreviewPost(props: Readonly<Props>) {
   const { formatTimeDifference } = useTimeFormat();
+  const navigate = useNavigate();
 
-  let url = `/community/${communityId}/${post.id}?p=1`;
-  if (post.comment_count > 1) {
-    const commentPage = Math.ceil(post.comment_count / 10);
+  let url = `/community/${props.communityId}/${props.post.id}?p=1`;
+  if (props.post.comment_count > 1) {
+    const commentPage = Math.ceil(props.post.comment_count / 10);
     url += `&cp=${commentPage}`;
   }
+
   const handleClickPost = () => {
     navigate(url);
   };
@@ -31,11 +29,11 @@ export default function CommunityPreviewPost({
       }}
     >
       <div className="text-left">
-        {post.title} <span>[{post.comment_count}]</span>
+        {props.post.title} <span>[{props.post.comment_count}]</span>
       </div>
 
       <div className="ml-auto mt-1 h-fit w-fit items-center rounded bg-gray-700 px-1 text-center text-sm opacity-70">
-        {formatTimeDifference(post.creation_time)}
+        {formatTimeDifference({ time: props.post.creation_time })}
       </div>
     </button>
   );

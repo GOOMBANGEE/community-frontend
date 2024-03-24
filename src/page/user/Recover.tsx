@@ -21,7 +21,8 @@ export default function Recover() {
     ) {
       return;
     }
-    void recover(email);
+    
+    void recover({ email });
   };
 
   return (

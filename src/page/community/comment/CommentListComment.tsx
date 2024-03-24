@@ -9,11 +9,7 @@ interface Props {
   comment: Comment;
 }
 
-export default function CommentListComment({
-  communityId,
-  postId,
-  comment,
-}: Readonly<Props>) {
+export default function CommentListComment(props: Readonly<Props>) {
   const navigate = useNavigate();
   const { commentState, setCommentState, resetCommentState } =
     useCommentStore();
@@ -24,29 +20,34 @@ export default function CommentListComment({
   const handleDeleteButton = () => {
     setCommentState({
       ...commentState,
-      communityId: communityId,
-      postId: postId,
-      id: comment.id,
-      creator: comment.creator,
-      content: comment.content,
+      communityId: props.communityId,
+      postId: props.postId,
+      id: props.comment.id,
+      creator: props.comment.creator,
+      content: props.comment.content,
       status: "delete",
     });
-    navigate(`/community/${communityId}/${postId}/${comment.id}/check`);
+    navigate(
+      `/community/${props.communityId}/${props.postId}/${props.comment.id}/check`,
+    );
   };
 
   // 수정은 페이지이동하지않고 commentEditor 사용
   const handleEditButton = () => {
-    if (commentState.status === "update" && commentState.id === comment.id) {
+    if (
+      commentState.status === "update" &&
+      commentState.id === props.comment.id
+    ) {
       resetCommentState();
     } else {
       setCommentState({
         ...commentState,
-        communityId: communityId,
-        postId: postId,
-        id: comment.id,
-        creator: comment.creator,
-        nickname: comment.nickname,
-        content: comment.content,
+        communityId: props.communityId,
+        postId: props.postId,
+        id: props.comment.id,
+        creator: props.comment.creator,
+        nickname: props.comment.nickname,
+        content: props.comment.content,
         status: "update",
       });
     }
@@ -57,8 +58,8 @@ export default function CommentListComment({
       <div className="mx-2 my-3 border-2 border-customGray text-sm font-extralight text-white">
         <div className="flex bg-customGray px-2 py-1">
           <div className="flex items-center">
-            {comment.nickname}
-            {comment.creator ? (
+            {props.comment.nickname}
+            {props.comment.creator ? (
               <svg
                 className="ml-1"
                 width="16px"
@@ -87,9 +88,10 @@ export default function CommentListComment({
             ) : null}
           </div>
           <div className="ml-auto flex items-center text-xs">
-            <div>{formatTime(comment.creation_time)}</div>
-            {(comment.creator && comment.creator === userState.id) ||
-            comment.creator === null ? (
+            <div>{formatTime({ time: props.comment.creation_time })}</div>
+            {(props.comment.creator &&
+              props.comment.creator === userState.id) ||
+            props.comment.creator === null ? (
               <>
                 <div className="mx-2">|</div>
                 <button
@@ -112,12 +114,12 @@ export default function CommentListComment({
           </div>
         </div>
         {/*작성시간과 수정시간이 다른경우 수정됨 표시*/}
-        {comment.creation_time === comment.modification_time ? (
-          <div className="p-2 text-white">{comment.content}</div>
+        {props.comment.creation_time === props.comment.modification_time ? (
+          <div className="p-2 text-white">{props.comment.content}</div>
         ) : (
           <div className="p-2 text-white">
             <span className="mr-1 text-xs">*수정됨</span>
-            {comment.content}
+            {props.comment.content}
           </div>
         )}
       </div>

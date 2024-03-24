@@ -6,10 +6,11 @@ import { handleAxiosErrorModal } from "../../handleAxiosErrorModal.tsx";
 import { useGlobalStore } from "../../../store/GlobalStore.tsx";
 
 export default function useCommentCreate() {
+  const { commentState } = useCommentStore();
   const { envState } = useEnvStore();
   const { setGlobalState } = useGlobalStore();
-  const { commentState } = useCommentStore();
   const { communityId, postId } = useParams();
+
   const commentCreate = async () => {
     try {
       await axios.post(

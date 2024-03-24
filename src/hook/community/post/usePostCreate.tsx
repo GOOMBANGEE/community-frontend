@@ -6,9 +6,9 @@ import { handleAxiosErrorModal } from "../../handleAxiosErrorModal.tsx";
 import { useGlobalStore } from "../../../store/GlobalStore.tsx";
 
 export default function usePostCreate() {
+  const { postState, resetPostState } = usePostStore();
   const { envState } = useEnvStore();
   const { setGlobalState } = useGlobalStore();
-  const { postState, resetPostState } = usePostStore();
   const { communityId } = useParams();
 
   const postCreate = async () => {

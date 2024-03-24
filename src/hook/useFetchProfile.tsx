@@ -5,9 +5,10 @@ import { handleAxiosErrorModal } from "./handleAxiosErrorModal.tsx";
 import { useGlobalStore } from "../store/GlobalStore.tsx";
 
 export default function useFetchProfile() {
+  const { setUserState } = useUserStore();
   const { envState } = useEnvStore();
   const { setGlobalState } = useGlobalStore();
-  const { setUserState } = useUserStore();
+  
   const fetchProfile = async () => {
     try {
       const response = await axios.get(`${envState.userUrl}/profile`);

@@ -6,10 +6,10 @@ import { useParams } from "react-router-dom";
 import { handleAxiosErrorPage } from "../handleAxiosErrorPage.tsx";
 
 export default function useRecoverCheck() {
-  const { setGlobalState } = useGlobalStore();
-  const { envState } = useEnvStore();
-  const { token } = useParams();
   const [isValidToken, setIsValidToken] = useState<boolean>(false);
+  const { envState } = useEnvStore();
+  const { setGlobalState } = useGlobalStore();
+  const { token } = useParams();
 
   const recoverCheck = async () => {
     try {

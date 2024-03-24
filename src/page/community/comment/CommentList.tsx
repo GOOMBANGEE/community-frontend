@@ -17,6 +17,8 @@ export interface CommentList {
 
 export default function CommentList() {
   const { fetchCommentList } = useFetchCommentList();
+
+  const { commentState } = useCommentStore();
   const { communityId, postId } = useParams();
   const [searchParams] = useSearchParams();
   const commentPage = searchParams.get("cp");
@@ -29,8 +31,6 @@ export default function CommentList() {
     prev: 0,
     next: 0,
   });
-
-  const { commentState } = useCommentStore();
   const paginationProps = {
     type: "comment",
     currentPage: commentList.page,
@@ -40,6 +40,7 @@ export default function CommentList() {
   useEffect(() => {
     void fetchCommentList({ setCommentList });
   }, [commentPage]);
+
   return (
     <div>
       <div className="flex p-2">

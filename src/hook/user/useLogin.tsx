@@ -7,10 +7,10 @@ import { useUserStore } from "../../store/UserStore.tsx";
 import useRefreshAccessToken from "../useRefreshAcccessToken.tsx";
 
 export default function useLogin() {
-  const { setGlobalState } = useGlobalStore();
-  const { envState } = useEnvStore();
-  const { userState } = useUserStore();
   const { refreshAccessToken } = useRefreshAccessToken();
+  const { userState } = useUserStore();
+  const { envState } = useEnvStore();
+  const { setGlobalState } = useGlobalStore();
 
   const login = async () => {
     try {

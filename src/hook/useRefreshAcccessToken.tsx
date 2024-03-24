@@ -8,9 +8,9 @@ import { handleAxiosErrorModal } from "./handleAxiosErrorModal.tsx";
 const TOKEN_EXPIRE_TIME = import.meta.env.VITE_TOKEN_EXPIRE_TIME;
 
 export default function useRefreshAccessToken() {
+  const { setHeaderAccessToken } = useTokenStore();
   const { envState } = useEnvStore();
   const { setGlobalState } = useGlobalStore();
-  const { setHeaderAccessToken } = useTokenStore();
 
   const refreshAccessToken = async (refreshToken: string) => {
     try {
@@ -21,7 +21,6 @@ export default function useRefreshAccessToken() {
       setHeaderAccessToken(response.data.access_token);
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        console.log(error.response?.data);
         handleAxiosErrorModal(error, setGlobalState);
         if (error.response?.data.id === "USER:TOKEN_INVALID") {
           deleteCookie("refresh_token");

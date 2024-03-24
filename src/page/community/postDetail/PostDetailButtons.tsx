@@ -3,12 +3,11 @@ import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { useUserStore } from "../../../store/UserStore.tsx";
 
 export default function PostDetailButtons() {
-  const navigate = useNavigate();
-  const { communityId, postId } = useParams();
-
   const { postState, setPostState } = usePostStore();
   const { userState } = useUserStore();
 
+  const navigate = useNavigate();
+  const { communityId, postId } = useParams();
   const [searchParams] = useSearchParams();
   const mode = searchParams.get("mode");
   const target = searchParams.get("target");
@@ -23,6 +22,7 @@ export default function PostDetailButtons() {
     });
     navigate(`/community/${communityId}/${postId}/check`);
   };
+
   const handleUpdateButton = () => {
     setPostState({
       ...postState,
@@ -34,11 +34,9 @@ export default function PostDetailButtons() {
       commentPage: commentPage,
     });
 
-    if (postState.creator === userState.id) {
-      navigate(`/community/${communityId}/${postState.id}/editor`);
-      return;
-    }
-    navigate(`/community/${communityId}/${postId}/check`);
+    postState.creator === userState.id
+      ? navigate(`/community/${communityId}/${postState.id}/editor`)
+      : navigate(`/community/${communityId}/${postId}/check`);
   };
 
   return (

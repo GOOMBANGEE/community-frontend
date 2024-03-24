@@ -5,8 +5,8 @@ import { handleAxiosErrorModal } from "../handleAxiosErrorModal.tsx";
 import { deleteCookie } from "../../Cookie.tsx";
 
 export default function useUserDelete() {
-  const { setGlobalState } = useGlobalStore();
   const { envState } = useEnvStore();
+  const { setGlobalState } = useGlobalStore();
 
   const userDelete = async () => {
     try {

@@ -5,21 +5,25 @@ import { useParams } from "react-router-dom";
 import { handleAxiosErrorModal } from "../../handleAxiosErrorModal.tsx";
 import { useGlobalStore } from "../../../store/GlobalStore.tsx";
 
+interface Props {
+  value: number;
+}
+
 export default function usePostRate() {
-  const { envState } = useEnvStore();
   const { postState, setPostState } = usePostStore();
+  const { envState } = useEnvStore();
   const { setGlobalState } = useGlobalStore();
   const { communityId, postId } = useParams();
 
-  const postRate = async (value: number) => {
+  const postRate = async (props: Props) => {
     try {
       await axios.post(
         `${envState.communityUrl}/${communityId}/${postId}/rate`,
         {
-          value: value,
+          value: props.value,
         },
       );
-      if (value === 1) {
+      if (props.value === 1) {
         setPostState({ ...postState, rate_plus: postState.rate_plus + 1 });
         return;
       }

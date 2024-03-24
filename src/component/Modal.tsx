@@ -1,9 +1,25 @@
 import { useNavigate } from "react-router-dom";
 import { useGlobalStore } from "../store/GlobalStore";
+import React from "react";
 
 export default function Modal() {
   const { globalState, resetGlobalState } = useGlobalStore();
   const navigate = useNavigate();
+
+  const handleRedirectButton = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    resetGlobalState();
+    if (globalState.redirectUrl === "reload") {
+      window.location.reload();
+      return;
+    }
+    if (globalState.redirectUrl === "reloadHome") {
+      navigate("/");
+      window.location.reload();
+      return;
+    }
+    navigate(`${globalState.redirectUrl}`);
+  };
 
   return (
     <div className="fixed left-0 top-0 flex h-full w-full items-center justify-center">
@@ -30,18 +46,7 @@ export default function Modal() {
             <button
               className="mx-auto flex rounded bg-indigo-500 px-4 py-2 text-white"
               onClick={(e) => {
-                e.preventDefault();
-                resetGlobalState();
-                if (globalState.redirectUrl === "reload") {
-                  window.location.reload();
-                  return;
-                }
-                if (globalState.redirectUrl === "reloadHome") {
-                  navigate("/");
-                  window.location.reload();
-                  return;
-                }
-                navigate(`${globalState.redirectUrl}`);
+                handleRedirectButton(e);
               }}
             >
               {globalState.redirectName}

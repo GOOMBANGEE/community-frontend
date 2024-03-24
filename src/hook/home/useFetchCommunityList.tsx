@@ -1,28 +1,27 @@
 import { useGlobalStore } from "../../store/GlobalStore.tsx";
 import { useEnvStore } from "../../store/EnvStore.tsx";
-import { useCallback, useEffect, useState } from "react";
 import axios from "axios";
 import { handleAxiosErrorModal } from "../handleAxiosErrorModal.tsx";
+import { Community } from "../../page/community/CommunityHeader.tsx";
 
-export function useCommunityList() {
-  const { setGlobalState } = useGlobalStore();
+interface Props {
+  setCommunity: (state: Community) => void;
+}
+
+export function useFetchCommunityList() {
   const { envState } = useEnvStore();
-  const [result, setResult] = useState<Community>();
+  const { setGlobalState } = useGlobalStore();
 
-  const fetchCommunityList = useCallback(async () => {
+  const fetchCommunityList = async (props: Props) => {
     try {
       const response = await axios.get(
         `${envState.communityUrl}/list?page=1&page_size=3`,
       );
-      setResult(response.data.items);
+      props.setCommunity(response.data.items);
     } catch (error) {
       handleAxiosErrorModal(error, setGlobalState);
     }
-  }, [envState.communityUrl, setGlobalState]);
+  };
 
-  useEffect(() => {
-    void fetchCommunityList();
-  }, []);
-
-  return result;
+  return { fetchCommunityList };
 }

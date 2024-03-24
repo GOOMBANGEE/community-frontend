@@ -8,26 +8,27 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useTokenStore } from "../../store/TokenStore.tsx";
 
 export default function PostEditor() {
-  const { tokenState } = useTokenStore();
-
-  const { postState, setPostState } = usePostStore();
+  const { postCreate } = usePostCreate();
+  const { postUpdate } = usePostUpdate();
   const {
     isInvalidTitle,
     isInvalidNickname,
     isInvalidPassword,
     isInvalidContent,
   } = useValidatePost();
+
+  const { postState, setPostState } = usePostStore();
+  const { tokenState } = useTokenStore();
+
+  const navigate = useNavigate();
+  const { communityId } = useParams();
+
   const [validateState, setValidateState] = useState<ValidatePost>({
     titleError: "",
     nicknameError: "",
     passwordError: "",
     contentError: "",
   });
-
-  const navigate = useNavigate();
-  const { communityId } = useParams();
-  const { postCreate } = usePostCreate();
-  const { postUpdate } = usePostUpdate();
 
   let url = `/community/${communityId}/${postState.id}`;
   const queryParams = [];

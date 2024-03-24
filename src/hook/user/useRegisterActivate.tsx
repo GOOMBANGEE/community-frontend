@@ -10,10 +10,9 @@ interface Props {
 }
 
 export function useRegisterActivate() {
-  const { setGlobalState } = useGlobalStore();
-  const { envState } = useEnvStore();
-
   const token = getCookie("token");
+  const { envState } = useEnvStore();
+  const { setGlobalState } = useGlobalStore();
 
   const registerActivate = async (props: Props) => {
     try {

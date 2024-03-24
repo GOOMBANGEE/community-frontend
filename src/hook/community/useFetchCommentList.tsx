@@ -16,7 +16,7 @@ export default function useFetchCommentList() {
   const [searchParams] = useSearchParams();
   const commentPage = searchParams.get("cp");
 
-  const fetchCommentList = async (prop: Props) => {
+  const fetchCommentList = async (props: Props) => {
     let apiUrl = `${envState.communityUrl}/${communityId}/${postId}/comment`;
 
     if (commentPage) {
@@ -25,14 +25,7 @@ export default function useFetchCommentList() {
 
     try {
       const response = await axios.get(apiUrl);
-      prop.setCommentList({
-        items: response.data.items,
-        page: response.data.page,
-        page_size: response.data.page_size,
-        total_page: response.data.total_page,
-        prev: response.data.prev,
-        next: response.data.next,
-      });
+      props.setCommentList(response.data);
     } catch (error) {
       handleAxiosErrorModal(error, setGlobalState);
     }

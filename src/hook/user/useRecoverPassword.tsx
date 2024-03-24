@@ -6,9 +6,9 @@ import { handleAxiosErrorModal } from "../handleAxiosErrorModal.tsx";
 import { useParams } from "react-router-dom";
 
 export default function useRecoverPassword() {
-  const { setGlobalState } = useGlobalStore();
-  const { envState } = useEnvStore();
   const { userState, resetUserState } = useUserStore();
+  const { envState } = useEnvStore();
+  const { setGlobalState } = useGlobalStore();
   const { token } = useParams();
 
   const recoverPassword = async () => {

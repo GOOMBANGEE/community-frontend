@@ -12,12 +12,17 @@ interface Props {
   status: string;
 }
 
-export default function CommentEditor(prop: Readonly<Props>) {
-  const { tokenState } = useTokenStore();
-  const { userState } = useUserStore();
-  const { commentState, setCommentState } = useCommentStore();
+export default function CommentEditor(props: Readonly<Props>) {
+  const { commentCreate } = useCommentCreate();
+  const { commentUpdate } = useCommentUpdate();
+  const { passwordCheckComment } = usePasswordCheck();
   const { isInvalidNickname, isInvalidPassword, isInvalidContent } =
     useValidateComment();
+
+  const { commentState, setCommentState } = useCommentStore();
+  const { userState } = useUserStore();
+  const { tokenState } = useTokenStore();
+
   const [isFocusTextArea, setIsFocusTextArea] = useState<boolean>(false);
   const [validateState, setValidateState] = useState<ValidateComment>({
     nicknameError: "",
@@ -26,13 +31,10 @@ export default function CommentEditor(prop: Readonly<Props>) {
     invalidPasswordError: "",
   });
 
-  const { commentCreate } = useCommentCreate();
-  const { commentUpdate } = useCommentUpdate();
-  const { passwordCheckComment } = usePasswordCheck();
   const handleCommentButton = async () => {
     if (
       !tokenState.accessToken &&
-      prop.status === "create" &&
+      props.status === "create" &&
       isInvalidNickname({
         value: commentState.nickname,
         setValidateState,
@@ -58,7 +60,7 @@ export default function CommentEditor(prop: Readonly<Props>) {
       return;
     }
 
-    if (prop.status !== "update") {
+    if (props.status !== "update") {
       await commentCreate();
       window.location.reload();
       return;
@@ -106,9 +108,9 @@ export default function CommentEditor(prop: Readonly<Props>) {
                   });
                 }}
                 defaultValue={
-                  prop.status === "update" ? commentState.nickname : ""
+                  props.status === "update" ? commentState.nickname : ""
                 }
-                readOnly={prop.status === "update"}
+                readOnly={props.status === "update"}
               />
               <input
                 type="password"
@@ -144,7 +146,7 @@ export default function CommentEditor(prop: Readonly<Props>) {
               contentError: "",
             });
           }}
-          defaultValue={prop.status === "update" ? commentState.content : ""}
+          defaultValue={props.status === "update" ? commentState.content : ""}
           style={{ outline: "none" }}
         ></textarea>
         {isFocusTextArea ? (

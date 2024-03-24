@@ -8,21 +8,22 @@ import useCommentDelete from "../../hook/community/comment/useCommentDelete.tsx"
 import { useUserStore } from "../../store/UserStore.tsx";
 
 interface Props {
-  prop: PostState | CommentState;
+  stateType: PostState | CommentState;
 }
 
-export default function PasswordCheck({ prop }: Readonly<Props>) {
-  const [password, setPassword] = useState<string>("");
-  const [isPasswordInvalid, setIsPasswordInvalid] = useState<boolean>(false);
-  const navigate = useNavigate();
-  const { communityId, commentId } = useParams();
-
+export default function PasswordCheck(props: Readonly<Props>) {
   const { passwordCheckPost, passwordCheckComment } = usePasswordCheck();
   const { postDelete } = usePostDelete();
+  const { commentDelete } = useCommentDelete();
 
   const { postState, setPostState } = usePostStore();
   const { commentState } = useCommentStore();
   const { userState } = useUserStore();
+
+  const [password, setPassword] = useState<string>("");
+  const [isPasswordInvalid, setIsPasswordInvalid] = useState<boolean>(false);
+  const navigate = useNavigate();
+  const { communityId, commentId } = useParams();
 
   const isPost = (state: PostState | CommentState): state is PostState => {
     return "title" in state;
@@ -33,21 +34,31 @@ export default function PasswordCheck({ prop }: Readonly<Props>) {
     return !("title" in state);
   };
 
+  const handleConfirmButton = () => {
+    if (isPost(props.stateType)) {
+      void handleConfirmPost();
+      return;
+    }
+    if (isComment(props.stateType)) {
+      void handleConfirmComment();
+    }
+  };
+
   const handleConfirmPost = async () => {
-    if (isPost(prop)) {
+    if (isPost(props.stateType)) {
       if (postState.creator === userState.id) {
-        await postDelete(password);
+        await postDelete({ password });
         navigate(`/community/${communityId}/`);
         return;
       }
 
-      if (await passwordCheckPost({ postState: prop, password })) {
-        if (prop.status === "update") {
+      if (await passwordCheckPost({ postState: props.stateType, password })) {
+        if (props.stateType.status === "update") {
           setPostState({ ...postState, password: password });
           navigate(`/community/${communityId}/${postState.id}/editor`);
           return;
         }
-        await postDelete(password);
+        await postDelete({ password });
         navigate(`/community/${communityId}/`);
         return;
       }
@@ -55,17 +66,16 @@ export default function PasswordCheck({ prop }: Readonly<Props>) {
     setIsPasswordInvalid(true);
   };
 
-  const { commentDelete } = useCommentDelete();
   const handleConfirmComment = async () => {
-    if (isComment(prop)) {
+    if (isComment(props.stateType)) {
       if (
         commentState.creator === userState.id ||
         (await passwordCheckComment({
-          commentState: prop,
+          commentState: props.stateType,
           password,
         }))
       ) {
-        await commentDelete(password);
+        await commentDelete({ password });
         navigate(`/community/${communityId}/${commentState.postId}`);
         return;
       }
@@ -75,19 +85,21 @@ export default function PasswordCheck({ prop }: Readonly<Props>) {
 
   return (
     <div className="m-2 rounded bg-customGray p-4 font-light text-white">
-      {isPost(prop) ? (
+      {isPost(props.stateType) ? (
         <>
           <div className="mb-2 text-xl font-semibold">
-            {prop.status === "update" ? "게시물 수정" : "게시물 삭제"}
+            {props.stateType.status === "update"
+              ? "게시물 수정"
+              : "게시물 삭제"}
           </div>
-          <div className="mb-6 text-gray-400">{prop.title}</div>
-          {prop.status === "delete" ? (
+          <div className="mb-6 text-gray-400">{props.stateType.title}</div>
+          {props.stateType.status === "delete" ? (
             <div className="mb-4">삭제된 글은 복구할 수 없습니다.</div>
           ) : null}
         </>
       ) : null}
 
-      {isComment(prop) ? (
+      {isComment(props.stateType) ? (
         <>
           <div className="mb-2 text-xl font-semibold">댓글 삭제</div>
           <div className="mb-4">삭제된 댓글은 복구할 수 없습니다.</div>
@@ -122,13 +134,7 @@ export default function PasswordCheck({ prop }: Readonly<Props>) {
       <button
         className="ml-auto mr-6 flex w-fit bg-blue-600 p-2 px-3 text-white"
         onClick={() => {
-          if (isPost(prop)) {
-            void handleConfirmPost();
-            return;
-          }
-          if (isComment(prop)) {
-            void handleConfirmComment();
-          }
+          handleConfirmButton();
         }}
       >
         확인

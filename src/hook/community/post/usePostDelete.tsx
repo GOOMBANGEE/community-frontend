@@ -5,16 +5,20 @@ import { useParams } from "react-router-dom";
 import { useGlobalStore } from "../../../store/GlobalStore.tsx";
 import { handleAxiosErrorModal } from "../../handleAxiosErrorModal.tsx";
 
+interface Props {
+  password: string;
+}
+
 export default function usePostDelete() {
+  const { resetPostState } = usePostStore();
   const { envState } = useEnvStore();
   const { setGlobalState } = useGlobalStore();
-  const { resetPostState } = usePostStore();
   const { communityId, postId } = useParams();
 
-  const postDelete = async (password: string) => {
+  const postDelete = async (props: Props) => {
     try {
       await axios.delete(
-        `${envState.communityUrl}/${communityId}/${postId}/delete?password=${password}`,
+        `${envState.communityUrl}/${communityId}/${postId}/delete?password=${props.password}`,
       );
       resetPostState();
     } catch (error) {

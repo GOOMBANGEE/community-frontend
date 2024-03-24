@@ -18,27 +18,23 @@ export default function usePasswordCheck() {
   const { envState } = useEnvStore();
   const { communityId } = useParams();
 
-  const passwordCheckPost = async ({ postState, password }: checkPostProps) => {
+  const passwordCheckPost = async (props: checkPostProps) => {
     try {
       await axios.get(
-        `${envState.communityUrl}/${communityId}/${postState.id}/check?password=${password}`,
+        `${envState.communityUrl}/${communityId}/${props.postState.id}/check?password=${props.password}`,
       );
       return true;
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        console.log(error);
         return false;
       }
     }
   };
 
-  const passwordCheckComment = async ({
-    commentState,
-    password,
-  }: checkCommentProps) => {
+  const passwordCheckComment = async (props: checkCommentProps) => {
     try {
       await axios.get(
-        `${envState.communityUrl}/${communityId}/${commentState.postId}/${commentState.id}/check?password=${password}`,
+        `${envState.communityUrl}/${communityId}/${props.commentState.postId}/${props.commentState.id}/check?password=${props.password}`,
       );
       return true;
     } catch (error) {

@@ -6,22 +6,20 @@ import useRenderErrorMessage from "../../hook/user/useRenderErrorMessage.tsx";
 import useLogin from "../../hook/user/useLogin.tsx";
 
 export default function Login() {
+  const { login } = useLogin();
+  const { isInvalidEmail, isInvalidPassword } = useValidateUser();
   const { userState, setUserState } = useUserStore();
+  const navigate = useNavigate();
 
+  const [loginFail, setLoginFail] = useState(false);
   const [validateState, setValidateState] = useState<ValidateUser>({
     emailError: "",
     nicknameError: "",
     passwordError: "",
   });
 
-  const { isInvalidEmail, isInvalidPassword } = useValidateUser();
-  const { login } = useLogin();
-  const navigate = useNavigate();
-  const [loginFail, setLoginFail] = useState(false);
-
   const handleLogin = async (e: FormEvent) => {
     e.preventDefault();
-
     if (
       isInvalidEmail({
         value: userState.email,
@@ -112,8 +110,6 @@ export default function Login() {
                 계정 만들기
               </a>
             </div>
-            <div className="my-4">또는 다음을 사용하여 계속하기</div>
-            <div>oauth list</div>
           </div>
         </div>
       </div>

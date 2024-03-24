@@ -1,28 +1,27 @@
 import { useGlobalStore } from "../../store/GlobalStore.tsx";
 import { useEnvStore } from "../../store/EnvStore.tsx";
-import { useCallback, useEffect, useState } from "react";
 import axios from "axios";
 import { handleAxiosErrorModal } from "../handleAxiosErrorModal.tsx";
 
-export function useFetchCommunityPreviewPostList(communityId: number) {
-  const { setGlobalState } = useGlobalStore();
-  const { envState } = useEnvStore();
-  const [result, setResult] = useState<Post>();
+interface Props {
+  communityId: number;
+  setPreviewPost: (state: Post) => void;
+}
 
-  const fetchPostList = useCallback(async () => {
+export function useFetchCommunityPreviewPostList() {
+  const { envState } = useEnvStore();
+  const { setGlobalState } = useGlobalStore();
+
+  const fetchCommunityPreviewPostList = async (props: Props) => {
     try {
       const response = await axios.get(
-        `${envState.communityUrl}/${communityId}?p=1&size=10`,
+        `${envState.communityUrl}/${props.communityId}?p=1&size=10`,
       );
-      setResult(response.data.items);
+      props.setPreviewPost(response.data.items);
     } catch (error) {
       handleAxiosErrorModal(error, setGlobalState);
     }
-  }, [communityId, envState.communityUrl]);
+  };
 
-  useEffect(() => {
-    void fetchPostList();
-  }, []);
-
-  return result;
+  return { fetchCommunityPreviewPostList };
 }

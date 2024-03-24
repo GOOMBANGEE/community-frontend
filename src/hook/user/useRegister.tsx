@@ -6,9 +6,9 @@ import { useGlobalStore } from "../../store/GlobalStore.tsx";
 import { useUserStore } from "../../store/UserStore.tsx";
 
 export default function useRegister() {
-  const { setGlobalState } = useGlobalStore();
-  const { envState } = useEnvStore();
   const { userState, setUserState } = useUserStore();
+  const { envState } = useEnvStore();
+  const { setGlobalState } = useGlobalStore();
 
   const register = async () => {
     try {
@@ -25,7 +25,7 @@ export default function useRegister() {
         confirmPassword: "",
       });
       // 응답들어오면 토큰 state와 쿠키에 저장
-      // email token제외 모두 초기화
+      // email token제외 모두 초기화ㄴ
       const today = new Date();
       const expireDate = today.setDate(today.getDate() + 1);
       setCookie("email", userState.email, {

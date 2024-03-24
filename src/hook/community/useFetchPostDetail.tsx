@@ -6,12 +6,12 @@ import { useGlobalStore } from "../../store/GlobalStore.tsx";
 import { handleAxiosErrorModal } from "../handleAxiosErrorModal.tsx";
 
 export default function useFetchPostDetail() {
+  const { setPostState } = usePostStore();
   const { envState } = useEnvStore();
   const { setGlobalState } = useGlobalStore();
-  const { setPostState } = usePostStore();
   const { communityId, postId } = useParams();
 
-  const fetchPost = async () => {
+  const fetchPostDetail = async () => {
     try {
       const response = await axios.get(
         `${envState.communityUrl}/${communityId}/${postId}`,
@@ -22,5 +22,5 @@ export default function useFetchPostDetail() {
     }
   };
 
-  return { fetchPost };
+  return { fetchPostDetail };
 }

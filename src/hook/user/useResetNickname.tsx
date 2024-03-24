@@ -5,9 +5,9 @@ import { useUserStore } from "../../store/UserStore.tsx";
 import { handleAxiosErrorModal } from "../handleAxiosErrorModal.tsx";
 
 export default function useResetNickname() {
-  const { setGlobalState } = useGlobalStore();
-  const { envState } = useEnvStore();
   const { userState } = useUserStore();
+  const { envState } = useEnvStore();
+  const { setGlobalState } = useGlobalStore();
 
   const resetNickname = async () => {
     try {
@@ -19,9 +19,6 @@ export default function useResetNickname() {
         redirectName: "닫기",
         redirectUrl: "reload",
       });
-      setTimeout(() => {
-        setGlobalState({ modalMessage: "" });
-      }, 3000);
     } catch (error) {
       handleAxiosErrorModal(error, setGlobalState);
     }

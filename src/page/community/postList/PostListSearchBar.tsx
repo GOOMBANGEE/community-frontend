@@ -2,12 +2,12 @@ import { useState } from "react";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 
 export default function PostListSearchBar() {
+  const navigate = useNavigate();
   const { communityId } = useParams();
   const [searchParams] = useSearchParams();
   const mode = searchParams.get("mode");
   const targetParam = searchParams.get("target");
   const keywordParam = searchParams.get("keyword");
-  const navigate = useNavigate();
 
   const [target, setTarget] = useState("all");
   const [keyword, setKeyword] = useState("");
@@ -17,13 +17,13 @@ export default function PostListSearchBar() {
       window.location.reload();
     }
 
-    if (mode) {
-      navigate(
-        `/community/${communityId}?mode=${mode}&target=${target}&keyword=${keyword}`,
-      );
-      return;
-    }
-    navigate(`/community/${communityId}?target=${target}&keyword=${keyword}`);
+    mode
+      ? navigate(
+          `/community/${communityId}?mode=${mode}&target=${target}&keyword=${keyword}`,
+        )
+      : navigate(
+          `/community/${communityId}?target=${target}&keyword=${keyword}`,
+        );
   };
 
   return (

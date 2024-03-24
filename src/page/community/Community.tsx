@@ -11,9 +11,9 @@ import { useGlobalStore } from "../../store/GlobalStore.tsx";
 import Modal from "../../component/Modal.tsx";
 
 export default function Community() {
-  const { globalState } = useGlobalStore();
   const { postState } = usePostStore();
   const { commentState } = useCommentStore();
+  const { globalState } = useGlobalStore();
 
   return (
     <>
@@ -26,12 +26,12 @@ export default function Community() {
         <Route path="/:communityId/:postId/*" element={<PostDetail />} />
         <Route
           path="/:communityId/:postId/check"
-          element={<PasswordCheck prop={postState} />}
+          element={<PasswordCheck stateType={postState} />}
         />
         <Route path="/:communityId/:postId/editor" element={<PostEditor />} />
         <Route
           path="/:communityId/:postId/:commentId/check"
-          element={<PasswordCheck prop={commentState} />}
+          element={<PasswordCheck stateType={commentState} />}
         />
       </Routes>
       {globalState.modalMessage ? <Modal /> : null}

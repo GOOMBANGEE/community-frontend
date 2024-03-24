@@ -7,10 +7,10 @@ import CommentEditor from "../comment/CommentEditor.tsx";
 import { useEffect } from "react";
 
 export default function PostDetail() {
-  const { fetchPost } = useFetchPostDetail();
+  const { fetchPostDetail } = useFetchPostDetail();
 
   useEffect(() => {
-    void fetchPost();
+    void fetchPostDetail();
   }, []);
 
   return (

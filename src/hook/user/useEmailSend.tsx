@@ -7,8 +7,8 @@ import { useUserStore } from "../../store/UserStore.tsx";
 // 메일 다시보내기
 export default function useEmailSend() {
   const { userState } = useUserStore();
-  const { setGlobalState } = useGlobalStore();
   const { envState } = useEnvStore();
+  const { setGlobalState } = useGlobalStore();
 
   const emailSend = async () => {
     try {

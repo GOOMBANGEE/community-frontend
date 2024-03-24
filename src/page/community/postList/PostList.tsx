@@ -18,9 +18,11 @@ export interface PostList {
 }
 
 export default function PostList() {
-  const { globalState } = useGlobalStore();
-  const { resetPostState } = usePostStore();
   const { fetchPostList } = useFetchPostList();
+
+  const { resetPostState } = usePostStore();
+  const { globalState } = useGlobalStore();
+
   const [searchParams] = useSearchParams();
   const target = searchParams.get("target");
   const keyword = searchParams.get("keyword");

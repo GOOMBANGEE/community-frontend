@@ -6,14 +6,14 @@ interface Props {
 }
 
 // 게시판내 게시글 하나씩 표시하는 컴포넌트
-export default function PostListPost({ post }: Readonly<Props>) {
-  const navigate = useNavigate();
+export default function PostListPost(props: Readonly<Props>) {
   const { formatTimeDifference } = useTimeFormat();
+  const navigate = useNavigate();
   const location = useLocation();
 
-  let url = location.pathname + `/${post.id}` + location.search;
-  if (post.comment_count > 1) {
-    const commentPage = Math.ceil(post.comment_count / 10);
+  let url = location.pathname + `/${props.post.id}` + location.search;
+  if (props.post.comment_count > 1) {
+    const commentPage = Math.ceil(props.post.comment_count / 10);
     url += `&cp=${commentPage}`;
   }
   const handleClickPost = () => {
@@ -30,14 +30,14 @@ export default function PostListPost({ post }: Readonly<Props>) {
                 handleClickPost();
               }}
             >
-              {post.title} <span>[{post.comment_count}]</span>
+              {props.post.title} <span>[{props.post.comment_count}]</span>
             </button>
           </div>
         </div>
         <div className="flex text-sm ">
           <div className="mr-auto flex items-center">
-            {post.nickname}
-            {post.creator ? (
+            {props.post.nickname}
+            {props.post.creator ? (
               <svg
                 className="ml-1"
                 width="16px"
@@ -67,15 +67,17 @@ export default function PostListPost({ post }: Readonly<Props>) {
           </div>
 
           <div className="mt-1 flex items-center gap-2">
-            <div>{formatTimeDifference(post.creation_time)}</div>
+            <div>
+              {formatTimeDifference({ time: props.post.creation_time })}
+            </div>
 
             <div>|</div>
             <div>조회</div>
-            <div>{post.view_count}</div>
+            <div>{props.post.view_count}</div>
 
             <div>|</div>
             <div>추천</div>
-            <div>{post.rate_plus - post.rate_minus}</div>
+            <div>{props.post.rate_plus - props.post.rate_minus}</div>
           </div>
         </div>
       </div>

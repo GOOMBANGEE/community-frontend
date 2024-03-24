@@ -6,14 +6,13 @@ interface Props {
   totalPage: number;
 }
 
-export default function PaginationBar(prop: Props) {
-  const { currentPage, totalPage } = prop;
+export default function PaginationBar(props: Props) {
   const navigate = useNavigate();
-  const { communityId } = useParams();
   const location = useLocation();
+  const { communityId } = useParams();
 
   let url = location.pathname + location.search;
-  if (prop.type === "post") {
+  if (props.type === "post") {
     const index = url.indexOf("p=");
     // 쿼리에서 cp가 있는경우 postDetail에 진입한상태
     // postPaginationBar의 버튼 클릭할경우 postList상태로 가야하기때문에 postId부분이 필요없다
@@ -23,30 +22,29 @@ export default function PaginationBar(prop: Props) {
     url = url.slice(0, index) + `p=`;
   }
 
-  if (prop.type === "comment") {
+  if (props.type === "comment") {
     const index = url.indexOf("cp=");
     url = url.slice(0, index) + `cp=`;
-    console.log(url);
   }
 
   const renderPageNumbers = () => {
     let minPage = 1;
-    let maxPage = totalPage;
+    let maxPage = props.totalPage;
 
-    if (totalPage > 10) {
-      if (currentPage < 6) {
+    if (props.totalPage > 10) {
+      if (props.currentPage < 6) {
         maxPage = 10;
-      } else if (currentPage + 5 >= totalPage) {
-        minPage = totalPage - 9;
+      } else if (props.currentPage + 5 >= props.totalPage) {
+        minPage = props.totalPage - 9;
       } else {
-        minPage = currentPage - 4;
-        maxPage = currentPage + 5;
+        minPage = props.currentPage - 4;
+        maxPage = props.currentPage + 5;
       }
     }
 
     const pageNumbers = [];
     for (let i = minPage; i <= maxPage; i++) {
-      const isActivePage = i === currentPage;
+      const isActivePage = i === props.currentPage;
       pageNumbers.push(
         <button
           key={i}
@@ -70,7 +68,7 @@ export default function PaginationBar(prop: Props) {
     <>
       <div className="mx-auto flex w-full justify-center">
         <div className="bg-buttonBlack mx-6 my-2 flex p-1 font-extralight text-white">
-          {currentPage >= 6 ? (
+          {props.currentPage >= 6 ? (
             <>
               <button
                 className="border-2 border-customGray px-1"
@@ -84,7 +82,7 @@ export default function PaginationBar(prop: Props) {
                 className="border-2 border-customGray px-1"
                 onClick={() => {
                   navigate(
-                    `${url}${currentPage >= totalPage - 5 ? totalPage - 10 : currentPage - 5}`,
+                    `${url}${props.currentPage >= props.totalPage - 5 ? props.totalPage - 10 : props.currentPage - 5}`,
                   );
                 }}
               >
@@ -95,12 +93,14 @@ export default function PaginationBar(prop: Props) {
 
           {renderPageNumbers()}
 
-          {totalPage > 10 && totalPage - currentPage >= 6 ? (
+          {props.totalPage > 10 && props.totalPage - props.currentPage >= 6 ? (
             <>
               <button
                 className="border-2 border-customGray px-1"
                 onClick={() => {
-                  navigate(`${url}${currentPage <= 5 ? 11 : currentPage + 6}`);
+                  navigate(
+                    `${url}${props.currentPage <= 5 ? 11 : props.currentPage + 6}`,
+                  );
                 }}
               >
                 〉
@@ -108,7 +108,7 @@ export default function PaginationBar(prop: Props) {
               <button
                 className="border-2 border-customGray px-1"
                 onClick={() => {
-                  navigate(`${url}${totalPage}`);
+                  navigate(`${url}${props.totalPage}`);
                 }}
               >
                 〉〉

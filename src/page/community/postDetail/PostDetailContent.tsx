@@ -3,10 +3,10 @@ import useTimeFormat from "../../../hook/useTimeFormat.tsx";
 import usePostRate from "../../../hook/community/post/usePostRate.tsx";
 
 export default function PostDetailContent() {
+  const { postRate } = usePostRate();
   const { formatTime } = useTimeFormat();
   const { postState } = usePostStore();
-  const { postRate } = usePostRate();
-
+  
   return (
     <>
       <div className="text-white">
@@ -55,15 +55,15 @@ export default function PostDetailContent() {
 
             {postState.creation_time === postState.modification_time ? (
               <div className="">
-                작성일 {formatTime(postState.creation_time)}
+                작성일 {formatTime({ time: postState.creation_time })}
               </div>
             ) : (
               <div className="">
                 <div className="">
-                  작성일 {formatTime(postState.creation_time)}
+                  작성일 {formatTime({ time: postState.creation_time })}
                 </div>
                 <div className="">
-                  수정일 {formatTime(postState.modification_time)}
+                  수정일 {formatTime({ time: postState.modification_time })}
                 </div>
               </div>
             )}
@@ -80,7 +80,7 @@ export default function PostDetailContent() {
         <button
           className="mx-auto w-2/5 rounded-lg border-2 border-customGray py-4 text-center font-extralight text-white"
           onClick={() => {
-            void postRate(1);
+            void postRate({ value: 1 });
           }}
         >
           추천! {postState.rate_plus}
@@ -88,7 +88,7 @@ export default function PostDetailContent() {
         <button
           className="mx-auto w-2/5 rounded-lg border-2 border-customGray py-4 text-center font-extralight text-white"
           onClick={() => {
-            void postRate(0);
+            void postRate({ value: 0 });
           }}
         >
           비추! {postState.rate_minus}

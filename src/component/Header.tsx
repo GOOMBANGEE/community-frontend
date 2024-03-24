@@ -4,9 +4,9 @@ import { useState } from "react";
 import HeaderDropdown from "./HeaderDropdown.tsx";
 
 export default function Header() {
-  const navigate = useNavigate();
-  const { tokenState } = useTokenStore();
   const [isDropdown, setIsDropdown] = useState<boolean>(false);
+  const { tokenState } = useTokenStore();
+  const navigate = useNavigate();
 
   const handleOpen = () => {
     setIsDropdown(!isDropdown);

@@ -9,18 +9,19 @@ import ConfirmModal from "../../component/ConfirmModal.tsx";
 import useUserDelete from "../../hook/user/useUserDelete.tsx";
 
 export default function Setting() {
+  const { resetNickname } = useResetNickname();
+  const { resetPassword } = useResetPassword();
+  const { userDelete } = useUserDelete();
+  const { isInvalidNickname, isInvalidPassword, isInvalidConfirmPassword } =
+    useValidateUser();
+
   const { userState, setUserState } = useUserStore();
   const { confirmState, setConfirmState } = useConfirmStore();
+
   const [validateState, setValidateState] = useState<ValidateUser>({
     nicknameError: "",
     passwordError: "",
   });
-
-  const { isInvalidNickname, isInvalidPassword, isInvalidConfirmPassword } =
-    useValidateUser();
-  const { resetNickname } = useResetNickname();
-  const { resetPassword } = useResetPassword();
-  const { userDelete } = useUserDelete();
 
   const handleResetNickname = (e: FormEvent) => {
     e.preventDefault();
@@ -32,6 +33,7 @@ export default function Setting() {
     ) {
       return;
     }
+
     void resetNickname();
   };
 
@@ -54,6 +56,7 @@ export default function Setting() {
     ) {
       return;
     }
+
     void resetPassword();
   };
 
