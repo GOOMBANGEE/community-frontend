@@ -84,10 +84,9 @@ export default function PostEditor() {
     }
 
     if (postState.status !== "update") {
-      if (await postCreate()) {
-        navigate(`/community/${communityId}?p=1`);
-        return;
-      }
+      const postId = await postCreate();
+      navigate(`/community/${communityId}/${postId}?p=1`);
+      return;
     }
     if (postState.status === "update") {
       if (await postUpdate()) {

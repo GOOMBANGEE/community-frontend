@@ -14,16 +14,20 @@ export default function CommunityPreviewPost({
   const navigate = useNavigate();
   const { formatTimeDifference } = useTimeFormat();
 
-  // 클릭한 게시글로 이동
-  const clickPost = () => {
-    navigate(`/community/${communityId}/${post.id}`);
+  let url = `/community/${communityId}/${post.id}?p=1`;
+  if (post.comment_count > 1) {
+    const commentPage = Math.ceil(post.comment_count / 10);
+    url += `&cp=${commentPage}`;
+  }
+  const handleClickPost = () => {
+    navigate(url);
   };
 
   return (
     <button
       className="mb-1 grid w-full grid-cols-2 gap-2 text-base font-extralight"
       onClick={() => {
-        clickPost();
+        handleClickPost();
       }}
     >
       <div className="text-left">

@@ -13,14 +13,18 @@ export default function usePostCreate() {
 
   const postCreate = async () => {
     try {
-      await axios.post(`${envState.communityUrl}/${communityId}/create`, {
-        title: postState.title,
-        content: postState.content,
-        nickname: postState.nickname,
-        password: postState.password,
-      });
+      const response = await axios.post(
+        `${envState.communityUrl}/${communityId}/create`,
+        {
+          title: postState.title,
+          content: postState.content,
+          nickname: postState.nickname,
+          password: postState.password,
+        },
+      );
       resetPostState();
-      return true;
+
+      return response.data.id;
     } catch (error) {
       handleAxiosError(error, setGlobalState);
     }

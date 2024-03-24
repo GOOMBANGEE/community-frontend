@@ -1,4 +1,4 @@
-import { useParams, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import { useGlobalStore } from "../../../store/GlobalStore.tsx";
 import useFetchPostList from "../../../hook/community/useFetchPostList.tsx";
 import PostListPost from "./PostListPost.tsx";
@@ -19,7 +19,6 @@ export interface PostList {
 
 export default function PostList() {
   const { globalState } = useGlobalStore();
-  const { communityId } = useParams();
   const { resetPostState } = usePostStore();
   const { fetchPostList } = useFetchPostList();
   const [searchParams] = useSearchParams();
@@ -56,7 +55,7 @@ export default function PostList() {
         <>
           <PostListHeader />
           {data.map((post: Post) => (
-            <PostListPost key={post.id} communityId={communityId} post={post} />
+            <PostListPost key={post.id} post={post} />
           ))}
           <PostListHeader />
 

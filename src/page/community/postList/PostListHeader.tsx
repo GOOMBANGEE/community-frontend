@@ -11,7 +11,7 @@ export default function PostListHeader() {
   };
 
   const handleClickBest = () => {
-    window.location.href = `/community/${communityId}/?mode=best&p=1`;
+    window.location.href = `/community/${communityId}?mode=best&p=1`;
   };
 
   return (

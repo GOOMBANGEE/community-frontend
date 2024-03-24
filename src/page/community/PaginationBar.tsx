@@ -1,5 +1,4 @@
-import { useNavigate, useParams, useSearchParams } from "react-router-dom";
-import { usePostStore } from "../../store/PostStore.tsx";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 interface Props {
   type: string;
@@ -9,44 +8,36 @@ interface Props {
 
 export default function PaginationBar(prop: Props) {
   const { currentPage, totalPage } = prop;
-  const { postState } = usePostStore();
   const navigate = useNavigate();
   const { communityId } = useParams();
-  const [searchParams] = useSearchParams();
-  const target = searchParams.get("target");
-  const keyword = searchParams.get("keyword");
-  const mode = searchParams.get("mode");
-  const page = searchParams.get("p");
-  let url = `/community/${communityId}`;
-  if (prop.type === "comment") {
-    url += `/${postState.id}`;
-  }
-  const queryParams = [];
+  const location = useLocation();
 
-  if (mode) {
-    queryParams.push(`mode=${mode}`);
+  let url = location.pathname + location.search;
+  if (prop.type === "post") {
+    const index = url.indexOf("p=");
+    // 쿼리에서 cp가 있는경우 postDetail에 진입한상태
+    // postPaginationBar의 버튼 클릭할경우 postList상태로 가야하기때문에 postId부분이 필요없다
+    if (url.indexOf("cp=")) {
+      url = `/community/${communityId}?`;
+    }
+    url = url.slice(0, index) + `p=`;
   }
-  if (target && keyword) {
-    queryParams.push(`target=${target}&keyword=${keyword}`);
-  }
-  url += queryParams.length > 0 ? `?${queryParams.join("&")}&p=` : "?p=";
 
   if (prop.type === "comment") {
-    url += `${page}&cp=`;
+    const index = url.indexOf("cp=");
+    url = url.slice(0, index) + `cp=`;
+    console.log(url);
   }
 
   const renderPageNumbers = () => {
-    let minPage, maxPage;
-    if (totalPage <= 10) {
-      minPage = 1;
-      maxPage = totalPage;
-    } else {
+    let minPage = 1;
+    let maxPage = totalPage;
+
+    if (totalPage > 10) {
       if (currentPage < 6) {
-        minPage = 1;
         maxPage = 10;
       } else if (currentPage + 5 >= totalPage) {
         minPage = totalPage - 9;
-        maxPage = totalPage;
       } else {
         minPage = currentPage - 4;
         maxPage = currentPage + 5;

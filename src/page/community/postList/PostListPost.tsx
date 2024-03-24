@@ -1,34 +1,17 @@
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import useTimeFormat from "../../../hook/useTimeFormat.tsx";
 
 interface Props {
-  communityId: string | undefined;
   post: Post;
 }
 
 // 게시판내 게시글 하나씩 표시하는 컴포넌트
-export default function PostListPost({ communityId, post }: Readonly<Props>) {
+export default function PostListPost({ post }: Readonly<Props>) {
   const navigate = useNavigate();
   const { formatTimeDifference } = useTimeFormat();
-  const [searchParams] = useSearchParams();
-  const mode = searchParams.get("mode");
-  const target = searchParams.get("target");
-  const keyword = searchParams.get("keyword");
-  const page = searchParams.get("p");
+  const location = useLocation();
 
-  let url = `/community/${communityId}/${post.id}`;
-  const queryParams = [];
-  if (mode) {
-    queryParams.push(`mode=${mode}`);
-  }
-  if (target && keyword) {
-    queryParams.push(`target=${target}&keyword=${keyword}`);
-  }
-  url +=
-    queryParams.length > 0
-      ? `?${queryParams.join("&")}&p=${page}`
-      : `?p=${page}`;
-
+  let url = location.pathname + `/${post.id}` + location.search;
   if (post.comment_count > 1) {
     const commentPage = Math.ceil(post.comment_count / 10);
     url += `&cp=${commentPage}`;
