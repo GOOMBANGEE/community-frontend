@@ -67,15 +67,15 @@ export default function Setting() {
   }, [confirmState.confirm]);
 
   return (
-    <>
-      <div className="p-4 text-white">
+    <div className="h-screen w-full bg-customBlack pt-8">
+      <div className="mx-4 rounded bg-customGray p-4 text-white sm:mx-auto sm:w-3/4 lg:w-3/5">
         <div className="mb-8 text-xl font-semibold">설정</div>
         <form className="mb-4" onSubmit={handleResetNickname}>
           <div className="mb-4 flex items-center">
             <div className="font-light">닉네임</div>
             <input
               defaultValue={userState.nickname}
-              className="ml-auto border-2 border-customGray bg-black p-2"
+              className="ml-auto border-2 border-customGray bg-black p-2 sm:w-2/3"
               onChange={(e) => {
                 setUserState({
                   ...userState,
@@ -94,53 +94,70 @@ export default function Setting() {
         </form>
 
         <form className="mb-4" onSubmit={handleResetPassword}>
-          <div className="mb-4 flex items-center">
-            <div className="font-light">현재 비밀번호</div>
-            <input
-              type="password"
-              className="ml-auto border-2 border-customGray bg-black p-2"
-              onChange={(e) => {
-                setUserState({
-                  ...userState,
-                  prevPassword: e.target.value,
-                });
-                setValidateState({
-                  passwordError: "",
-                });
-              }}
-            />
+          <div className="mb-4 flex">
+            <div className="py-2 font-light">현재 비밀번호</div>
+            <div className="ml-auto sm:w-2/3">
+              <input
+                type="password"
+                className="ml-auto w-full border-2 border-customGray bg-black p-2"
+                onChange={(e) => {
+                  setUserState({
+                    ...userState,
+                    prevPassword: e.target.value,
+                  });
+                  setValidateState({
+                    passwordError: "",
+                  });
+                }}
+              />
+              <div className="text-sm font-extralight text-gray-400">
+                현재 비밀번호를 입력해주세요
+              </div>
+            </div>
           </div>
-          <div className="mb-4 flex items-center">
-            <div className="font-light">변경할 비밀번호</div>
-            <input
-              type="password"
-              className="ml-auto border-2 border-customGray bg-black p-2"
-              onChange={(e) => {
-                setUserState({
-                  ...userState,
-                  password: e.target.value,
-                });
-                setValidateState({
-                  passwordError: "",
-                });
-              }}
-            />
+
+          <div className="mb-4 flex">
+            <div className="py-2 font-light">변경할 비밀번호</div>
+            <div className="ml-auto sm:w-2/3">
+              <input
+                type="password"
+                className="ml-auto w-full border-2 border-customGray bg-black p-2"
+                onChange={(e) => {
+                  setUserState({
+                    ...userState,
+                    password: e.target.value,
+                  });
+                  setValidateState({
+                    passwordError: "",
+                  });
+                }}
+              />
+              <div className="text-sm font-extralight text-gray-400">
+                변경할 비밀번호를 입력해주세요
+              </div>
+            </div>
           </div>
-          <div className="mb-4 flex items-center">
-            <div className="font-light">비밀번호 확인</div>
-            <input
-              type="password"
-              className="ml-auto border-2 border-customGray bg-black p-2"
-              onChange={(e) => {
-                setUserState({
-                  ...userState,
-                  confirmPassword: e.target.value,
-                });
-                setValidateState({
-                  passwordError: "",
-                });
-              }}
-            />
+
+          <div className="mb-4 flex">
+            <div className="py-2 font-light">비밀번호 확인</div>
+            <div className="ml-auto sm:w-2/3">
+              <input
+                type="password"
+                className="mb-1 w-full border-2 border-customGray bg-black p-2"
+                onChange={(e) => {
+                  setUserState({
+                    ...userState,
+                    confirmPassword: e.target.value,
+                  });
+                  setValidateState({
+                    passwordError: "",
+                  });
+                }}
+              />
+              <div className="text-sm font-extralight text-gray-400">
+                비밀번호 확인을 입력해주세요
+              </div>
+            </div>
           </div>
           <button type="submit" className="ml-auto flex bg-indigo-600 p-2 px-8">
             변경
@@ -160,6 +177,6 @@ export default function Setting() {
         </button>
         {confirmState.modalMessage ? <ConfirmModal /> : null}
       </div>
-    </>
+    </div>
   );
 }

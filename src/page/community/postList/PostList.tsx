@@ -2,11 +2,12 @@ import { useSearchParams } from "react-router-dom";
 import { useGlobalStore } from "../../../store/GlobalStore.tsx";
 import useFetchPostList from "../../../hook/community/useFetchPostList.tsx";
 import PostListPost from "./PostListPost.tsx";
-import PostListHeader from "./PostListHeader.tsx";
+import PostListButtons from "./PostListButtons.tsx";
 import { usePostStore } from "../../../store/PostStore.tsx";
 import { useEffect, useState } from "react";
 import PostListSearchBar from "./PostListSearchBar.tsx";
 import PaginationBar from "../PaginationBar.tsx";
+import PostListHeader from "./PostListHeader.tsx";
 
 export interface PostList {
   items: Post[];
@@ -54,16 +55,17 @@ export default function PostList() {
   return (
     <>
       {globalState.loading ? null : (
-        <>
+        <div className="lg:bg-customBlack">
+          <PostListButtons />
           <PostListHeader />
           {data.map((post: Post) => (
             <PostListPost key={post.id} post={post} />
           ))}
-          <PostListHeader />
+          <PostListButtons />
 
           <PostListSearchBar />
           <PaginationBar {...paginationProps} />
-        </>
+        </div>
       )}
     </>
   );

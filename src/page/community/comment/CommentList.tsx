@@ -42,8 +42,8 @@ export default function CommentList() {
   }, [commentPage]);
 
   return (
-    <div>
-      <div className="flex p-2">
+    <div className="lg:bg-customBlack">
+      <div className="mb-2 flex px-2 sm:px-6">
         <svg
           className="pt-1"
           width="26px"

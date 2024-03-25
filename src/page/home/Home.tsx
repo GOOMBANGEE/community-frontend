@@ -15,12 +15,16 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="p-4 text-white">
+    <div className="lg:bg-customBlack text-white sm:grid sm:grid-cols-2 sm:p-4 lg:mx-24 lg:h-screen lg:border-x-2 lg:border-customGray">
       {Array.isArray(community) &&
         community.map((community) => (
-          <CommunityPreview key={community.id} community={community} />
+          <div
+            key={community.id}
+            className="mx-2 my-2 border-b-4 border-customGray sm:mx-0 sm:w-full"
+          >
+            <CommunityPreview community={community} />
+          </div>
         ))}
-
       {globalState.modalMessage ? <Modal /> : null}
     </div>
   );

@@ -33,26 +33,35 @@ export default function CommunityHeader() {
 
   return (
     <>
-      <div
-        className="my-1.5 flex h-10 items-center px-4"
+      <button
+        className="my-1.5 mb-1.5 flex h-10 items-center px-4 text-start text-white sm:h-20 sm:items-start lg:my-0"
         onClick={() => {
           handleClickCommunityHeader();
         }}
       >
         {community.thumbnail ? (
-          <img
-            src={community.thumbnail}
-            alt="Community Thumbnail"
-            className="w-10 rounded-full"
-          />
+          <div className="flex h-full items-center">
+            <img
+              src={community.thumbnail}
+              alt="Community Thumbnail"
+              className="w-10 rounded-full sm:w-14"
+            />
+          </div>
         ) : (
-          <div className="h-10 w-10"></div>
+          <div className="h-10 w-10 sm:w-14"></div>
         )}
 
-        <div className="ml-3 text-xl font-semibold text-white opacity-80">
-          {community.title}
+        <div className="ml-3 flex h-full items-center">
+          <div className="flex-row">
+            <div className="text-xl font-semibold opacity-80">
+              {community.title}
+            </div>
+            <div className="hidden font-extralight sm:block">
+              {community.description}
+            </div>
+          </div>
         </div>
-      </div>
+      </button>
       <div className="my-1 mb-4 border-b-2 border-customGray"></div>
     </>
   );

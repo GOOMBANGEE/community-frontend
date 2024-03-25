@@ -83,8 +83,8 @@ export default function CommentEditor(props: Readonly<Props>) {
   };
 
   return (
-    <>
-      <div className="mx-2 mb-6 rounded border-2 border-customGray">
+    <div className="lg:bg-customBlack pb-2 sm:px-4">
+      <div className="mx-2 rounded border-2 border-customGray">
         <div className="flex items-center border-b-2 border-customGray text-white">
           <div className="text-extralight border-r-2 border-customGray p-2 text-xs">
             댓글 작성
@@ -165,6 +165,6 @@ export default function CommentEditor(props: Readonly<Props>) {
       {useRenderErrorMessage(validateState.passwordError)}
       {useRenderErrorMessage(validateState.invalidPasswordError)}
       {useRenderErrorMessage(validateState.contentError)}
-    </>
+    </div>
   );
 }

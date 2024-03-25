@@ -18,29 +18,33 @@ export default function HeaderDropdown() {
   };
 
   return (
-    <div className="absolute right-2 top-12 z-10 flex border-2 border-gray-500 bg-customGray">
+    <div className="bg-buttonBlack absolute right-2 top-12 z-10 flex border border-gray-500 bg-customGray text-start">
       <div className="flex-col">
         <div className="p-4 pr-8 text-xl font-semibold">
           {userState.nickname}
         </div>
-        <div className="w-full border-b-2 border-gray-500"></div>
-        <button
-          className="p-4 pr-8"
-          onClick={() => {
-            handleSetting();
-          }}
-        >
-          설정
-        </button>
-        <div className="w-full border-b-2 border-gray-500"></div>
-        <button
-          className="p-4 pr-8"
-          onClick={() => {
-            handleLogout();
-          }}
-        >
-          로그아웃
-        </button>
+
+        <div className="border-t border-gray-500">
+          <button
+            className="p-4 pr-8"
+            onClick={() => {
+              handleSetting();
+            }}
+          >
+            설정
+          </button>
+        </div>
+
+        <div className="border-t border-gray-500">
+          <button
+            className="p-4 pr-8"
+            onClick={() => {
+              handleLogout();
+            }}
+          >
+            로그아웃
+          </button>
+        </div>
       </div>
     </div>
   );

@@ -16,7 +16,7 @@ export default function Community() {
   const { globalState } = useGlobalStore();
 
   return (
-    <>
+    <div className="lg:bg-customBlack lg:mx-24 lg:h-screen">
       <Routes>
         <Route path="/:communityId/*" element={<CommunityHeader />} />
       </Routes>
@@ -35,6 +35,6 @@ export default function Community() {
         />
       </Routes>
       {globalState.modalMessage ? <Modal /> : null}
-    </>
+    </div>
   );
 }

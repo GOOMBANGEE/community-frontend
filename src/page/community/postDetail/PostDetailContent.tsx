@@ -6,15 +6,15 @@ export default function PostDetailContent() {
   const { postRate } = usePostRate();
   const { formatTime } = useTimeFormat();
   const { postState } = usePostStore();
-  
+
   return (
-    <>
+    <div className="sm:px-4">
       <div className="text-white">
-        <div className="bg-customGray p-3 text-lg font-light">
+        <div className="bg-customGray px-2 py-2 text-lg font-light">
           {postState.title}
         </div>
 
-        <div className="flex p-2 text-sm font-extralight">
+        <div className="flex-row p-2 text-sm font-extralight sm:flex lg:text-xs">
           <div>
             <div className="flex items-center">
               {postState.nickname}
@@ -47,38 +47,53 @@ export default function PostDetailContent() {
               ) : null}
             </div>
           </div>
-          <div className="ml-auto flex flex-col">
-            <div>
-              추천 {postState.rate_plus} | 비추 {postState.rate_minus} | 댓글{" "}
-              {postState.reply_count} | 조회수 {postState.view_count}
-            </div>
-
-            {postState.creation_time === postState.modification_time ? (
-              <div className="">
-                작성일 {formatTime({ time: postState.creation_time })}
+          <div className="flex sm:ml-auto">
+            <div className="ml-auto flex flex-col sm:flex-row">
+              <div className="flex flex-row">
+                추천{" "}
+                <span className="mx-2 text-blue-600">
+                  {postState.rate_plus}
+                </span>
+                <div className="mr-2">|</div>
+                비추
+                <span className="mx-2 text-red-600">
+                  {postState.rate_minus}
+                </span>
+                <div className="mr-2">|</div>
+                댓글 {postState.reply_count}
+                <div className="mx-2">|</div>
+                조회수 {postState.view_count}
               </div>
-            ) : (
-              <div className="">
+              <div className="mx-2 hidden sm:block">|</div>
+
+              {postState.creation_time === postState.modification_time ? (
                 <div className="">
                   작성일 {formatTime({ time: postState.creation_time })}
                 </div>
-                <div className="">
-                  수정일 {formatTime({ time: postState.modification_time })}
+              ) : (
+                <div className="sm:flex">
+                  <div className="">
+                    작성일 {formatTime({ time: postState.creation_time })}
+                  </div>
+                  <div className="mx-2 hidden sm:block">|</div>
+                  <div className="">
+                    수정일 {formatTime({ time: postState.modification_time })}
+                  </div>
                 </div>
-              </div>
-            )}
+              )}
+            </div>
           </div>
         </div>
       </div>
       <div className="mb-2 border-b-2 border-customGray"></div>
 
-      <div className="p-2 font-light text-white">
+      <div className="p-2 text-sm font-light text-white">
         <div>{postState.content}</div>
       </div>
 
-      <div id="추천 비추천" className="mx-auto mt-8 flex w-1/2">
+      <div className="mx-auto mt-8 flex w-1/2 justify-center sm:w-1/3">
         <button
-          className="mx-auto w-2/5 rounded-lg border-2 border-customGray py-4 text-center font-extralight text-white"
+          className="mx-2 w-2/5 rounded-lg border-2 border-customGray py-4 text-center font-extralight text-white sm:w-1/3 lg:w-20"
           onClick={() => {
             void postRate({ value: 1 });
           }}
@@ -86,7 +101,7 @@ export default function PostDetailContent() {
           추천! {postState.rate_plus}
         </button>
         <button
-          className="mx-auto w-2/5 rounded-lg border-2 border-customGray py-4 text-center font-extralight text-white"
+          className="mx-2 w-2/5 rounded-lg border-2 border-customGray py-4 text-center font-extralight text-white sm:w-1/3 lg:w-20"
           onClick={() => {
             void postRate({ value: 0 });
           }}
@@ -96,6 +111,6 @@ export default function PostDetailContent() {
       </div>
 
       <div className="my-4 border-b-2 border-customGray"></div>
-    </>
+    </div>
   );
 }

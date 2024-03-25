@@ -47,51 +47,50 @@ export default function RegisterActivate() {
   };
 
   return (
-    <div>
-      <div className="mx-auto flex w-5/6 flex-col">
-        <div className="my-6 font-semibold">코드를 입력해 주세요</div>
+    <div className="mx-auto flex flex-col p-6 sm:p-16">
+      <div className="my-6 font-semibold sm:my-4">코드를 입력해 주세요</div>
 
-        <form className="flex w-full flex-col" onSubmit={handleSubmit}>
-          <div className="mb-1 text-start">이메일</div>
-          <input
-            className="mx-auto mb-2 w-full border-2 border-gray-500 bg-black p-2 focus:bg-indigo-100 focus:opacity-90"
-            defaultValue={userState.email}
-            disabled
-          />
+      <form className="flex w-full flex-col" onSubmit={handleSubmit}>
+        <div className="mb-1 text-start">이메일</div>
+        <input
+          className="mx-auto mb-2 w-full border-2 border-gray-500 bg-black p-2 focus:bg-indigo-100 focus:opacity-90"
+          defaultValue={userState.email}
+          disabled
+        />
 
-          <div className="mb-1 text-start">코드</div>
-          <input
-            type="number"
-            placeholder="코드 입력"
-            className="mx-auto mb-2 w-full border-2 border-gray-500 bg-black p-2 focus:bg-indigo-100 focus:text-black focus:opacity-90"
-            onChange={(e) => {
-              setCode(e.target.value);
-              setValidateState({
-                ...validateState,
-                codeError: "",
-              });
-            }}
-          />
+        <div className="mb-1 text-start">코드</div>
+        <input
+          type="text"
+          placeholder="코드 입력"
+          className="mx-auto mb-2 w-full border-2 border-gray-500 bg-black p-2 focus:bg-indigo-100 focus:text-black focus:opacity-90"
+          onChange={(e) => {
+            setCode(e.target.value);
+            setValidateState({
+              ...validateState,
+              codeError: "",
+            });
+          }}
+        />
 
-          <button
-            type="submit"
-            className="w- mx-auto mb-2 mt-4 w-full bg-indigo-600 p-2 font-semibold text-white"
-          >
-            가입
-          </button>
+        <button
+          type="submit"
+          className="w- mx-auto mb-2 mt-4 w-full bg-indigo-600 p-2 font-semibold text-white"
+        >
+          가입
+        </button>
 
-          <button
-            onClick={(e) => {
-              void handleSend(e);
-            }}
-          >
-            메일이 도착하지않았나요?
-          </button>
+        <button
+          className="mt-4 text-blue-500"
+          onClick={(e) => {
+            void handleSend(e);
+          }}
+        >
+          메일이 도착하지않았나요?
+        </button>
 
-          {useRenderErrorMessage(validateState.codeError)}
-          {useRenderErrorMessage(globalState.errorMessage)}
-        </form>
-      </div>
+        {useRenderErrorMessage(validateState.codeError)}
+        {useRenderErrorMessage(globalState.errorMessage)}
+      </form>
     </div>
   );
 }

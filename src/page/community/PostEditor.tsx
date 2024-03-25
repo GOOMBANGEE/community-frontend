@@ -98,7 +98,7 @@ export default function PostEditor() {
   };
 
   return (
-    <div className="h-screen pb-60 text-white">
+    <div className="lg:bg-customBlack h-screen pb-60 text-white sm:px-2">
       <div className="border-b-2 border-customGray"></div>
 
       <div className="ml-2 p-2 text-lg font-extralight">
@@ -108,10 +108,9 @@ export default function PostEditor() {
       <div className="mb-2 border-b-2 border-customGray"></div>
 
       <div className="mx-2 flex border-2 border-customGray text-center">
-        <div className="bg-customGray p-1 px-2 text-sm font-light">제목</div>
         <input
           type="text"
-          className="w-fit grow bg-black px-2"
+          className="w-full grow bg-black px-2 py-1"
           onChange={(e) => {
             setPostState({
               ...postState,
@@ -122,6 +121,7 @@ export default function PostEditor() {
               titleError: "",
             });
           }}
+          placeholder={"제목"}
           defaultValue={postState.title}
         />
       </div>

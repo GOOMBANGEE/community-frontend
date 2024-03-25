@@ -6,7 +6,7 @@ interface Props {
   totalPage: number;
 }
 
-export default function PaginationBar(props: Props) {
+export default function PaginationBar(props: Readonly<Props>) {
   const navigate = useNavigate();
   const location = useLocation();
   const { communityId } = useParams();
@@ -48,7 +48,7 @@ export default function PaginationBar(props: Props) {
       pageNumbers.push(
         <button
           key={i}
-          className={`flex items-center border-2 border-customGray px-1 text-sm ${isActivePage ? "border-emerald-600 bg-customGray px-1.5" : ""}`}
+          className={`flex items-center border-2 border-customGray bg-customBlack px-1.5 text-sm sm:px-3 sm:py-1 ${isActivePage ? "border-emerald-600 bg-customGray" : ""}`}
           onClick={() => {
             if (isActivePage) {
               window.location.reload();
@@ -65,58 +65,56 @@ export default function PaginationBar(props: Props) {
   };
 
   return (
-    <>
-      <div className="mx-auto flex w-full justify-center">
-        <div className="bg-buttonBlack mx-6 my-2 flex p-1 font-extralight text-white">
-          {props.currentPage >= 6 ? (
-            <>
-              <button
-                className="border-2 border-customGray px-1"
-                onClick={() => {
-                  navigate(`${url}1`);
-                }}
-              >
-                〈〈
-              </button>
-              <button
-                className="border-2 border-customGray px-1"
-                onClick={() => {
-                  navigate(
-                    `${url}${props.currentPage >= props.totalPage - 5 ? props.totalPage - 10 : props.currentPage - 5}`,
-                  );
-                }}
-              >
-                〈
-              </button>
-            </>
-          ) : null}
+    <div className="mx-auto flex w-full justify-center">
+      <div className="mx-6 my-2 flex bg-customBlack p-1 font-extralight text-white sm:font-normal">
+        {props.currentPage >= 6 ? (
+          <>
+            <button
+              className="border-2 border-customBlack px-1.5 sm:px-3 sm:py-1"
+              onClick={() => {
+                navigate(`${url}1`);
+              }}
+            >
+              〈〈
+            </button>
+            <button
+              className="border-2 border-customBlack px-1.5 sm:px-3 sm:py-1"
+              onClick={() => {
+                navigate(
+                  `${url}${props.currentPage >= props.totalPage - 5 ? props.totalPage - 10 : props.currentPage - 5}`,
+                );
+              }}
+            >
+              〈
+            </button>
+          </>
+        ) : null}
 
-          {renderPageNumbers()}
+        {renderPageNumbers()}
 
-          {props.totalPage > 10 && props.totalPage - props.currentPage >= 6 ? (
-            <>
-              <button
-                className="border-2 border-customGray px-1"
-                onClick={() => {
-                  navigate(
-                    `${url}${props.currentPage <= 5 ? 11 : props.currentPage + 6}`,
-                  );
-                }}
-              >
-                〉
-              </button>
-              <button
-                className="border-2 border-customGray px-1"
-                onClick={() => {
-                  navigate(`${url}${props.totalPage}`);
-                }}
-              >
-                〉〉
-              </button>
-            </>
-          ) : null}
-        </div>
+        {props.totalPage > 10 && props.totalPage - props.currentPage >= 6 ? (
+          <>
+            <button
+              className="border-2 border-customBlack px-1.5 sm:px-3 sm:py-1"
+              onClick={() => {
+                navigate(
+                  `${url}${props.currentPage <= 5 ? 11 : props.currentPage + 6}`,
+                );
+              }}
+            >
+              〉
+            </button>
+            <button
+              className="border-2 border-customBlack px-1.5 sm:px-3 sm:py-1"
+              onClick={() => {
+                navigate(`${url}${props.totalPage}`);
+              }}
+            >
+              〉〉
+            </button>
+          </>
+        ) : null}
       </div>
-    </>
+    </div>
   );
 }

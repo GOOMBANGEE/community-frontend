@@ -27,12 +27,10 @@ export default function Register() {
   }, [userState.token]);
 
   return (
-    <div className="mx-auto pt-60 text-center md:p-16 dark:text-slate-200">
-      <div className="w-full rounded-lg shadow-md">
-        <div className="p-4">Community</div>
-        <div className="mx-auto flex w-5/6 flex-col">
-          {hasToken ? <RegisterActivate /> : <RegisterForm />}
-        </div>
+    <div className="mx-auto flex h-screen items-center bg-black lg:w-2/3">
+      <div className="bg-customBlack mx-4 w-full border-2 border-customGray text-center text-white sm:mx-12">
+        <div className="mt-6 sm:mt-10">Community</div>
+        {hasToken ? <RegisterActivate /> : <RegisterForm />}
       </div>
     </div>
   );

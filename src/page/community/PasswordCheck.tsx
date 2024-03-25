@@ -84,7 +84,7 @@ export default function PasswordCheck(props: Readonly<Props>) {
   };
 
   return (
-    <div className="m-2 rounded bg-customGray p-4 font-light text-white">
+    <div className="m-2 rounded-lg bg-customGray p-4 font-light text-white">
       {isPost(props.stateType) ? (
         <>
           <div className="mb-2 text-xl font-semibold">
@@ -109,13 +109,11 @@ export default function PasswordCheck(props: Readonly<Props>) {
       {(!commentId && postState.creator === userState.id) ||
       (commentId && commentState.creator === userState.id) ? null : (
         <>
-          <div className="mb-4">비밀번호를 입력해주세요</div>
-
           <div className="mb-4 flex items-center">
             <div className="mx-4 mr-8">비밀번호</div>
             <input
               type="password"
-              className="w-2/3 border-2 border-customGray bg-black p-1"
+              className="w-2/3 border-2 border-customGray bg-black p-1 sm:ml-auto sm:mr-6"
               onChange={(e) => {
                 setPassword(e.target.value);
                 setIsPasswordInvalid(false);
@@ -132,12 +130,12 @@ export default function PasswordCheck(props: Readonly<Props>) {
       )}
 
       <button
-        className="ml-auto mr-6 flex w-fit bg-blue-600 p-2 px-3 text-white"
+        className={`ml-auto mr-6 flex w-fit p-2 px-3 text-white ${props.stateType.status === "delete" ? "bg-red-500" : "bg-blue-600"}`}
         onClick={() => {
           handleConfirmButton();
         }}
       >
-        확인
+        {props.stateType.status === "delete" ? "삭제" : "확인"}
       </button>
     </div>
   );

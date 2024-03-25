@@ -8,6 +8,20 @@
 </head>
 <body style="background-color: #222">
 <div id="root"></div>
+<script type="module">
+  const setBodyBackground = () => {
+    const width = window.innerWidth;
+    if (width >= 1024) {
+      document.body.style.backgroundColor = "black";
+    } else {
+      document.body.style.backgroundColor = "#222";
+    }
+  };
+  // 최초 로딩 시 body 배경색 설정
+  setBodyBackground();
+  // 창 크기가 변경될 때마다 body 배경색을 다시 설정
+  window.addEventListener("resize", setBodyBackground);
+</script>
 <script type="module" src="/src/main.tsx"></script>
 </body>
 </html>

@@ -22,25 +22,30 @@ export default function CommunityPreview(props: Readonly<Props>) {
 
   return (
     <div>
-      <button
-        className="mb-3 w-fit border-b-4 border-emerald-700 text-xl font-extralight"
-        onClick={() => {
-          navigate(`/community/${props.community.id}?p=1`);
-        }}
+      <div
+        className={`mb-4 px-4 py-4 ${props.community.id % 2 === 0 ? "" : "sm:border-r-2 sm:border-customGray"}`}
       >
-        {props.community.title}
-      </button>
+        <button
+          className="mb-3 flex w-full text-xl font-extralight"
+          onClick={() => {
+            navigate(`/community/${props.community.id}?p=1`);
+          }}
+        >
+          <span className="mr-auto border-b-4 border-emerald-700">
+            {props.community.title}
+          </span>
+          <span className="ml-auto font-bold"> 〉 </span>
+        </button>
 
-      {Array.isArray(previewPost) &&
-        previewPost.map((post) => (
-          <CommunityPreviewPost
-            key={post.id}
-            communityId={props.community.id}
-            post={post}
-          />
-        ))}
-
-      <div className="my-4 border-b-2 border-customGray" />
+        {Array.isArray(previewPost) &&
+          previewPost.map((post) => (
+            <CommunityPreviewPost
+              key={post.id}
+              communityId={props.community.id}
+              post={post}
+            />
+          ))}
+      </div>
     </div>
   );
 }

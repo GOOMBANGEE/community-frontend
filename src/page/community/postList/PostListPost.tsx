@@ -7,7 +7,7 @@ interface Props {
 
 // 게시판내 게시글 하나씩 표시하는 컴포넌트
 export default function PostListPost(props: Readonly<Props>) {
-  const { formatTimeDifference } = useTimeFormat();
+  const { formatDate } = useTimeFormat();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -22,20 +22,23 @@ export default function PostListPost(props: Readonly<Props>) {
 
   return (
     <>
-      <div className="flex-row gap-2 px-3 text-base font-extralight text-white">
-        <div className="">
-          <div className="mx-auto mr-2">
-            <button
-              onClick={() => {
-                handleClickPost();
-              }}
-            >
-              {props.post.title} <span>[{props.post.comment_count}]</span>
-            </button>
-          </div>
+      <div className="flex-row truncate px-3 text-base font-extralight text-white sm:flex sm:py-0.5 sm:text-sm">
+        <div className="mr-2 hidden text-center sm:block sm:w-10">
+          {props.post.id}
         </div>
-        <div className="flex text-sm ">
-          <div className="mr-auto flex items-center">
+
+        <div className="mx-auto sm:mx-0 sm:w-3/5 sm:text-start">
+          <button
+            onClick={() => {
+              handleClickPost();
+            }}
+          >
+            {props.post.title} <span>[{props.post.comment_count}]</span>
+          </button>
+        </div>
+
+        <div className="flex text-sm">
+          <div className="mr-auto flex items-center sm:mr-0 sm:w-28">
             {props.post.nickname}
             {props.post.creator ? (
               <svg
@@ -66,22 +69,24 @@ export default function PostListPost(props: Readonly<Props>) {
             ) : null}
           </div>
 
-          <div className="mt-1 flex items-center gap-2">
-            <div>
-              {formatTimeDifference({ time: props.post.creation_time })}
+          <div className="mt-1 flex items-center gap-2 sm:mt-0 sm:gap-0 sm:text-center">
+            <div className="sm:w-16">
+              {formatDate({ time: props.post.creation_time })}
             </div>
 
-            <div>|</div>
-            <div>조회</div>
-            <div>{props.post.view_count}</div>
+            <div className="sm:hidden">|</div>
+            <div className="sm:hidden">조회</div>
+            <div className="sm:w-14">{props.post.view_count}</div>
 
-            <div>|</div>
-            <div>추천</div>
-            <div>{props.post.rate_plus - props.post.rate_minus}</div>
+            <div className="sm:hidden">|</div>
+            <div className="sm:hidden">추천</div>
+            <div className="sm:w-10">
+              {props.post.rate_plus - props.post.rate_minus}
+            </div>
           </div>
         </div>
       </div>
-      <div className="my-1 border-b-2 border-gray-700"></div>
+      <div className="my-1 border-b-2 border-customGray"></div>
     </>
   );
 }

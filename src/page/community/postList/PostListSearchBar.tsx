@@ -27,7 +27,7 @@ export default function PostListSearchBar() {
   };
 
   return (
-    <div className="mx-4 flex border-2 border-customGray bg-black text-center text-sm font-extralight text-white">
+    <div className="mx-4 flex border-2 border-customGray bg-black text-center text-sm font-extralight text-white sm:ml-auto sm:w-1/3">
       <select
         className="border-r-2 border-customGray bg-black py-1 pl-1"
         value={target}
@@ -46,7 +46,7 @@ export default function PostListSearchBar() {
         onChange={(e) => setKeyword(e.target.value)}
       />
       <button
-        className="bg-buttonBlack ml-auto w-10 p-1"
+        className="bg-customBlack ml-auto w-12 p-1 sm:px-1.5"
         onClick={() => {
           handleSearchButton();
         }}

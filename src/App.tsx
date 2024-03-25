@@ -1,5 +1,5 @@
 import Home from "./page/home/Home.tsx";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useLocation } from "react-router-dom";
 import User from "./page/user/User.tsx";
 import Header from "./component/Header.tsx";
 
@@ -14,6 +14,10 @@ export default function App() {
   const { tokenState } = useTokenStore();
   const { fetchProfile } = useFetchProfile();
   const { refreshAccessToken } = useRefreshAccessToken();
+  const location = useLocation();
+  const userPage =
+    location.pathname.startsWith("/user/login") ||
+    location.pathname.startsWith("/user/register");
 
   const refreshToken = getCookie("refresh_token");
   useEffect(() => {
@@ -30,9 +34,11 @@ export default function App() {
 
   return (
     <>
-      <Routes>
-        <Route path="/*" element={<Header />} />
-      </Routes>
+      {!userPage && (
+        <Routes>
+          <Route path="/*" element={<Header />} />
+        </Routes>
+      )}
       <Routes>
         <Route index element={<Home />} />
         <Route path="user/*" element={<User />} />
