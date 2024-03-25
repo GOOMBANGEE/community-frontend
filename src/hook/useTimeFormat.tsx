@@ -1,19 +1,33 @@
+import { useEnvStore } from "../store/EnvStore.tsx";
+
 interface Props {
   time: Date;
 }
 
+// postDetail
 export default function useTimeFormat() {
+  const { envState } = useEnvStore();
+
   const formatTime = (props: Props) => {
-    const formattedTime = new Date(props.time)
-      .toISOString()
-      .replace("T", " ")
-      .slice(0, -5);
+    const postDate = new Date(
+      new Date(props.time).getTime() + envState.timeDifference * 60 * 60 * 1000,
+    );
+
+    const hour = ("0" + postDate.getHours()).slice(-2);
+    const minute = ("0" + postDate.getMinutes()).slice(-2);
+    const second = ("0" + postDate.getSeconds()).slice(-2);
+    const formattedDate = postDate.toISOString().replace("T", " ").slice(0, 10);
+    const formattedTime = formattedDate + " " + `${hour}:${minute}:${second}`;
+
     return `${formattedTime}`;
   };
 
+  // postList
   const formatDate = (props: Props) => {
     const today = new Date();
-    const postDate = new Date(props.time);
+    const postDate = new Date(
+      new Date(props.time).getTime() + envState.timeDifference * 60 * 60 * 1000,
+    );
 
     if (
       today.getDate() === postDate.getDate() &&
@@ -23,23 +37,27 @@ export default function useTimeFormat() {
       return postDate.toLocaleTimeString([], {
         hour: "2-digit",
         minute: "2-digit",
+        hour12: false,
       });
     } else {
       const year = postDate.getFullYear();
-      const month = postDate.getMonth() + 1;
-      const date = postDate.getDate();
+      const month = ("0" + (postDate.getMonth() + 1)).slice(-2);
+      const date = ("0" + (postDate.getDate() + 1)).slice(-2);
 
       return `${year}.${month}.${date}`;
     }
   };
 
+  // communityPreview
   // 시간 차이를 표시하는 함수
   // n 초전,  n 분전, n 시간전, n 일전
   const formatTimeDifference = (props: Props) => {
     const now = new Date();
-    const postTime = new Date(props.time);
+    const postDate = new Date(
+      new Date(props.time).getTime() + envState.timeDifference * 60 * 60 * 1000,
+    );
     const differenceInSeconds = Math.floor(
-      (now.getTime() - postTime.getTime()) / 1000,
+      (now.getTime() - postDate.getTime()) / 1000,
     );
 
     if (differenceInSeconds < 60) {
