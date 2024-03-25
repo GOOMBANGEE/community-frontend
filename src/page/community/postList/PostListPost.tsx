@@ -1,4 +1,4 @@
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import useTimeFormat from "../../../hook/useTimeFormat.tsx";
 
 interface Props {
@@ -9,15 +9,36 @@ interface Props {
 export default function PostListPost(props: Readonly<Props>) {
   const { formatDate } = useTimeFormat();
   const navigate = useNavigate();
-  const location = useLocation();
+  const { communityId } = useParams();
+  const [searchParams] = useSearchParams();
+  const target = searchParams.get("target");
+  const keyword = searchParams.get("keyword");
+  const mode = searchParams.get("mode");
+  const page = searchParams.get("p");
 
-  let url = location.pathname + `/${props.post.id}` + location.search;
-  if (props.post.comment_count > 1) {
-    const commentPage = Math.ceil(props.post.comment_count / 10);
-    url += `&cp=${commentPage}`;
-  }
+  const navigateUrl = () => {
+    let url = `/community/${communityId}/${props.post.id}`;
+    const queryParams = [];
+    if (mode) {
+      queryParams.push(`mode=${mode}`);
+    }
+    if (target && keyword) {
+      queryParams.push(`target=${target}&keyword=${keyword}`);
+    }
+    url +=
+      queryParams.length > 0
+        ? `?${queryParams.join("&")}&p=${page}`
+        : `?p=${page}`;
+
+    if (props.post.comment_count > 1) {
+      const commentPage = Math.ceil(props.post.comment_count / 10);
+      url += `&cp=${commentPage}`;
+    }
+    return url;
+  };
+
   const handleClickPost = () => {
-    navigate(url);
+    navigate(navigateUrl());
   };
 
   return (

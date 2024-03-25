@@ -5,13 +5,15 @@ import PostDetailButtons from "./PostDetailButtons.tsx";
 import PostDetailContent from "./PostDetailContent.tsx";
 import CommentEditor from "../comment/CommentEditor.tsx";
 import { useEffect } from "react";
+import { useParams } from "react-router-dom";
 
 export default function PostDetail() {
   const { fetchPostDetail } = useFetchPostDetail();
+  const { postId } = useParams();
 
   useEffect(() => {
     void fetchPostDetail();
-  }, []);
+  }, [postId]);
 
   return (
     <>

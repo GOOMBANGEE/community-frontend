@@ -19,10 +19,10 @@ export default function PostListSearchBar() {
 
     mode
       ? navigate(
-          `/community/${communityId}?mode=${mode}&target=${target}&keyword=${keyword}`,
+          `/community/${communityId}?mode=${mode}&target=${target}&keyword=${keyword}&p=1`,
         )
       : navigate(
-          `/community/${communityId}?target=${target}&keyword=${keyword}`,
+          `/community/${communityId}?target=${target}&keyword=${keyword}&p=1`,
         );
   };
 
@@ -46,7 +46,7 @@ export default function PostListSearchBar() {
         onChange={(e) => setKeyword(e.target.value)}
       />
       <button
-        className="bg-customBlack ml-auto w-12 p-1 sm:px-1.5"
+        className="ml-auto w-12 bg-customBlack p-1 sm:px-1.5"
         onClick={() => {
           handleSearchButton();
         }}

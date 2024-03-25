@@ -30,23 +30,6 @@ export default function PostEditor() {
     contentError: "",
   });
 
-  let url = `/community/${communityId}/${postState.id}`;
-  const queryParams = [];
-  if (postState.mode) {
-    queryParams.push(`mode=${postState.mode}`);
-  }
-  if (postState.target && postState.keyword) {
-    queryParams.push(`target=${postState.target}&keyword=${postState.keyword}`);
-  }
-  url +=
-    queryParams.length > 0
-      ? `?${queryParams.join("&")}&p=${postState.page}`
-      : `?p=${postState.page}`;
-
-  if (postState.commentPage) {
-    url += `&cp=${postState.commentPage}`;
-  }
-
   const handlePostButton = async () => {
     if (
       isInvalidTitle({
@@ -91,14 +74,14 @@ export default function PostEditor() {
     }
     if (postState.status === "update") {
       if (await postUpdate()) {
-        navigate(url);
+        navigate(-2);
         return;
       }
     }
   };
 
   return (
-    <div className="lg:bg-customBlack h-screen pb-60 text-white sm:px-2">
+    <div className="h-screen pb-60 text-white sm:px-2 lg:bg-customBlack">
       <div className="border-b-2 border-customGray"></div>
 
       <div className="ml-2 p-2 text-lg font-extralight">

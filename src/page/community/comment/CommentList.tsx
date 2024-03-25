@@ -39,7 +39,7 @@ export default function CommentList() {
 
   useEffect(() => {
     void fetchCommentList({ setCommentList });
-  }, [commentPage]);
+  }, [postId, commentPage]);
 
   return (
     <div className="lg:bg-customBlack">

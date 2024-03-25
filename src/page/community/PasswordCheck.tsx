@@ -48,7 +48,7 @@ export default function PasswordCheck(props: Readonly<Props>) {
     if (isPost(props.stateType)) {
       if (postState.creator === userState.id) {
         await postDelete({ password });
-        navigate(`/community/${communityId}/`);
+        navigate(-2);
         return;
       }
 
@@ -59,7 +59,7 @@ export default function PasswordCheck(props: Readonly<Props>) {
           return;
         }
         await postDelete({ password });
-        navigate(`/community/${communityId}/`);
+        navigate(-2);
         return;
       }
     }
@@ -76,7 +76,7 @@ export default function PasswordCheck(props: Readonly<Props>) {
         }))
       ) {
         await commentDelete({ password });
-        navigate(`/community/${communityId}/${commentState.postId}`);
+        navigate(-1);
         return;
       }
     }
