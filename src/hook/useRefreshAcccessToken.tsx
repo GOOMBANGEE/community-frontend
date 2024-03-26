@@ -18,10 +18,12 @@ export default function useRefreshAccessToken() {
       const response = await axios.post(`${envState.userUrl}/refresh`, {
         refresh_token: refreshToken,
       });
+      // accessToken 헤더에 담아서 이후 요청보낼때는 Authorization 추가
       setHeaderAccessToken(response.data.access_token);
     } catch (error) {
       if (axios.isAxiosError(error)) {
         handleAxiosErrorModal(error, setGlobalState);
+        // refresh_token이 만료되거나 잘못된 경우 쿠키 삭제하여 로그인 유도
         if (error.response?.data.id === "USER:TOKEN_INVALID") {
           deleteCookie("refresh_token");
         }

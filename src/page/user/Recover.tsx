@@ -1,6 +1,6 @@
 import { useState } from "react";
 import useValidateUser from "../../hook/user/useValidateUser.tsx";
-import useRenderErrorMessage from "../../hook/user/useRenderErrorMessage.tsx";
+import useRenderErrorMessage from "../../hook/useRenderErrorMessage.tsx";
 import useRecover from "../../hook/user/useRecover.tsx";
 
 export default function Recover() {
@@ -26,7 +26,7 @@ export default function Recover() {
   };
 
   return (
-    <div className="bg-customBlack h-screen pt-10">
+    <div className="h-screen bg-customBlack pt-10">
       <div className="mx-4 rounded border-2 border-gray-600 bg-customGray p-4 text-white sm:mx-auto sm:w-3/4">
         <div className="mb-10 text-2xl font-light">비밀번호 찾기</div>
 

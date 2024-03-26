@@ -6,15 +6,15 @@ export default function HeaderDropdown() {
   const { userState } = useUserStore();
   const navigate = useNavigate();
 
+  const handleSetting = () => {
+    navigate("/user/setting");
+  };
+
   const handleLogout = () => {
     // 페이지 리로드 + 쿠키삭제
     deleteCookie("refresh_token");
     navigate("/");
     window.location.reload();
-  };
-
-  const handleSetting = () => {
-    navigate("/user/setting");
   };
 
   return (

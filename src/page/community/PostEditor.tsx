@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { usePostStore } from "../../store/PostStore.tsx";
-import useRenderErrorMessage from "../../hook/user/useRenderErrorMessage.tsx";
+import useRenderErrorMessage from "../../hook/useRenderErrorMessage.tsx";
 import useValidatePost from "../../hook/community/post/useValidatePost.tsx";
 import usePostUpdate from "../../hook/community/post/usePostUpdate.tsx";
 import usePostCreate from "../../hook/community/post/usePostCreate.tsx";

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useCommentStore } from "../../../store/CommentStore.tsx";
-import useRenderErrorMessage from "../../../hook/user/useRenderErrorMessage.tsx";
+import useRenderErrorMessage from "../../../hook/useRenderErrorMessage.tsx";
 import useValidateComment from "../../../hook/community/comment/useValidateComment.tsx";
 import useCommentCreate from "../../../hook/community/comment/useCommentCreate.tsx";
 import usePasswordCheck from "../../../hook/community/usePasswordCheck.tsx";
@@ -23,6 +23,7 @@ export default function CommentEditor(props: Readonly<Props>) {
   const { userState } = useUserStore();
   const { tokenState } = useTokenStore();
 
+  // textarea에 포커싱 되어있을때만 "작성"버튼 표시
   const [isFocusTextArea, setIsFocusTextArea] = useState<boolean>(false);
   const [validateState, setValidateState] = useState<ValidateComment>({
     nicknameError: "",
@@ -32,6 +33,7 @@ export default function CommentEditor(props: Readonly<Props>) {
   });
 
   const handleCommentButton = async () => {
+    // 유효성 검사
     if (
       !tokenState.accessToken &&
       props.status === "create" &&
@@ -65,6 +67,10 @@ export default function CommentEditor(props: Readonly<Props>) {
       window.location.reload();
       return;
     }
+    // 유효성검사 종료
+
+    // comment 작성자가 user와 동일한 경우
+    // passwordCheckComment (비밀번호 검증) 통과한 경우 commentUpdate 실행 후 페이지 리로드
     if (
       commentState.creator === userState.id ||
       (await passwordCheckComment({
@@ -76,6 +82,7 @@ export default function CommentEditor(props: Readonly<Props>) {
       window.location.reload();
       return;
     }
+    // 비밀번호 검증 통과하지 못한경우 textarea 하단 오류메시지 표시
     setValidateState({
       ...validateState,
       invalidPasswordError: "비밀번호를 다시 확인해주세요",
@@ -83,12 +90,13 @@ export default function CommentEditor(props: Readonly<Props>) {
   };
 
   return (
-    <div className="lg:bg-customBlack pb-2 sm:px-4">
+    <div className="pb-2 sm:px-4 lg:bg-customBlack">
       <div className="mx-2 rounded border-2 border-customGray">
         <div className="flex items-center border-b-2 border-customGray text-white">
           <div className="text-extralight border-r-2 border-customGray p-2 text-xs">
             댓글 작성
           </div>
+
           {tokenState.accessToken ? (
             <div className="p-2 text-gray-400">{userState.nickname}</div>
           ) : (
@@ -149,6 +157,7 @@ export default function CommentEditor(props: Readonly<Props>) {
           defaultValue={props.status === "update" ? commentState.content : ""}
           style={{ outline: "none" }}
         ></textarea>
+
         {isFocusTextArea ? (
           <button
             className="justify-item-end mb-2 ml-auto mr-2 flex rounded border-2 border-customGray p-1 px-6 font-extralight text-white"

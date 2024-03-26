@@ -4,7 +4,7 @@ import { useGlobalStore } from "../../store/GlobalStore.tsx";
 import { useUserStore } from "../../store/UserStore.tsx";
 import useValidateUser from "../../hook/user/useValidateUser.tsx";
 import useEmailSend from "../../hook/user/useEmailSend.tsx";
-import useRenderErrorMessage from "../../hook/user/useRenderErrorMessage.tsx";
+import useRenderErrorMessage from "../../hook/useRenderErrorMessage.tsx";
 
 export default function RegisterActivate() {
   const { registerActivate } = useRegisterActivate();

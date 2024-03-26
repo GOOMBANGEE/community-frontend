@@ -1,7 +1,7 @@
 import ErrorPage from "../ErrorPage.tsx";
 import useRecoverCheck from "../../hook/user/useRecoverCheck.tsx";
 import { useGlobalStore } from "../../store/GlobalStore.tsx";
-import useRenderErrorMessage from "../../hook/user/useRenderErrorMessage.tsx";
+import useRenderErrorMessage from "../../hook/useRenderErrorMessage.tsx";
 import useValidateUser from "../../hook/user/useValidateUser.tsx";
 import { useUserStore } from "../../store/UserStore.tsx";
 import { FormEvent, useState } from "react";
@@ -43,7 +43,7 @@ export default function RecoverPassword() {
       {!globalState.loading ? (
         <>
           {isValidToken ? (
-            <div className="bg-customBlack h-screen px-4 pt-10 text-white">
+            <div className="h-screen bg-customBlack px-4 pt-10 text-white">
               <div className="rounded border-2 border-gray-600 bg-customGray p-4">
                 <div className="mb-10 text-2xl font-light">비밀번호 변경</div>
 

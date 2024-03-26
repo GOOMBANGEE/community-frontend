@@ -3,7 +3,7 @@ import { FormEvent, useState } from "react";
 import { useUserStore } from "../../store/UserStore.tsx";
 import useRegister from "../../hook/user/useRegister.tsx";
 import useValidateUser from "../../hook/user/useValidateUser.tsx";
-import useRenderErrorMessage from "../../hook/user/useRenderErrorMessage.tsx";
+import useRenderErrorMessage from "../../hook/useRenderErrorMessage.tsx";
 
 export default function RegisterForm() {
   const { register } = useRegister();
@@ -26,6 +26,7 @@ export default function RegisterForm() {
   // 유효성검사 + 회원가입 로직
   const handleRegister = async (e: FormEvent) => {
     e.preventDefault();
+    // 유효성검사
     if (
       isInvalidEmail({
         value: userState.email,
@@ -55,6 +56,7 @@ export default function RegisterForm() {
     ) {
       return;
     }
+    // 유효성검사 종료
 
     void register();
   };

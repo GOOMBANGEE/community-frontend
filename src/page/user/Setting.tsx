@@ -3,7 +3,7 @@ import useValidateUser from "../../hook/user/useValidateUser.tsx";
 import { FormEvent, useEffect, useState } from "react";
 import useResetNickname from "../../hook/user/useResetNickname.tsx";
 import useResetPassword from "../../hook/user/useResetPassword.tsx";
-import useRenderErrorMessage from "../../hook/user/useRenderErrorMessage.tsx";
+import useRenderErrorMessage from "../../hook/useRenderErrorMessage.tsx";
 import { useConfirmStore } from "../../store/ConfirmStore.tsx";
 import ConfirmModal from "../../component/ConfirmModal.tsx";
 import useUserDelete from "../../hook/user/useUserDelete.tsx";

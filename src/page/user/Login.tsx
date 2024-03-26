@@ -2,7 +2,7 @@ import { FormEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useUserStore } from "../../store/UserStore.tsx";
 import useValidateUser from "../../hook/user/useValidateUser.tsx";
-import useRenderErrorMessage from "../../hook/user/useRenderErrorMessage.tsx";
+import useRenderErrorMessage from "../../hook/useRenderErrorMessage.tsx";
 import useLogin from "../../hook/user/useLogin.tsx";
 
 export default function Login() {
@@ -20,6 +20,7 @@ export default function Login() {
 
   const handleLogin = async (e: FormEvent) => {
     e.preventDefault();
+    // 유효성검사
     if (
       isInvalidEmail({
         value: userState.email,
@@ -36,6 +37,7 @@ export default function Login() {
     ) {
       return;
     }
+    // 유효성검사 종료
 
     if (await login()) {
       navigate("/");
@@ -46,7 +48,7 @@ export default function Login() {
 
   return (
     <div className="mx-auto flex h-screen items-center bg-black lg:w-2/3">
-      <div className="bg-customBlack mx-4 w-full border-2 border-customGray text-center text-white sm:mx-12">
+      <div className="mx-4 w-full border-2 border-customGray bg-customBlack text-center text-white sm:mx-12">
         <div className="mt-6 sm:mt-10">Community</div>
         <div className="mx-auto flex flex-col p-6 sm:p-16">
           <div className="my-6 font-semibold sm:my-4">로그인</div>
