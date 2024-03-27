@@ -3,7 +3,6 @@ import { deleteCookie } from "../Cookie.tsx";
 import { useEnvStore } from "../store/EnvStore.tsx";
 import { useTokenStore } from "../store/TokenStore.tsx";
 import { useGlobalStore } from "../store/GlobalStore.tsx";
-import { handleAxiosErrorModal } from "./handleAxiosErrorModal.tsx";
 
 const TOKEN_EXPIRE_TIME = import.meta.env.VITE_TOKEN_EXPIRE_TIME;
 
@@ -22,10 +21,18 @@ export default function useRefreshAccessToken() {
       setHeaderAccessToken(response.data.access_token);
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        handleAxiosErrorModal(error, setGlobalState);
         // refresh_token이 만료되거나 잘못된 경우 쿠키 삭제하여 로그인 유도
-        if (error.response?.data.id === "USER:TOKEN_INVALID") {
+        if (
+          error.response?.data.id === "USER:TOKEN_INVALID" ||
+          error.response?.data.id === "USER:USER_UNREGISTERED"
+        ) {
           deleteCookie("refresh_token");
+
+          setGlobalState({
+            modalMessage: error.response?.data.message,
+            redirectName: "홈으로",
+            redirectUrl: "reloadHome",
+          });
         }
       }
     } finally {
