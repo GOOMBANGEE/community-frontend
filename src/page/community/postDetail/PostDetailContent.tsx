@@ -60,7 +60,7 @@ export default function PostDetailContent() {
                   {postState.rate_minus}
                 </span>
                 <div className="mr-2">|</div>
-                댓글 {postState.reply_count}
+                댓글 {postState.comment_count}
                 <div className="mx-2">|</div>
                 조회수 {postState.view_count}
               </div>

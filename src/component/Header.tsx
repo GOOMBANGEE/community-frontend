@@ -27,6 +27,7 @@ export default function Header() {
         className="mr-auto"
         onClick={() => {
           navigate("/");
+          window.location.reload();
         }}
       >
         <svg
