@@ -16,7 +16,7 @@ export default function useValidateUser() {
 
   const isInvalidNickname = (props: ValidationProps) => {
     const validationConfig: ValidationConfig = {
-      regex: /^[a-zA-Z0-9]{2,20}$/,
+      regex: /^.{2,20}$/,
       errorField: "nicknameError",
       errorMessage: "이름은 2~20자 이내로 설정해 주세요",
       validateVariable: "user",

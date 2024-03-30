@@ -25,7 +25,7 @@ export default function useValidateComment() {
 
   const isInvalidContent = (props: ValidationProps) => {
     const validationConfig: ValidationConfig = {
-      regex: /^.+$/,
+      regex: /^(.|\n)+$/,
       errorField: "contentError",
       errorMessage: "내용이 비어있습니다",
       validateVariable: "comment",
