@@ -17,8 +17,10 @@ export default function useFetchPostDetail() {
         `${envState.communityUrl}/${communityId}/${postId}`,
       );
       setPostState(response.data);
+      return true;
     } catch (error) {
       handleAxiosErrorModal(error, setGlobalState);
+      return false;
     }
   };
 

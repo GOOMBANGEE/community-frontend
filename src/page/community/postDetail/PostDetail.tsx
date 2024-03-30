@@ -12,7 +12,13 @@ export default function PostDetail() {
   const { postId } = useParams();
 
   useEffect(() => {
-    void fetchPostDetail();
+    const fetchData = async () => {
+      const result = await fetchPostDetail();
+      if (result) {
+        window.scrollTo(0, 0);
+      }
+    };
+    void fetchData();
   }, [postId]);
 
   return (
