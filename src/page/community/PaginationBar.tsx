@@ -16,7 +16,7 @@ export default function PaginationBar(props: Readonly<Props>) {
     const index = url.indexOf("p=");
     // 쿼리에서 cp가 있는경우 postDetail에 진입한상태
     // postPaginationBar의 버튼 클릭할경우 postList상태로 가야하기때문에 postId부분이 필요없다
-    if (url.indexOf("cp=")) {
+    if (url.indexOf("&cp=") != -1) {
       url = `/community/${communityId}?`;
     }
     url = url.slice(0, index) + `p=`;
