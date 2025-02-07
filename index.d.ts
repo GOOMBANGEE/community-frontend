@@ -3,6 +3,7 @@ interface Community {
   title: string;
   description: string;
   thumbnail: string;
+  postList: Post[] | [];
 }
 
 interface Post {

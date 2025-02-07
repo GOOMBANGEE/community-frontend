@@ -4,24 +4,22 @@ import axios from "axios";
 import { handleAxiosErrorModal } from "../handleAxiosErrorModal.tsx";
 
 interface Props {
-  communityId: number;
-  setPreviewPost: (state: Post) => void;
+  setCommunity: (state: Community[]) => void;
 }
 
-export function useFetchCommunityPreviewPostList() {
+export function useCommunityList() {
   const { envState } = useEnvStore();
   const { setGlobalState } = useGlobalStore();
 
-  const fetchCommunityPreviewPostList = async (props: Props) => {
+  const communityList = async (props: Props) => {
     try {
-      const response = await axios.get(
-        `${envState.communityUrl}/${props.communityId}?p=1&size=10`,
-      );
-      props.setPreviewPost(response.data.items);
+      const communityUrl = envState.communityUrl;
+      const response = await axios.get(`${communityUrl}?page=1`);
+      props.setCommunity(response.data.communityList);
     } catch (error) {
       handleAxiosErrorModal(error, setGlobalState);
     }
   };
 
-  return { fetchCommunityPreviewPostList };
+  return { communityList };
 }
