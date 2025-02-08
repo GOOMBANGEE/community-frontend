@@ -18,6 +18,9 @@ interface EnvState {
 const initialEnvState: EnvState = {
   userUrl: BASE_URL_USER,
   communityUrl: BASE_URL_COMMUNITY,
+  postUrl: BASE_URL_POST,
+
+  commentUrl: BASE_URL_COMMENT,
   timeDifference: TIME_DIFFERENCE,
 };
 

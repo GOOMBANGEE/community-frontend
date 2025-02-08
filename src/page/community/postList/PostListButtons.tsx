@@ -7,18 +7,18 @@ export default function PostListButtons() {
   const { communityId } = useParams();
 
   const handleClickPostList = () => {
-    window.location.href = `/community/${communityId}?p=1`;
+    window.location.href = `/community/${communityId}?page=1`;
   };
 
   const handleClickBest = () => {
-    window.location.href = `/community/${communityId}?mode=best&p=1`;
+    window.location.href = `/community/${communityId}?mode=best&page=1`;
   };
 
   return (
-    <div className="lg:bg-customBlack mx-2 flex pb-4 pt-2 text-sm font-light text-white">
+    <div className="mx-2 flex pb-4 pt-2 text-sm font-light text-white lg:bg-customBlack">
       <div className="flex border-2 border-customGray">
         <button
-          className="bg-customBlack flex items-center p-1 sm:px-1.5"
+          className="flex items-center bg-customBlack p-1 sm:px-1.5"
           onClick={() => {
             handleClickPostList();
           }}
@@ -61,7 +61,7 @@ export default function PostListButtons() {
       </div>
 
       <button
-        className="bg-customBlack ml-auto flex items-center border-2 border-customGray p-1 sm:px-1.5"
+        className="ml-auto flex items-center border-2 border-customGray bg-customBlack p-1 sm:px-1.5"
         onClick={() => {
           navigate(`/community/${communityId}/editor`);
           resetPostState();

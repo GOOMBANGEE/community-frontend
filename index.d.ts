@@ -9,17 +9,18 @@ interface Community {
 interface Post {
   id: number;
   title: string;
-  nickname: string;
+  username: string;
   creator: string;
-  view_count: number;
-  rate_plus: number;
-  rate_minus: number;
+  viewCount: number;
+  ratePlus: number;
+  rateMinus: number;
   content: string;
-  comment_count: number;
-  previous_id: number;
-  next_id: number;
-  creation_time: Date;
-  modification_time: Date;
+  commentCount: number;
+  previousId: number;
+  nextId: number;
+  creationTime: Date;
+  modificationTime: Date;
+  communityId: number;
 }
 
 interface Comment {

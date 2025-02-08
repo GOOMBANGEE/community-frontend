@@ -1,4 +1,4 @@
-import { useNavigate, useParams, useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import useTimeFormat from "../../../hook/useTimeFormat.tsx";
 
 interface Props {
@@ -9,31 +9,37 @@ interface Props {
 export default function PostListPost(props: Readonly<Props>) {
   const { formatDate } = useTimeFormat();
   const navigate = useNavigate();
-  const { communityId } = useParams();
   const [searchParams] = useSearchParams();
+
   const target = searchParams.get("target");
   const keyword = searchParams.get("keyword");
   const mode = searchParams.get("mode");
-  const page = searchParams.get("p");
+  const page = searchParams.get("page");
 
   const navigateUrl = () => {
-    let url = `/community/${communityId}/${props.post.id}`;
+    let url = `/community/${props.post.communityId}/${props.post.id}`;
     const queryParams = [];
+
+    // best mode
     if (mode) {
       queryParams.push(`mode=${mode}`);
     }
+    // search target, keyword
     if (target && keyword) {
       queryParams.push(`target=${target}&keyword=${keyword}`);
     }
+
+    // community page
     url +=
       queryParams.length > 0
-        ? `?${queryParams.join("&")}&p=${page}`
-        : `?p=${page}`;
+        ? `?${queryParams.join("&")}&page=${page}`
+        : `?page=${page}`;
 
-    if (props.post.comment_count > 1) {
-      const commentPage = Math.ceil(props.post.comment_count / 10);
-      url += `&cp=${commentPage}`;
-    }
+    // comment page
+    const commentPage =
+      props.post.commentCount > 1 ? Math.ceil(props.post.commentCount / 10) : 1;
+    url += `&commentPage=${commentPage}`;
+
     return url;
   };
 
@@ -54,13 +60,13 @@ export default function PostListPost(props: Readonly<Props>) {
               handleClickPost();
             }}
           >
-            {props.post.title} <span>[{props.post.comment_count}]</span>
+            {props.post.title} <span>[{props.post.commentCount}]</span>
           </button>
         </div>
 
         <div className="flex text-sm">
           <div className="mr-auto flex items-center sm:mr-0 sm:w-28">
-            {props.post.nickname}
+            {props.post.username}
             {props.post.creator ? (
               <svg
                 className="ml-1"
@@ -92,17 +98,17 @@ export default function PostListPost(props: Readonly<Props>) {
 
           <div className="mt-1 flex items-center gap-2 sm:mt-0 sm:gap-0 sm:text-center">
             <div className="sm:w-16">
-              {formatDate({ time: props.post.creation_time })}
+              {formatDate({ time: props.post.creationTime })}
             </div>
 
             <div className="sm:hidden">|</div>
             <div className="sm:hidden">조회</div>
-            <div className="sm:w-14">{props.post.view_count}</div>
+            <div className="sm:w-14">{props.post.viewCount}</div>
 
             <div className="sm:hidden">|</div>
             <div className="sm:hidden">추천</div>
             <div className="sm:w-10">
-              {props.post.rate_plus - props.post.rate_minus}
+              {props.post.ratePlus - props.post.rateMinus}
             </div>
           </div>
         </div>

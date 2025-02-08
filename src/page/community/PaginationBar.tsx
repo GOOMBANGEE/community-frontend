@@ -2,8 +2,8 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 interface Props {
   type: string;
-  currentPage: number;
-  totalPage: number;
+  page: number | undefined;
+  totalPage: number | undefined;
 }
 
 export default function PaginationBar(props: Readonly<Props>) {
@@ -11,40 +11,43 @@ export default function PaginationBar(props: Readonly<Props>) {
   const location = useLocation();
   const { communityId } = useParams();
 
+  const page = props.page ? props.page : 1;
+  const totalPage = props.totalPage ? props.totalPage : 1;
+
   let url = location.pathname + location.search;
   if (props.type === "post") {
-    const index = url.indexOf("p=");
-    // 쿼리에서 cp가 있는경우 postDetail에 진입한상태
+    const index = url.indexOf("page=");
+    // 쿼리에서 comment page가 있는경우 postDetail에 진입한상태
     // postPaginationBar의 버튼 클릭할경우 postList상태로 가야하기때문에 postId부분이 필요없다
-    if (url.indexOf("&cp=") != -1) {
+    if (url.indexOf("&commentPage=") != -1) {
       url = `/community/${communityId}?`;
     }
-    url = url.slice(0, index) + `p=`;
+    url = url.slice(0, index) + `page=`;
   }
 
   if (props.type === "comment") {
-    const index = url.indexOf("cp=");
-    url = url.slice(0, index) + `cp=`;
+    const index = url.indexOf("commentPage=");
+    url = url.slice(0, index) + `commentPage=`;
   }
 
   const renderPageNumbers = () => {
     let minPage = 1;
-    let maxPage = props.totalPage;
+    let maxPage = totalPage;
 
-    if (props.totalPage > 10) {
-      if (props.currentPage < 6) {
+    if (totalPage > 10) {
+      if (page < 6) {
         maxPage = 10;
-      } else if (props.currentPage + 5 >= props.totalPage) {
-        minPage = props.totalPage - 9;
+      } else if (page + 5 >= totalPage) {
+        minPage = totalPage - 9;
       } else {
-        minPage = props.currentPage - 4;
-        maxPage = props.currentPage + 5;
+        minPage = page - 4;
+        maxPage = page + 5;
       }
     }
 
     const pageNumbers = [];
     for (let i = minPage; i <= maxPage; i++) {
-      const isActivePage = i === props.currentPage;
+      const isActivePage = i === page;
       pageNumbers.push(
         <button
           key={i}
@@ -67,7 +70,7 @@ export default function PaginationBar(props: Readonly<Props>) {
   return (
     <div className="mx-auto flex w-full justify-center">
       <div className="mx-6 my-2 flex bg-customBlack p-1 font-extralight text-white sm:font-normal">
-        {props.currentPage >= 6 ? (
+        {page >= 6 ? (
           <>
             <button
               className="border-2 border-customBlack px-1.5 sm:px-3 sm:py-1"
@@ -81,7 +84,7 @@ export default function PaginationBar(props: Readonly<Props>) {
               className="border-2 border-customBlack px-1.5 sm:px-3 sm:py-1"
               onClick={() => {
                 navigate(
-                  `${url}${props.currentPage >= props.totalPage - 5 ? props.totalPage - 10 : props.currentPage - 5}`,
+                  `${url}${page >= totalPage - 5 ? totalPage - 10 : page - 5}`,
                 );
               }}
             >
@@ -92,14 +95,12 @@ export default function PaginationBar(props: Readonly<Props>) {
 
         {renderPageNumbers()}
 
-        {props.totalPage > 10 && props.totalPage - props.currentPage >= 6 ? (
+        {totalPage > 10 && totalPage - page >= 6 ? (
           <>
             <button
               className="border-2 border-customBlack px-1.5 sm:px-3 sm:py-1"
               onClick={() => {
-                navigate(
-                  `${url}${props.currentPage <= 5 ? 11 : props.currentPage + 6}`,
-                );
+                navigate(`${url}${page <= 5 ? 11 : page + 6}`);
               }}
             >
               〉
@@ -107,7 +108,7 @@ export default function PaginationBar(props: Readonly<Props>) {
             <button
               className="border-2 border-customBlack px-1.5 sm:px-3 sm:py-1"
               onClick={() => {
-                navigate(`${url}${props.totalPage}`);
+                navigate(`${url}${totalPage}`);
               }}
             >
               〉〉
