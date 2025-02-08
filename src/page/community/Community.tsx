@@ -2,13 +2,13 @@ import { Route, Routes } from "react-router-dom";
 
 import PostList from "./postList/PostList.tsx";
 import CommunityHeader from "./CommunityHeader.tsx";
-import PostDetail from "./postDetail/PostDetail.tsx";
 import PostEditor from "./PostEditor.tsx";
 import PasswordCheck from "./PasswordCheck.tsx";
-import { useCommentStore } from "../../store/CommentStore.tsx";
-import { usePostStore } from "../../store/PostStore.tsx";
-import { useGlobalStore } from "../../store/GlobalStore.tsx";
+import { useCommentStore } from "../../store/CommentStore.ts";
+import { usePostStore } from "../../store/PostStore.ts";
+import { useGlobalStore } from "../../store/GlobalStore.ts";
 import Modal from "../../component/Modal.tsx";
+import PostDetail from "./postDetail/PostDetail.tsx";
 
 export default function Community() {
   const { postState } = usePostStore();
@@ -16,7 +16,7 @@ export default function Community() {
   const { globalState } = useGlobalStore();
 
   return (
-    <div className="lg:bg-customBlack lg:mx-24 lg:h-screen">
+    <div className="lg:mx-24 lg:h-screen lg:bg-customBlack">
       <Routes>
         <Route path="/:communityId/*" element={<CommunityHeader />} />
       </Routes>

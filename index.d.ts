@@ -18,8 +18,8 @@ interface Post {
   commentCount: number;
   previousId: number;
   nextId: number;
-  creationTime: Date;
-  modificationTime: Date;
+  creationTime: string;
+  modificationTime: string;
   communityId: number;
 }
 

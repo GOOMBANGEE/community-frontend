@@ -1,5 +1,5 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { usePostStore } from "../../../store/PostStore.tsx";
+import { usePostStore } from "../../../store/PostStore.ts";
 
 export default function PostListButtons() {
   const { resetPostState } = usePostStore();

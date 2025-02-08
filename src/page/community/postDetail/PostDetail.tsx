@@ -1,24 +1,24 @@
-import useFetchPostDetail from "../../../hook/community/useFetchPostDetail.tsx";
 import PostList from "../postList/PostList.tsx";
 import CommentList from "../comment/CommentList.tsx";
 import PostDetailButtons from "./PostDetailButtons.tsx";
 import PostDetailContent from "./PostDetailContent.tsx";
 import CommentEditor from "../comment/CommentEditor.tsx";
-import { useEffect } from "react";
 import { useParams } from "react-router-dom";
+import usePostDetail from "../../../hook/community/post/usePostDetail.ts";
+import { useEffect } from "react";
 
 export default function PostDetail() {
-  const { fetchPostDetail } = useFetchPostDetail();
+  const { postDetail } = usePostDetail();
   const { postId } = useParams();
 
   useEffect(() => {
     const fetchData = async () => {
-      const result = await fetchPostDetail();
+      const result = await postDetail();
       if (result) {
         window.scrollTo(0, 0);
       }
     };
-    void fetchData();
+    fetchData();
   }, [postId]);
 
   return (

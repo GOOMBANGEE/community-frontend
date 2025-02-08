@@ -1,5 +1,5 @@
 import { useNavigate, useSearchParams } from "react-router-dom";
-import useTimeFormat from "../../../hook/useTimeFormat.tsx";
+import useTimeFormat from "../../../hook/useTimeFormat.ts";
 
 interface Props {
   post: Post;
@@ -7,7 +7,7 @@ interface Props {
 
 // 게시판내 게시글 하나씩 표시하는 컴포넌트
 export default function PostListPost(props: Readonly<Props>) {
-  const { formatDate } = useTimeFormat();
+  const { timeFormatPostList } = useTimeFormat();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
 
@@ -98,7 +98,7 @@ export default function PostListPost(props: Readonly<Props>) {
 
           <div className="mt-1 flex items-center gap-2 sm:mt-0 sm:gap-0 sm:text-center">
             <div className="sm:w-16">
-              {formatDate({ time: props.post.creationTime })}
+              {timeFormatPostList({ time: props.post.creationTime })}
             </div>
 
             <div className="sm:hidden">|</div>

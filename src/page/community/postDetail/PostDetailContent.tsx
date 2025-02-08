@@ -1,10 +1,10 @@
-import { usePostStore } from "../../../store/PostStore.tsx";
-import useTimeFormat from "../../../hook/useTimeFormat.tsx";
-import usePostRate from "../../../hook/community/post/usePostRate.tsx";
+import { usePostStore } from "../../../store/PostStore.ts";
+import usePostRate from "../../../hook/community/post/usePostRate.ts";
+import useTimeFormat from "../../../hook/useTimeFormat.ts";
 
 export default function PostDetailContent() {
   const { postRate } = usePostRate();
-  const { formatTime } = useTimeFormat();
+  const { timeFormatYYYYMMDDHHMMSS } = useTimeFormat();
   const { postState } = usePostStore();
 
   return (
@@ -17,7 +17,7 @@ export default function PostDetailContent() {
         <div className="flex-row p-2 text-sm font-extralight sm:flex lg:text-xs">
           <div>
             <div className="flex items-center">
-              {postState.nickname}
+              {postState.username}
               {postState.creator ? (
                 <svg
                   className="ml-1"
@@ -51,33 +51,34 @@ export default function PostDetailContent() {
             <div className="ml-auto flex flex-col sm:flex-row">
               <div className="flex flex-row">
                 추천{" "}
-                <span className="mx-2 text-blue-600">
-                  {postState.rate_plus}
-                </span>
+                <span className="mx-2 text-blue-600">{postState.ratePlus}</span>
                 <div className="mr-2">|</div>
                 비추
-                <span className="mx-2 text-red-600">
-                  {postState.rate_minus}
-                </span>
+                <span className="mx-2 text-red-600">{postState.rateMinus}</span>
                 <div className="mr-2">|</div>
-                댓글 {postState.comment_count}
+                댓글 {postState.commentCount}
                 <div className="mx-2">|</div>
-                조회수 {postState.view_count}
+                조회수 {postState.viewCount}
               </div>
               <div className="mx-2 hidden sm:block">|</div>
 
-              {postState.creation_time === postState.modification_time ? (
+              {postState.creationTime === postState.modificationTime ? (
                 <div className="">
-                  작성일 {formatTime({ time: postState.creation_time })}
+                  작성일{" "}
+                  {timeFormatYYYYMMDDHHMMSS({ time: postState.creationTime })}
                 </div>
               ) : (
                 <div className="sm:flex">
                   <div className="">
-                    작성일 {formatTime({ time: postState.creation_time })}
+                    작성일{" "}
+                    {timeFormatYYYYMMDDHHMMSS({ time: postState.creationTime })}
                   </div>
                   <div className="mx-2 hidden sm:block">|</div>
                   <div className="">
-                    수정일 {formatTime({ time: postState.modification_time })}
+                    수정일{" "}
+                    {timeFormatYYYYMMDDHHMMSS({
+                      time: postState.modificationTime,
+                    })}
                   </div>
                 </div>
               )}
@@ -95,18 +96,18 @@ export default function PostDetailContent() {
         <button
           className="mx-2 w-2/5 rounded-lg border-2 border-customGray py-4 text-center font-extralight text-white sm:w-1/3 lg:w-20"
           onClick={() => {
-            void postRate({ value: 1 });
+            postRate({ rate: true });
           }}
         >
-          추천! {postState.rate_plus}
+          추천! {postState.ratePlus}
         </button>
         <button
           className="mx-2 w-2/5 rounded-lg border-2 border-customGray py-4 text-center font-extralight text-white sm:w-1/3 lg:w-20"
           onClick={() => {
-            void postRate({ value: 0 });
+            postRate({ rate: false });
           }}
         >
-          비추! {postState.rate_minus}
+          비추! {postState.rateMinus}
         </button>
       </div>
 

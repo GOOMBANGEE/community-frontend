@@ -22,14 +22,14 @@ export interface PostState {
   commentCount: number | undefined;
   previousId: number | undefined;
   nextId: number | undefined;
-  creationTime: Date | undefined;
-  modificationTime: Date | undefined;
+  creationTime: string;
+  modificationTime: string;
   password: string | undefined;
-  mode: string | undefined;
-  target: string | undefined;
-  keyword: string | undefined;
-  page: string | undefined;
-  commentPage: string | undefined;
+  mode: string | null;
+  target: string | null;
+  keyword: string | null;
+  page: string | null;
+  commentPage: string | null;
 }
 
 interface PostListState {
@@ -53,14 +53,14 @@ const initialPostState: PostState = {
   commentCount: undefined,
   previousId: undefined,
   nextId: undefined,
-  creationTime: undefined,
-  modificationTime: undefined,
+  creationTime: new Date().toISOString(),
+  modificationTime: new Date().toISOString(),
   password: undefined,
-  mode: undefined,
-  target: undefined,
-  keyword: undefined,
-  page: undefined,
-  commentPage: undefined,
+  mode: null,
+  target: null,
+  keyword: null,
+  page: null,
+  commentPage: null,
 };
 
 const initialPostListState: PostListState = {

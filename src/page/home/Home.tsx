@@ -1,6 +1,6 @@
 import { useCommunityList } from "../../hook/community/useCommunityList.ts";
 import HomeCommunityPreview from "./HomeCommunityPreview.tsx";
-import { useGlobalStore } from "../../store/GlobalStore.tsx";
+import { useGlobalStore } from "../../store/GlobalStore.ts";
 import Modal from "../../component/Modal.tsx";
 import { useEffect } from "react";
 import { useCommunityStore } from "../../store/CommunityStore.ts";

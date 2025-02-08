@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import useTimeFormat from "../../hook/useTimeFormat.tsx";
+import useTimeFormat from "../../hook/useTimeFormat.ts";
 
 interface Props {
   index: number;
@@ -8,7 +8,7 @@ interface Props {
 
 // 게시판 하나씩 표시하는 컴포넌트
 export default function HomeCommunityPreview(props: Readonly<Props>) {
-  const { formatTimeDifference } = useTimeFormat();
+  const { timeFormatDifference } = useTimeFormat();
   const navigate = useNavigate();
 
   return (
@@ -43,7 +43,7 @@ export default function HomeCommunityPreview(props: Readonly<Props>) {
             </div>
 
             <div className="ml-auto mt-1 h-fit w-fit items-center rounded bg-gray-700 px-1 text-center text-sm opacity-70">
-              {formatTimeDifference({ time: post.creationTime })}
+              {timeFormatDifference({ time: post.creationTime })}
             </div>
           </button>
         ))}

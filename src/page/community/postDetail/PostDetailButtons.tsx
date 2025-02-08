@@ -1,42 +1,31 @@
-import { usePostStore } from "../../../store/PostStore.tsx";
-import { useNavigate, useParams, useSearchParams } from "react-router-dom";
-import { useUserStore } from "../../../store/UserStore.tsx";
+import { usePostStore } from "../../../store/PostStore.ts";
+import { useNavigate } from "react-router-dom";
+import { useUserStore } from "../../../store/UserStore.ts";
+import { useCommunityStore } from "../../../store/CommunityStore.ts";
 
 export default function PostDetailButtons() {
+  const { communityState } = useCommunityStore();
   const { postState, setPostState } = usePostStore();
   const { userState } = useUserStore();
-
   const navigate = useNavigate();
-  const { communityId, postId } = useParams();
-  const [searchParams] = useSearchParams();
-  const mode = searchParams.get("mode");
-  const target = searchParams.get("target");
-  const keyword = searchParams.get("keyword");
-  const page = searchParams.get("p");
-  const commentPage = searchParams.get("cp");
 
   const handleDeleteButton = async () => {
     setPostState({
       ...postState,
       status: "delete",
     });
-    navigate(`/community/${communityId}/${postId}/check`);
+    navigate(`/community/${communityState.id}/${postState.id}/check`);
   };
 
   const handleUpdateButton = () => {
     setPostState({
       ...postState,
       status: "update",
-      mode: mode,
-      target: target,
-      keyword: keyword,
-      page: page,
-      commentPage: commentPage,
     });
 
     postState.creator === userState.id
-      ? navigate(`/community/${communityId}/${postState.id}/editor`)
-      : navigate(`/community/${communityId}/${postId}/check`);
+      ? navigate(`/community/${communityState.id}/${postState.id}/editor`)
+      : navigate(`/community/${communityState.id}/${postState.id}/check`);
   };
 
   return (
@@ -49,7 +38,7 @@ export default function PostDetailButtons() {
             <button
               className="flex items-center"
               onClick={() => {
-                void handleDeleteButton();
+                handleDeleteButton();
               }}
             >
               <svg

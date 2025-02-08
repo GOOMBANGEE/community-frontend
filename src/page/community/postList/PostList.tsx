@@ -1,8 +1,8 @@
 import { useSearchParams } from "react-router-dom";
-import { useGlobalStore } from "../../../store/GlobalStore.tsx";
+import { useGlobalStore } from "../../../store/GlobalStore.ts";
 import useCommunityPostList from "../../../hook/community/useCommunityPostList.ts";
 import PostListButtons from "./PostListButtons.tsx";
-import { usePostStore } from "../../../store/PostStore.tsx";
+import { usePostStore } from "../../../store/PostStore.ts";
 import { useEffect } from "react";
 import PostListSearchBar from "./PostListSearchBar.tsx";
 import PostListHeader from "./PostListHeader.tsx";
