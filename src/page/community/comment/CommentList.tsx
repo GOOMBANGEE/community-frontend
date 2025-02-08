@@ -1,44 +1,26 @@
-import useFetchCommentList from "../../../hook/community/useFetchCommentList.tsx";
-import CommentListComment from "./CommentListComment.tsx";
+import useCommentList from "../../../hook/community/comment/useCommentList.ts";
+import { useCommentStore } from "../../../store/CommentStore.ts";
 import { useParams, useSearchParams } from "react-router-dom";
-import { useCommentStore } from "../../../store/CommentStore.tsx";
+import { useEffect } from "react";
+import CommentListComment from "./CommentListComment.tsx";
 import CommentEditor from "./CommentEditor.tsx";
 import PaginationBar from "../PaginationBar.tsx";
-import { useEffect, useState } from "react";
-
-export interface CommentList {
-  items: Comment[];
-  page: number;
-  page_size: number;
-  total_page: number;
-  prev: number;
-  next: number;
-}
 
 export default function CommentList() {
-  const { fetchCommentList } = useFetchCommentList();
-
-  const { commentState } = useCommentStore();
+  const { commentList } = useCommentList();
+  const { commentState, commentListState } = useCommentStore();
   const { communityId, postId } = useParams();
   const [searchParams] = useSearchParams();
-  const commentPage = searchParams.get("cp");
+  const commentPage = searchParams.get("commentPage");
 
-  const [commentList, setCommentList] = useState<CommentList>({
-    items: [],
-    page: 0,
-    page_size: 0,
-    total_page: 0,
-    prev: 0,
-    next: 0,
-  });
   const paginationProps = {
     type: "comment",
-    currentPage: commentList.page,
-    totalPage: commentList.total_page,
+    page: commentListState.page,
+    totalPage: commentListState.totalPage,
   };
 
   useEffect(() => {
-    void fetchCommentList({ setCommentList });
+    commentList();
   }, [postId, commentPage]);
 
   return (
@@ -70,7 +52,8 @@ export default function CommentList() {
         </svg>
         <div className="ml-1 text-xl font-extralight text-white">댓글</div>
       </div>
-      {commentList.items.map((comment: Comment) => (
+
+      {commentListState.commentList.map((comment: Comment) => (
         <div key={comment.id}>
           <CommentListComment
             communityId={communityId}
@@ -83,6 +66,7 @@ export default function CommentList() {
           ) : null}
         </div>
       ))}
+
       <PaginationBar {...paginationProps} />
     </div>
   );

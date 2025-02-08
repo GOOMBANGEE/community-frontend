@@ -1,7 +1,7 @@
-import useTimeFormat from "../../../hook/useTimeFormat.tsx";
+import useTimeFormat from "../../../hook/useTimeFormat.ts";
 import { useNavigate } from "react-router-dom";
-import { useCommentStore } from "../../../store/CommentStore.tsx";
-import { useUserStore } from "../../../store/UserStore.tsx";
+import { useCommentStore } from "../../../store/CommentStore.ts";
+import { useUserStore } from "../../../store/UserStore.ts";
 
 interface Props {
   communityId: string | undefined;
@@ -14,7 +14,7 @@ export default function CommentListComment(props: Readonly<Props>) {
   const { commentState, setCommentState, resetCommentState } =
     useCommentStore();
   const { userState } = useUserStore();
-  const { formatTime } = useTimeFormat();
+  const { timeFormatYYYYMMDDHHMMSS } = useTimeFormat();
 
   // 삭제는 비밀번호 체크페이지로 이동
   const handleDeleteButton = () => {
@@ -46,7 +46,7 @@ export default function CommentListComment(props: Readonly<Props>) {
         postId: props.postId,
         id: props.comment.id,
         creator: props.comment.creator,
-        nickname: props.comment.nickname,
+        username: props.comment.username,
         content: props.comment.content,
         status: "update",
       });
@@ -58,7 +58,7 @@ export default function CommentListComment(props: Readonly<Props>) {
       <div className="mx-2 mb-3 border-2 border-customGray text-sm font-extralight text-white">
         <div className="flex bg-customGray px-2 py-1">
           <div className="flex items-center">
-            {props.comment.nickname}
+            {props.comment.username}
             {props.comment.creator ? (
               <svg
                 className="ml-1"
@@ -87,8 +87,11 @@ export default function CommentListComment(props: Readonly<Props>) {
               </svg>
             ) : null}
           </div>
+
           <div className="ml-auto flex items-center text-xs">
-            <div>{formatTime({ time: props.comment.creation_time })}</div>
+            <div>
+              {timeFormatYYYYMMDDHHMMSS({ time: props.comment.creationTime })}
+            </div>
             {(props.comment.creator &&
               props.comment.creator === userState.id) ||
             props.comment.creator === null ? (
@@ -163,15 +166,16 @@ export default function CommentListComment(props: Readonly<Props>) {
             ) : null}
           </div>
         </div>
-        {/*작성시간과 수정시간이 다른경우 수정됨 표시*/}
-        {props.comment.creation_time === props.comment.modification_time ? (
-          <div className="p-2 text-white">{props.comment.content}</div>
-        ) : (
-          <div className="p-2 text-white">
+
+        <div className="p-2 text-white">
+          {props.comment.content}
+
+          {/*작성시간과 수정시간이 다른경우 수정됨 표시*/}
+          {props.comment.creationTime ===
+          props.comment.modificationTime ? null : (
             <span className="mr-1 text-xs">*수정됨</span>
-            {props.comment.content}
-          </div>
-        )}
+          )}
+        </div>
       </div>
     </div>
   );

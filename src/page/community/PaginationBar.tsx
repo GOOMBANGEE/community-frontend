@@ -68,54 +68,58 @@ export default function PaginationBar(props: Readonly<Props>) {
   };
 
   return (
-    <div className="mx-auto flex w-full justify-center">
-      <div className="mx-6 my-2 flex bg-customBlack p-1 font-extralight text-white sm:font-normal">
-        {page >= 6 ? (
-          <>
-            <button
-              className="border-2 border-customBlack px-1.5 sm:px-3 sm:py-1"
-              onClick={() => {
-                navigate(`${url}1`);
-              }}
-            >
-              〈〈
-            </button>
-            <button
-              className="border-2 border-customBlack px-1.5 sm:px-3 sm:py-1"
-              onClick={() => {
-                navigate(
-                  `${url}${page >= totalPage - 5 ? totalPage - 10 : page - 5}`,
-                );
-              }}
-            >
-              〈
-            </button>
-          </>
-        ) : null}
+    <>
+      {totalPage > 1 ? (
+        <div className="mx-auto flex w-full justify-center">
+          <div className="mx-6 my-2 flex bg-customBlack p-1 font-extralight text-white sm:font-normal">
+            {page >= 6 ? (
+              <>
+                <button
+                  className="border-2 border-customBlack px-1.5 sm:px-3 sm:py-1"
+                  onClick={() => {
+                    navigate(`${url}1`);
+                  }}
+                >
+                  〈〈
+                </button>
+                <button
+                  className="border-2 border-customBlack px-1.5 sm:px-3 sm:py-1"
+                  onClick={() => {
+                    navigate(
+                      `${url}${page >= totalPage - 5 ? totalPage - 10 : page - 5}`,
+                    );
+                  }}
+                >
+                  〈
+                </button>
+              </>
+            ) : null}
 
-        {renderPageNumbers()}
+            {renderPageNumbers()}
 
-        {totalPage > 10 && totalPage - page >= 6 ? (
-          <>
-            <button
-              className="border-2 border-customBlack px-1.5 sm:px-3 sm:py-1"
-              onClick={() => {
-                navigate(`${url}${page <= 5 ? 11 : page + 6}`);
-              }}
-            >
-              〉
-            </button>
-            <button
-              className="border-2 border-customBlack px-1.5 sm:px-3 sm:py-1"
-              onClick={() => {
-                navigate(`${url}${totalPage}`);
-              }}
-            >
-              〉〉
-            </button>
-          </>
-        ) : null}
-      </div>
-    </div>
+            {totalPage > 10 && totalPage - page >= 6 ? (
+              <>
+                <button
+                  className="border-2 border-customBlack px-1.5 sm:px-3 sm:py-1"
+                  onClick={() => {
+                    navigate(`${url}${page <= 5 ? 11 : page + 6}`);
+                  }}
+                >
+                  〉
+                </button>
+                <button
+                  className="border-2 border-customBlack px-1.5 sm:px-3 sm:py-1"
+                  onClick={() => {
+                    navigate(`${url}${totalPage}`);
+                  }}
+                >
+                  〉〉
+                </button>
+              </>
+            ) : null}
+          </div>
+        </div>
+      ) : null}
+    </>
   );
 }

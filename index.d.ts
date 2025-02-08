@@ -25,11 +25,11 @@ interface Post {
 
 interface Comment {
   id: number;
-  nickname: string;
+  username: string;
   creator: string;
   content: string;
-  creation_time: Date;
-  modification_time: Date;
+  creationTime: string;
+  modificationTime: string;
 }
 
 interface ValidationProps {
