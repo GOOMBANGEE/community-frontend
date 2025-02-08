@@ -19,7 +19,6 @@ export default function HomeCommunityPreview(props: Readonly<Props>) {
         <button
           className="mb-3 flex w-full text-xl font-extralight"
           onClick={() => {
-            // todo
             navigate(`/community/${props.community.id}?page=1`);
           }}
         >
@@ -34,8 +33,9 @@ export default function HomeCommunityPreview(props: Readonly<Props>) {
             key={post.id}
             className="mb-1 flex w-full text-base font-extralight"
             onClick={() => {
-              // todo
-              navigate(`/community/${post.id}`);
+              navigate(
+                `/community/${post.communityId}/${post.id}?page=1&commentPage=1`,
+              );
             }}
           >
             <div className="text-left">

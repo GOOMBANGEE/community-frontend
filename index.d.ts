@@ -1,8 +1,8 @@
 interface Community {
-  id: number;
-  title: string;
-  description: string;
-  thumbnail: string;
+  id: number | undefined;
+  title: string | undefined;
+  description: string | undefined;
+  thumbnail: string | undefined;
   postList: Post[] | [];
 }
 

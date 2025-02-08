@@ -1,30 +1,32 @@
 import { useParams, useSearchParams } from "react-router-dom";
-import axios from "axios";
 import { useEnvStore } from "../../store/EnvStore.tsx";
 import { useGlobalStore } from "../../store/GlobalStore.tsx";
 import { handleAxiosErrorModal } from "../handleAxiosErrorModal.tsx";
-import { PostList } from "../../page/community/postList/PostList.tsx";
+import axios from "axios";
+import { usePostStore } from "../../store/PostStore.tsx";
+import { useCommunityStore } from "../../store/CommunityStore.ts";
 
-interface Props {
-  setPostList: (state: PostList) => void;
-}
-
-export default function useFetchPostList() {
+export default function useCommunityPostList() {
+  const { setCommunityState } = useCommunityStore();
+  const { setPostListState } = usePostStore();
   const { envState } = useEnvStore();
   const { setGlobalState } = useGlobalStore();
+
   const { communityId } = useParams();
   const [searchParams] = useSearchParams();
+  const mode = searchParams.get("mode");
   const target = searchParams.get("target");
   const keyword = searchParams.get("keyword");
-  const mode = searchParams.get("mode");
-  const page = searchParams.get("p");
+  const page = searchParams.get("page");
 
-  const fetchPostList = async (props: Props) => {
+  const communityPostList = async () => {
     const apiUrl = createApiUrl();
 
     try {
       const response = await axios.get(apiUrl);
-      props.setPostList(response.data);
+      const { community, ...postList } = response.data;
+      setCommunityState(community);
+      setPostListState(postList);
       setGlobalState({ loading: false });
       return;
     } catch (error) {
@@ -33,7 +35,8 @@ export default function useFetchPostList() {
   };
 
   const createApiUrl = () => {
-    let apiUrl = `${envState.communityUrl}/${communityId}`;
+    const communityUrl = envState.communityUrl;
+    let apiUrl = `${communityUrl}/${communityId}`;
     const queryParams = [];
     if (mode) {
       queryParams.push(`mode=${mode}`);
@@ -43,10 +46,10 @@ export default function useFetchPostList() {
     }
     apiUrl +=
       queryParams.length > 0
-        ? `?${queryParams.join("&")}&p=${page}`
-        : `?p=${page}`;
+        ? `?${queryParams.join("&")}&page=${page}`
+        : `?page=${page}`;
     return apiUrl;
   };
 
-  return { fetchPostList };
+  return { communityPostList };
 }
