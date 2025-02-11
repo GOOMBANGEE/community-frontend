@@ -20,7 +20,7 @@ const initialCommunityState: Community = {
   title: undefined,
   description: undefined,
   thumbnail: undefined,
-  postList: [],
+  Post: [],
 };
 
 const initialCommunityListState: CommunityListState = {

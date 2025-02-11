@@ -3,7 +3,7 @@ interface Community {
   title: string | undefined;
   description: string | undefined;
   thumbnail: string | undefined;
-  postList: Post[] | [];
+  Post: Post[] | [];
 }
 
 interface Post {

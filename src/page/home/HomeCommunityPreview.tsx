@@ -28,7 +28,7 @@ export default function HomeCommunityPreview(props: Readonly<Props>) {
           <span className="ml-auto font-bold"> 〉 </span>
         </button>
 
-        {props.community.postList.map((post) => (
+        {props.community.Post.map((post) => (
           <button
             key={post.id}
             className="mb-1 flex w-full text-base font-extralight"
