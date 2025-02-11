@@ -11,12 +11,12 @@ interface CommentStore {
 export interface CommentState {
   communityId: string | undefined;
   postId: string | undefined;
-  id: number;
-  status: string;
-  creator: string;
-  username: string;
-  password: string;
-  content: string;
+  id: number | undefined;
+  status: string | undefined;
+  creator: string | undefined;
+  username: string | undefined;
+  password: string | undefined;
+  content: string | undefined;
 }
 
 interface CommentListState {
@@ -27,14 +27,14 @@ interface CommentListState {
 }
 
 const initialCommentState: CommentState = {
-  communityId: "",
-  postId: "",
-  id: 0,
-  status: "create",
-  creator: "",
-  username: "",
-  password: "",
-  content: "",
+  communityId: undefined,
+  postId: undefined,
+  id: undefined,
+  status: undefined,
+  creator: undefined,
+  username: undefined,
+  password: undefined,
+  content: undefined,
 };
 
 const initialCommentListState: CommentListState = {

@@ -2,9 +2,8 @@ import { create } from "zustand";
 
 const BASE_URL_USER = import.meta.env.VITE_BASE_URL_USER;
 const BASE_URL_COMMUNITY = import.meta.env.VITE_BASE_URL_COMMUNITY;
-const BASE_URL_USER = import.meta.env.VITE_BASE_URL_USER;
-const TIME_DIFFERENCE = import.meta.env.VITE_TIME_DIFFERENCE;
 const BASE_URL_POST = import.meta.env.VITE_BASE_URL_POST;
+const BASE_URL_COMMENT = import.meta.env.VITE_BASE_URL_COMMENT;
 const TIME_LOCALE = import.meta.env.VITE_TIME_LOCALE;
 const TIME_ZONE = import.meta.env.VITE_TIME_ZONE;
 
@@ -16,8 +15,8 @@ interface EnvStore {
 interface EnvState {
   userUrl: string;
   communityUrl: string;
-  timeDifference: number;
   postUrl: string;
+  commentUrl: string;
   timeLocale: string;
   timeZone: string;
 }

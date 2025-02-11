@@ -27,9 +27,7 @@ export default function CommentListComment(props: Readonly<Props>) {
       content: props.comment.content,
       status: "delete",
     });
-    navigate(
-      `/community/${props.communityId}/${props.postId}/${props.comment.id}/check`,
-    );
+    navigate(`/community/check`);
   };
 
   // 수정은 페이지이동하지않고 commentEditor 사용

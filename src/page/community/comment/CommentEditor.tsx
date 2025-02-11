@@ -1,22 +1,27 @@
 import { useState } from "react";
-import { useCommentStore } from "../../../store/CommentStore.tsx";
+import { useCommentStore } from "../../../store/CommentStore.ts";
 import useRenderErrorMessage from "../../../hook/useRenderErrorMessage.tsx";
-import useValidateComment from "../../../hook/community/comment/useValidateComment.tsx";
-import useCommentCreate from "../../../hook/community/comment/useCommentCreate.tsx";
-import usePasswordCheck from "../../../hook/community/usePasswordCheck.tsx";
-import useCommentUpdate from "../../../hook/community/comment/useCommentUpdate.tsx";
-import { useTokenStore } from "../../../store/TokenStore.tsx";
-import { useUserStore } from "../../../store/UserStore.tsx";
+import useValidateComment from "../../../hook/community/comment/useValidateComment.ts";
+import useCommentCreate from "../../../hook/community/comment/useCommentCreate.ts";
+import useCommentUpdate from "../../../hook/community/comment/useCommentUpdate.ts";
+import { useTokenStore } from "../../../store/TokenStore.ts";
+import { useUserStore } from "../../../store/UserStore.ts";
 
 interface Props {
   status: string;
 }
 
+interface ValidateComment {
+  usernameError: string | undefined;
+  passwordError: string | undefined;
+  contentError: string | undefined;
+  invalidPasswordError: string | undefined;
+}
+
 export default function CommentEditor(props: Readonly<Props>) {
   const { commentCreate } = useCommentCreate();
   const { commentUpdate } = useCommentUpdate();
-  const { passwordCheckComment } = usePasswordCheck();
-  const { isInvalidNickname, isInvalidPassword, isInvalidContent } =
+  const { isInvalidUsername, isInvalidPassword, isInvalidContent } =
     useValidateComment();
 
   const { commentState, setCommentState } = useCommentStore();
@@ -26,19 +31,20 @@ export default function CommentEditor(props: Readonly<Props>) {
   // textarea에 포커싱 되어있을때만 "작성"버튼 표시
   const [isFocusTextArea, setIsFocusTextArea] = useState<boolean>(false);
   const [validateState, setValidateState] = useState<ValidateComment>({
-    nicknameError: "",
-    passwordError: "",
-    contentError: "",
-    invalidPasswordError: "",
+    usernameError: undefined,
+    passwordError: undefined,
+    contentError: undefined,
+    invalidPasswordError: undefined,
   });
 
   const handleCommentButton = async () => {
     // 유효성 검사
     if (
       !tokenState.accessToken &&
+      commentState.username &&
       props.status === "create" &&
-      isInvalidNickname({
-        value: commentState.nickname,
+      isInvalidUsername({
+        value: commentState.username,
         setValidateState,
       })
     ) {
@@ -46,6 +52,7 @@ export default function CommentEditor(props: Readonly<Props>) {
     }
     if (
       !tokenState.accessToken &&
+      commentState.password &&
       isInvalidPassword({
         value: commentState.password,
         setValidateState,
@@ -54,6 +61,7 @@ export default function CommentEditor(props: Readonly<Props>) {
       return;
     }
     if (
+      commentState.content &&
       isInvalidContent({
         value: commentState.content,
         setValidateState,
@@ -61,27 +69,24 @@ export default function CommentEditor(props: Readonly<Props>) {
     ) {
       return;
     }
-
-    if (props.status !== "update") {
-      await commentCreate();
-      window.location.reload();
-      return;
-    }
     // 유효성검사 종료
 
-    // comment 작성자가 user와 동일한 경우
-    // passwordCheckComment (비밀번호 검증) 통과한 경우 commentUpdate 실행 후 페이지 리로드
-    if (
-      commentState.creator === userState.id ||
-      (await passwordCheckComment({
-        commentState: commentState,
-        password: commentState.password,
-      }))
-    ) {
-      await commentUpdate();
-      window.location.reload();
-      return;
+    // create
+    if (props.status === "create") {
+      if (await commentCreate()) {
+        window.location.reload();
+        return;
+      }
     }
+
+    // update
+    if (props.status === "update") {
+      if (await commentUpdate()) {
+        window.location.reload();
+        return;
+      }
+    }
+
     // 비밀번호 검증 통과하지 못한경우 textarea 하단 오류메시지 표시
     setValidateState({
       ...validateState,
@@ -98,25 +103,25 @@ export default function CommentEditor(props: Readonly<Props>) {
           </div>
 
           {tokenState.accessToken ? (
-            <div className="p-2 text-gray-400">{userState.nickname}</div>
+            <div className="p-2 text-gray-400">{userState.username}</div>
           ) : (
             <div className="flex">
               <input
                 type="text"
-                placeholder="닉네임"
+                placeholder="이름"
                 className="border-r-2 border-customGray bg-transparent p-2 text-sm font-light text-white"
                 onChange={(e) => {
                   setCommentState({
                     ...commentState,
-                    nickname: e.target.value,
+                    username: e.target.value,
                   });
                   setValidateState({
                     ...validateState,
-                    nicknameError: "",
+                    usernameError: "",
                   });
                 }}
                 defaultValue={
-                  props.status === "update" ? commentState.nickname : ""
+                  props.status === "update" ? commentState.username : ""
                 }
                 readOnly={props.status === "update"}
               />
@@ -162,7 +167,7 @@ export default function CommentEditor(props: Readonly<Props>) {
           <button
             className="justify-item-end mb-2 ml-auto mr-2 flex rounded border-2 border-customGray p-1 px-6 font-extralight text-white"
             onClick={() => {
-              void handleCommentButton();
+              handleCommentButton();
             }}
           >
             작성
@@ -170,7 +175,7 @@ export default function CommentEditor(props: Readonly<Props>) {
         ) : null}
       </div>
 
-      {useRenderErrorMessage(validateState.nicknameError)}
+      {useRenderErrorMessage(validateState.usernameError)}
       {useRenderErrorMessage(validateState.passwordError)}
       {useRenderErrorMessage(validateState.invalidPasswordError)}
       {useRenderErrorMessage(validateState.contentError)}

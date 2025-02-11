@@ -1,18 +1,14 @@
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { PostState, usePostStore } from "../../store/PostStore.tsx";
-import { CommentState, useCommentStore } from "../../store/CommentStore.tsx";
-import usePasswordCheck from "../../hook/community/usePasswordCheck.tsx";
-import usePostDelete from "../../hook/community/post/usePostDelete.tsx";
-import useCommentDelete from "../../hook/community/comment/useCommentDelete.tsx";
-import { useUserStore } from "../../store/UserStore.tsx";
+import { usePostStore } from "../../store/PostStore.ts";
+import { useCommentStore } from "../../store/CommentStore.ts";
+import usePasswordCheck from "../../hook/community/usePasswordCheck.ts";
+import usePostDelete from "../../hook/community/post/usePostDelete.ts";
+import useCommentDelete from "../../hook/community/comment/useCommentDelete.ts";
+import { useUserStore } from "../../store/UserStore.ts";
 
-interface Props {
-  stateType: PostState | CommentState;
-}
-
-export default function PasswordCheck(props: Readonly<Props>) {
-  const { passwordCheckPost, passwordCheckComment } = usePasswordCheck();
+export default function PasswordCheck() {
+  const { passwordCheckPost } = usePasswordCheck();
   const { postDelete } = usePostDelete();
   const { commentDelete } = useCommentDelete();
 
@@ -23,37 +19,28 @@ export default function PasswordCheck(props: Readonly<Props>) {
   const [password, setPassword] = useState<string>("");
   const [isPasswordInvalid, setIsPasswordInvalid] = useState<boolean>(false);
   const navigate = useNavigate();
-  const { communityId, commentId } = useParams();
-
-  const isPost = (state: PostState | CommentState): state is PostState => {
-    return "title" in state;
-  };
-  const isComment = (
-    state: PostState | CommentState,
-  ): state is CommentState => {
-    return !("title" in state);
-  };
+  const { communityId } = useParams();
 
   const handleConfirmButton = () => {
-    if (isPost(props.stateType)) {
+    if (postState.status) {
       void handleConfirmPost();
       return;
     }
-    if (isComment(props.stateType)) {
+    if (commentState.status) {
       void handleConfirmComment();
     }
   };
 
   const handleConfirmPost = async () => {
-    if (isPost(props.stateType)) {
+    if (postState.status) {
       if (postState.creator === userState.id) {
         await postDelete({ password });
         navigate(-2);
         return;
       }
 
-      if (await passwordCheckPost({ postState: props.stateType, password })) {
-        if (props.stateType.status === "update") {
+      if (await passwordCheckPost({ password })) {
+        if (postState.status === "update") {
           setPostState({ ...postState, password: password });
           navigate(`/community/${communityId}/${postState.id}/editor`);
           return;
@@ -67,15 +54,8 @@ export default function PasswordCheck(props: Readonly<Props>) {
   };
 
   const handleConfirmComment = async () => {
-    if (isComment(props.stateType)) {
-      if (
-        commentState.creator === userState.id ||
-        (await passwordCheckComment({
-          commentState: props.stateType,
-          password,
-        }))
-      ) {
-        await commentDelete({ password });
+    if (commentState.status) {
+      if (await commentDelete({ password })) {
         navigate(-1);
         return;
       }
@@ -85,29 +65,30 @@ export default function PasswordCheck(props: Readonly<Props>) {
 
   return (
     <div className="m-2 rounded-lg bg-customGray p-4 font-light text-white">
-      {isPost(props.stateType) ? (
+      {postState.status ? (
         <>
           <div className="mb-2 text-xl font-semibold">
-            {props.stateType.status === "update"
-              ? "게시물 수정"
-              : "게시물 삭제"}
+            {postState.status === "update" ? "게시물 수정" : "게시물 삭제"}
           </div>
-          <div className="mb-6 text-gray-400">{props.stateType.title}</div>
-          {props.stateType.status === "delete" ? (
-            <div className="mb-4">삭제된 글은 복구할 수 없습니다.</div>
-          ) : null}
+          <div className="mb-6 text-gray-400">{postState.title}</div>
+
+          <div
+            className={`mb-4 ${postState.status === "delete" ? "" : "hidden"}`}
+          >
+            삭제된 글은 복구할 수 없습니다.
+          </div>
         </>
       ) : null}
 
-      {isComment(props.stateType) ? (
+      {commentState.status ? (
         <>
           <div className="mb-2 text-xl font-semibold">댓글 삭제</div>
           <div className="mb-4">삭제된 댓글은 복구할 수 없습니다.</div>
         </>
       ) : null}
 
-      {(!commentId && postState.creator === userState.id) ||
-      (commentId && commentState.creator === userState.id) ? null : (
+      {(!commentState.id && postState.creator === userState.id) ||
+      (commentState.id && commentState.creator === userState.id) ? null : (
         <>
           <div className="mb-4 flex items-center">
             <div className="mx-4 mr-8">비밀번호</div>
@@ -130,12 +111,12 @@ export default function PasswordCheck(props: Readonly<Props>) {
       )}
 
       <button
-        className={`ml-auto mr-6 flex w-fit p-2 px-3 text-white ${props.stateType.status === "delete" ? "bg-red-500" : "bg-blue-600"}`}
+        className={`ml-auto mr-6 flex w-fit p-2 px-3 text-white ${commentState.status === "delete" ? "bg-red-500" : "bg-blue-600"}`}
         onClick={() => {
           handleConfirmButton();
         }}
       >
-        {props.stateType.status === "delete" ? "삭제" : "확인"}
+        {commentState.status === "delete" ? "삭제" : "확인"}
       </button>
     </div>
   );
