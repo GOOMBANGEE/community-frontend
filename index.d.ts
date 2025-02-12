@@ -50,17 +50,3 @@ interface ValidateUser {
   passwordError?: string;
   codeError?: string;
 }
-
-interface ValidatePost {
-  titleError?: string;
-  nicknameError?: string;
-  passwordError?: string;
-  contentError?: string;
-}
-
-interface ValidateComment {
-  nicknameError?: string;
-  passwordError?: string;
-  contentError?: string;
-  invalidPasswordError?: string;
-}

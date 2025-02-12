@@ -20,7 +20,6 @@ export default function Community() {
         <Route path="/:communityId/*" element={<PostList />} />
         <Route path="/:communityId/editor" element={<PostEditor />} />
         <Route path="/:communityId/:postId/*" element={<PostDetail />} />
-        <Route path="/:communityId/:postId/editor" element={<PostEditor />} />
         <Route path="check" element={<PasswordCheck />} />
       </Routes>
       {globalState.modalMessage ? <Modal /> : null}

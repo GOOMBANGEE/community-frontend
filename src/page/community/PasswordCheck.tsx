@@ -1,17 +1,19 @@
 import { useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { usePostStore } from "../../store/PostStore.ts";
 import { useCommentStore } from "../../store/CommentStore.ts";
-import usePasswordCheck from "../../hook/community/usePasswordCheck.ts";
 import usePostDelete from "../../hook/community/post/usePostDelete.ts";
 import useCommentDelete from "../../hook/community/comment/useCommentDelete.ts";
 import { useUserStore } from "../../store/UserStore.ts";
+import { useCommunityStore } from "../../store/CommunityStore.ts";
+import usePostPasswordCheck from "../../hook/community/post/usePostPasswordCheck.ts";
 
 export default function PasswordCheck() {
-  const { passwordCheckPost } = usePasswordCheck();
+  const { postPasswordCheck } = usePostPasswordCheck();
   const { postDelete } = usePostDelete();
   const { commentDelete } = useCommentDelete();
 
+  const { communityState } = useCommunityStore();
   const { postState, setPostState } = usePostStore();
   const { commentState } = useCommentStore();
   const { userState } = useUserStore();
@@ -19,7 +21,6 @@ export default function PasswordCheck() {
   const [password, setPassword] = useState<string>("");
   const [isPasswordInvalid, setIsPasswordInvalid] = useState<boolean>(false);
   const navigate = useNavigate();
-  const { communityId } = useParams();
 
   const handleConfirmButton = () => {
     if (postState.status) {
@@ -32,24 +33,25 @@ export default function PasswordCheck() {
   };
 
   const handleConfirmPost = async () => {
-    if (postState.status) {
-      if (postState.creator === userState.id) {
-        await postDelete({ password });
-        navigate(-2);
-        return;
-      }
-
-      if (await passwordCheckPost({ password })) {
-        if (postState.status === "update") {
-          setPostState({ ...postState, password: password });
-          navigate(`/community/${communityId}/${postState.id}/editor`);
-          return;
-        }
-        await postDelete({ password });
-        navigate(-2);
-        return;
-      }
+    // 작성자 본인이 쓴 글에서 PasswordCheck에 방문하게되는 경우는 postDelete 요청을 할때
+    if (postState.creator === userState.id) {
+      await postDelete({ password });
+      navigate(`/community/${communityState.id}&page=1`, { replace: true });
+      return;
     }
+
+    // 익명게시글에서 PasswordCheck 방문시 -> password check -> postState.status에 따라서 update, delete실행
+    if (await postPasswordCheck({ password })) {
+      if (postState.status === "update") {
+        setPostState({ ...postState, password: password });
+        navigate(`/community/${communityState.id}/editor`, { replace: true });
+        return;
+      }
+      await postDelete({ password });
+      navigate(-2);
+      return;
+    }
+
     setIsPasswordInvalid(true);
   };
 

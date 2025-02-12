@@ -3,8 +3,8 @@ import { usePostStore } from "../../../store/PostStore.ts";
 
 export default function PostListButtons() {
   const { resetPostState } = usePostStore();
-  const navigate = useNavigate();
   const { communityId } = useParams();
+  const navigate = useNavigate();
 
   const handleClickPostList = () => {
     window.location.href = `/community/${communityId}?page=1`;
@@ -14,14 +14,17 @@ export default function PostListButtons() {
     window.location.href = `/community/${communityId}?mode=best&page=1`;
   };
 
+  const handleCLickPostCreateButton = () => {
+    resetPostState();
+    navigate(`/community/${communityId}/editor`);
+  };
+
   return (
     <div className="mx-2 flex pb-4 pt-2 text-sm font-light text-white lg:bg-customBlack">
       <div className="flex border-2 border-customGray">
         <button
           className="flex items-center bg-customBlack p-1 sm:px-1.5"
-          onClick={() => {
-            handleClickPostList();
-          }}
+          onClick={handleClickPostList}
         >
           <svg
             width="16px"
@@ -52,9 +55,7 @@ export default function PostListButtons() {
 
         <button
           className="flex items-center border-l-2 border-customGray bg-red-600 p-1 sm:px-1.5"
-          onClick={() => {
-            handleClickBest();
-          }}
+          onClick={handleClickBest}
         >
           ★ 개념글
         </button>
@@ -62,10 +63,7 @@ export default function PostListButtons() {
 
       <button
         className="ml-auto flex items-center border-2 border-customGray bg-customBlack p-1 sm:px-1.5"
-        onClick={() => {
-          navigate(`/community/${communityId}/editor`);
-          resetPostState();
-        }}
+        onClick={handleCLickPostCreateButton}
       >
         <svg
           width="16px"

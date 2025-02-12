@@ -1,31 +1,23 @@
 import { usePostStore } from "../../../store/PostStore.ts";
 import { useNavigate } from "react-router-dom";
 import { useUserStore } from "../../../store/UserStore.ts";
-import { useCommunityStore } from "../../../store/CommunityStore.ts";
 
 export default function PostDetailButtons() {
-  const { communityState } = useCommunityStore();
   const { postState, setPostState } = usePostStore();
   const { userState } = useUserStore();
   const navigate = useNavigate();
 
   const handleDeleteButton = async () => {
-    setPostState({
-      ...postState,
-      status: "delete",
-    });
-    navigate(`/community/${communityState.id}/${postState.id}/check`);
+    setPostState({ status: "delete" });
+    navigate(`/community/check`);
   };
 
   const handleUpdateButton = () => {
-    setPostState({
-      ...postState,
-      status: "update",
-    });
+    setPostState({ status: "update" });
 
     postState.creator === userState.id
-      ? navigate(`/community/${communityState.id}/${postState.id}/editor`)
-      : navigate(`/community/${communityState.id}/${postState.id}/check`);
+      ? navigate(`/community/editor`)
+      : navigate(`/community/check`);
   };
 
   return (

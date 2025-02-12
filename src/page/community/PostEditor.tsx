@@ -1,18 +1,25 @@
 import { useState } from "react";
-import { usePostStore } from "../../store/PostStore.tsx";
+import { usePostStore } from "../../store/PostStore.ts";
 import useRenderErrorMessage from "../../hook/useRenderErrorMessage.tsx";
-import useValidatePost from "../../hook/community/post/useValidatePost.tsx";
-import usePostUpdate from "../../hook/community/post/usePostUpdate.tsx";
-import usePostCreate from "../../hook/community/post/usePostCreate.tsx";
+import useValidatePost from "../../hook/community/post/useValidatePost.ts";
+import usePostUpdate from "../../hook/community/post/usePostUpdate.ts";
+import usePostCreate from "../../hook/community/post/usePostCreate.ts";
 import { useNavigate, useParams } from "react-router-dom";
-import { useTokenStore } from "../../store/TokenStore.tsx";
+import { useTokenStore } from "../../store/TokenStore.ts";
+
+interface ValidatePost {
+  titleError: string | undefined;
+  usernameError: string | undefined;
+  passwordError: string | undefined;
+  contentError: string | undefined;
+}
 
 export default function PostEditor() {
   const { postCreate } = usePostCreate();
   const { postUpdate } = usePostUpdate();
   const {
     isInvalidTitle,
-    isInvalidNickname,
+    isInvalidUsername,
     isInvalidPassword,
     isInvalidContent,
   } = useValidatePost();
@@ -24,14 +31,15 @@ export default function PostEditor() {
   const { communityId } = useParams();
 
   const [validateState, setValidateState] = useState<ValidatePost>({
-    titleError: "",
-    nicknameError: "",
-    passwordError: "",
-    contentError: "",
+    titleError: undefined,
+    usernameError: undefined,
+    passwordError: undefined,
+    contentError: undefined,
   });
 
   const handlePostButton = async () => {
     if (
+      postState.title &&
       isInvalidTitle({
         value: postState.title,
         setValidateState,
@@ -42,8 +50,9 @@ export default function PostEditor() {
     if (
       postState.status === "create" &&
       !tokenState.accessToken &&
-      isInvalidNickname({
-        value: postState.nickname,
+      postState.username &&
+      isInvalidUsername({
+        value: postState.username,
         setValidateState,
       })
     ) {
@@ -51,6 +60,7 @@ export default function PostEditor() {
     }
     if (
       !tokenState.accessToken &&
+      postState.password &&
       isInvalidPassword({
         value: postState.password,
         setValidateState,
@@ -59,6 +69,7 @@ export default function PostEditor() {
       return;
     }
     if (
+      postState.content &&
       isInvalidContent({
         value: postState.content,
         setValidateState,
@@ -66,17 +77,19 @@ export default function PostEditor() {
     ) {
       return;
     }
-
-    if (postState.status !== "update") {
-      const postId = await postCreate();
-      navigate(`/community/${communityId}/${postId}?p=1`);
-      return;
-    }
+    // update
     if (postState.status === "update") {
       if (await postUpdate()) {
         navigate(-2);
         return;
       }
+    }
+    // default: create
+    const postId = await postCreate();
+    if (postId) {
+      navigate(`/community/${communityId}/${postId}?page=1&commentPage=1`, {
+        replace: true,
+      });
     }
   };
 
@@ -95,10 +108,7 @@ export default function PostEditor() {
           type="text"
           className="w-full grow bg-black px-2 py-1"
           onChange={(e) => {
-            setPostState({
-              ...postState,
-              title: e.target.value,
-            });
+            setPostState({ title: e.target.value });
             setValidateState({
               ...validateState,
               titleError: "",
@@ -120,13 +130,10 @@ export default function PostEditor() {
                   type="text"
                   className="w-full bg-black px-2"
                   onChange={(e) => {
-                    setPostState({
-                      ...postState,
-                      nickname: e.target.value,
-                    });
+                    setPostState({ username: e.target.value });
                     setValidateState({
                       ...validateState,
-                      nicknameError: "",
+                      usernameError: "",
                     });
                   }}
                 />
@@ -139,10 +146,7 @@ export default function PostEditor() {
                   type="password"
                   className="w-full bg-black px-2"
                   onChange={(e) => {
-                    setPostState({
-                      ...postState,
-                      password: e.target.value,
-                    });
+                    setPostState({ password: e.target.value });
                     setValidateState({
                       ...validateState,
                       passwordError: "",
@@ -159,10 +163,7 @@ export default function PostEditor() {
         <textarea
           className="mx-auto mb-4 h-full w-full rounded bg-white p-4 text-black"
           onChange={(e) => {
-            setPostState({
-              ...postState,
-              content: e.target.value,
-            });
+            setPostState({ content: e.target.value });
             setValidateState({
               ...validateState,
               contentError: "",
@@ -174,15 +175,13 @@ export default function PostEditor() {
       </div>
 
       {useRenderErrorMessage(validateState.titleError)}
-      {useRenderErrorMessage(validateState.nicknameError)}
+      {useRenderErrorMessage(validateState.usernameError)}
       {useRenderErrorMessage(validateState.passwordError)}
       {useRenderErrorMessage(validateState.contentError)}
 
       <button
         className="justify-item-end mb-2 ml-auto mr-2 flex rounded border-2 border-customGray p-1 px-4 font-extralight"
-        onClick={() => {
-          void handlePostButton();
-        }}
+        onClick={handlePostButton}
       >
         {postState.status !== "update" ? "작성" : "수정"}
       </button>

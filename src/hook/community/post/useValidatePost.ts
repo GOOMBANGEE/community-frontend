@@ -1,4 +1,4 @@
-import useValidator from "../../useValidator.tsx";
+import useValidator from "../../useValidator.ts";
 
 export default function useValidatePost() {
   const { validator } = useValidator();
@@ -13,11 +13,11 @@ export default function useValidatePost() {
     return validator({ ...props, ...validationConfig });
   };
 
-  const isInvalidNickname = (props: ValidationProps) => {
+  const isInvalidUsername = (props: ValidationProps) => {
     const validationConfig: ValidationConfig = {
       regex: /^.{2,20}$/,
-      errorField: "nicknameError",
-      errorMessage: "닉네임은 2자 이상 20자 이하로 작성해주세요",
+      errorField: "usernameError",
+      errorMessage: "유저명은 2자 이상 20자 이하로 작성해주세요",
       validateVariable: "post",
     };
     return validator({ ...props, ...validationConfig });
@@ -45,7 +45,7 @@ export default function useValidatePost() {
 
   return {
     isInvalidTitle,
-    isInvalidNickname,
+    isInvalidUsername,
     isInvalidPassword,
     isInvalidContent,
   };
