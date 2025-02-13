@@ -39,7 +39,6 @@ export default function PostEditor() {
 
   const handlePostButton = async () => {
     if (
-      postState.title &&
       isInvalidTitle({
         value: postState.title,
         setValidateState,
@@ -50,7 +49,6 @@ export default function PostEditor() {
     if (
       postState.status === "create" &&
       !tokenState.accessToken &&
-      postState.username &&
       isInvalidUsername({
         value: postState.username,
         setValidateState,
@@ -59,7 +57,6 @@ export default function PostEditor() {
       return;
     }
     if (
-      !tokenState.accessToken &&
       postState.password &&
       isInvalidPassword({
         value: postState.password,
@@ -69,7 +66,6 @@ export default function PostEditor() {
       return;
     }
     if (
-      postState.content &&
       isInvalidContent({
         value: postState.content,
         setValidateState,

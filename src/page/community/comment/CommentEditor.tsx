@@ -41,7 +41,6 @@ export default function CommentEditor(props: Readonly<Props>) {
     // 유효성 검사
     if (
       !tokenState.accessToken &&
-      commentState.username &&
       props.status === "create" &&
       isInvalidUsername({
         value: commentState.username,
@@ -52,7 +51,6 @@ export default function CommentEditor(props: Readonly<Props>) {
     }
     if (
       !tokenState.accessToken &&
-      commentState.password &&
       isInvalidPassword({
         value: commentState.password,
         setValidateState,
@@ -61,7 +59,6 @@ export default function CommentEditor(props: Readonly<Props>) {
       return;
     }
     if (
-      commentState.content &&
       isInvalidContent({
         value: commentState.content,
         setValidateState,
