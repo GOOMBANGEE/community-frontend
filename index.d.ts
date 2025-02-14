@@ -33,7 +33,7 @@ interface Comment {
 }
 
 interface ValidationProps {
-  value: string;
+  value: string | undefined;
   setValidateState: (state: typeof ValidateState) => void;
 }
 
@@ -43,10 +43,3 @@ type ValidationConfig = {
   errorMessage: string;
   validateVariable: keyof ValidateState;
 };
-
-interface ValidateUser {
-  emailError?: string;
-  nicknameError?: string;
-  passwordError?: string;
-  codeError?: string;
-}

@@ -1,8 +1,8 @@
-import { useGlobalStore } from "../../store/GlobalStore.tsx";
-import { FormEvent, useState } from "react";
-import { useUserStore } from "../../store/UserStore.tsx";
-import useRegister from "../../hook/user/useRegister.tsx";
-import useValidateUser from "../../hook/user/useValidateUser.tsx";
+import { useGlobalStore } from "../../store/GlobalStore.ts";
+import { FormEvent } from "react";
+import { useUserStore } from "../../store/UserStore.ts";
+import useRegister from "../../hook/user/useRegister.ts";
+import useValidateUser from "../../hook/user/useValidateUser.ts";
 import useRenderErrorMessage from "../../hook/useRenderErrorMessage.tsx";
 
 export default function RegisterForm() {
@@ -17,12 +17,6 @@ export default function RegisterForm() {
   const { userState, setUserState } = useUserStore();
   const { globalState } = useGlobalStore();
 
-  const [validateState, setValidateState] = useState<ValidateUser>({
-    emailError: "",
-    nicknameError: "",
-    passwordError: "",
-  });
-
   // 유효성검사 + 회원가입 로직
   const handleRegister = async (e: FormEvent) => {
     e.preventDefault();
@@ -30,15 +24,15 @@ export default function RegisterForm() {
     if (
       isInvalidEmail({
         value: userState.email,
-        setValidateState,
+        setValidateState: setUserState,
       })
     ) {
       return;
     }
     if (
       isInvalidNickname({
-        value: userState.nickname,
-        setValidateState,
+        value: userState.username,
+        setValidateState: setUserState,
       })
     ) {
       return;
@@ -46,19 +40,18 @@ export default function RegisterForm() {
     if (
       isInvalidPassword({
         value: userState.password,
-        setValidateState,
+        setValidateState: setUserState,
       }) ||
       isInvalidConfirmPassword({
         password: userState.password,
         value: userState.confirmPassword,
-        setValidateState,
+        setValidateState: setUserState,
       })
     ) {
       return;
     }
     // 유효성검사 종료
-
-    void register();
+    register();
   };
 
   return (
@@ -71,29 +64,17 @@ export default function RegisterForm() {
           placeholder="이메일 입력"
           className="mx-auto mb-2 w-full border-2 border-gray-500 bg-black p-2 focus:bg-indigo-100 focus:text-black focus:opacity-90"
           onChange={(e) => {
-            setUserState({
-              ...userState,
-              email: e.target.value,
-            });
-            setValidateState({
-              ...validateState,
-              emailError: "",
-            });
+            setUserState({ email: e.target.value });
+            setUserState({ emailError: undefined });
           }}
         />
-        <div className="mb-1 text-start">닉네임</div>
+        <div className="mb-1 text-start">유저명</div>
         <input
-          placeholder="닉네임 입력"
+          placeholder="유저명 입력"
           className="mx-auto mb-2 w-full border-2 border-gray-500 bg-black p-2 focus:bg-indigo-100 focus:text-black focus:opacity-90"
           onChange={(e) => {
-            setUserState({
-              ...userState,
-              nickname: e.target.value,
-            });
-            setValidateState({
-              ...validateState,
-              nicknameError: "",
-            });
+            setUserState({ username: e.target.value });
+            setUserState({ usernameError: undefined });
           }}
         />
         <div className="mb-1 text-start">비밀번호</div>
@@ -102,14 +83,8 @@ export default function RegisterForm() {
           placeholder="비밀번호 입력"
           className="mx-auto mb-2 w-full border-2 border-gray-500 bg-black p-2 focus:bg-indigo-100 focus:text-black focus:opacity-90"
           onChange={(e) => {
-            setUserState({
-              ...userState,
-              password: e.target.value,
-            });
-            setValidateState({
-              ...validateState,
-              passwordError: "",
-            });
+            setUserState({ password: e.target.value });
+            setUserState({ passwordError: undefined });
           }}
         />
         <div className="mb-1 text-start">비밀번호 확인</div>
@@ -118,14 +93,8 @@ export default function RegisterForm() {
           placeholder="비밀번호 입력"
           className="mx-auto mb-2 w-full border-2 border-gray-500 bg-black p-2 focus:bg-indigo-100 focus:text-black focus:opacity-90"
           onChange={(e) => {
-            setUserState({
-              ...userState,
-              confirmPassword: e.target.value,
-            });
-            setValidateState({
-              ...validateState,
-              passwordError: "",
-            });
+            setUserState({ confirmPassword: e.target.value });
+            setUserState({ passwordError: undefined });
           }}
         />
         <button
@@ -135,9 +104,9 @@ export default function RegisterForm() {
           가입
         </button>
 
-        {useRenderErrorMessage(validateState.emailError)}
-        {useRenderErrorMessage(validateState.nicknameError)}
-        {useRenderErrorMessage(validateState.passwordError)}
+        {useRenderErrorMessage(userState.emailError)}
+        {useRenderErrorMessage(userState.usernameError)}
+        {useRenderErrorMessage(userState.passwordError)}
         {useRenderErrorMessage(globalState.errorMessage)}
 
         <div className="mx-auto mt-2 w-3/4 text-center text-sm text-gray-500">

@@ -1,4 +1,4 @@
-import useValidator from "../useValidator.tsx";
+import useValidator from "../useValidator.ts";
 
 export default function useValidateUser() {
   const { validator } = useValidator();
@@ -17,7 +17,7 @@ export default function useValidateUser() {
   const isInvalidNickname = (props: ValidationProps) => {
     const validationConfig: ValidationConfig = {
       regex: /^.{2,20}$/,
-      errorField: "nicknameError",
+      errorField: "usernameError",
       errorMessage: "이름은 2~20자 이내로 설정해 주세요",
       validateVariable: "user",
     };
@@ -35,7 +35,7 @@ export default function useValidateUser() {
   };
 
   const isInvalidConfirmPassword = (
-    props: ValidationProps & { password: string },
+    props: ValidationProps & { password: string | undefined },
   ) => {
     const validationConfig: ValidationConfig = {
       regex: new RegExp(`^${props.password}$`),

@@ -1,5 +1,6 @@
 import { create } from "zustand";
 
+const BASE_URL_AUTH = import.meta.env.VITE_BASE_URL_AUTH;
 const BASE_URL_USER = import.meta.env.VITE_BASE_URL_USER;
 const BASE_URL_COMMUNITY = import.meta.env.VITE_BASE_URL_COMMUNITY;
 const BASE_URL_POST = import.meta.env.VITE_BASE_URL_POST;
@@ -13,6 +14,7 @@ interface EnvStore {
 }
 
 interface EnvState {
+  authUrl: string;
   userUrl: string;
   communityUrl: string;
   postUrl: string;

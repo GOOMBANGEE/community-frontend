@@ -1,8 +1,8 @@
 import axios from "axios";
-import { useEnvStore } from "../../store/EnvStore.tsx";
-import { useGlobalStore } from "../../store/GlobalStore.tsx";
-import { handleAxiosErrorModal } from "../handleAxiosErrorModal.tsx";
-import { useUserStore } from "../../store/UserStore.tsx";
+import { useEnvStore } from "../../store/EnvStore.ts";
+import { useGlobalStore } from "../../store/GlobalStore.ts";
+import { handleAxiosErrorModal } from "../handleAxiosErrorModal.ts";
+import { useUserStore } from "../../store/UserStore.ts";
 
 // 메일 다시보내기
 export default function useEmailSend() {
@@ -12,10 +12,8 @@ export default function useEmailSend() {
 
   const emailSend = async () => {
     try {
-      await axios.post(`${envState.userUrl}/email/send`, {
-        email: userState.email,
-        token: userState.token,
-      });
+      const authUrl = envState.authUrl;
+      await axios.get(`${authUrl}/email/send?token=${userState.token}`);
       setGlobalState({ modalMessage: "메일이 정상적으로 발송되었습니다." });
     } catch (error) {
       handleAxiosErrorModal(error, setGlobalState);

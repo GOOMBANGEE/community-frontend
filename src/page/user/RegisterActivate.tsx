@@ -1,42 +1,34 @@
-import { useRegisterActivate } from "../../hook/user/useRegisterActivate.tsx";
+import { useEmailActivate } from "../../hook/user/useEmailActivate.ts";
 import { FormEvent, useState } from "react";
-import { useGlobalStore } from "../../store/GlobalStore.tsx";
-import { useUserStore } from "../../store/UserStore.tsx";
-import useValidateUser from "../../hook/user/useValidateUser.tsx";
-import useEmailSend from "../../hook/user/useEmailSend.tsx";
+import { useGlobalStore } from "../../store/GlobalStore.ts";
+import { useUserStore } from "../../store/UserStore.ts";
+import useValidateUser from "../../hook/user/useValidateUser.ts";
+import useEmailSend from "../../hook/user/useEmailSend.ts";
 import useRenderErrorMessage from "../../hook/useRenderErrorMessage.tsx";
 
 export default function RegisterActivate() {
-  const { registerActivate } = useRegisterActivate();
+  const { emailActivate } = useEmailActivate();
   const { emailSend } = useEmailSend();
   const { checkCodeLength } = useValidateUser();
 
-  const { userState } = useUserStore();
+  const { userState, setUserState } = useUserStore();
   const { globalState } = useGlobalStore();
 
-  const [code, setCode] = useState<string>("");
-  const [validateState, setValidateState] = useState<ValidateUser>({
-    codeError: "",
-  });
+  const [activationCode, setActivationCode] = useState<string>("");
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     if (
       checkCodeLength({
-        value: code,
+        value: activationCode,
         length: 6,
-        setValidateState,
+        setValidateState: setUserState,
       })
     ) {
       return;
     }
 
-    if (
-      !(await registerActivate({
-        code: code,
-        setValidateState,
-      }))
-    ) {
+    if (!(await emailActivate({ activationCode }))) {
       return;
     }
   };
@@ -51,24 +43,14 @@ export default function RegisterActivate() {
       <div className="my-6 font-semibold sm:my-4">코드를 입력해 주세요</div>
 
       <form className="flex w-full flex-col" onSubmit={handleSubmit}>
-        <div className="mb-1 text-start">이메일</div>
-        <input
-          className="mx-auto mb-2 w-full border-2 border-gray-500 bg-black p-2 focus:bg-indigo-100 focus:opacity-90"
-          defaultValue={userState.email}
-          disabled
-        />
-
         <div className="mb-1 text-start">코드</div>
         <input
           type="text"
           placeholder="코드 입력"
           className="mx-auto mb-2 w-full border-2 border-gray-500 bg-black p-2 focus:bg-indigo-100 focus:text-black focus:opacity-90"
           onChange={(e) => {
-            setCode(e.target.value);
-            setValidateState({
-              ...validateState,
-              codeError: "",
-            });
+            setActivationCode(e.target.value);
+            setUserState({ codeError: undefined });
           }}
         />
 
@@ -82,13 +64,13 @@ export default function RegisterActivate() {
         <button
           className="mt-4 text-blue-500"
           onClick={(e) => {
-            void handleSend(e);
+            handleSend(e);
           }}
         >
           메일이 도착하지않았나요?
         </button>
 
-        {useRenderErrorMessage(validateState.codeError)}
+        {useRenderErrorMessage(userState.codeError)}
         {useRenderErrorMessage(globalState.errorMessage)}
       </form>
     </div>
