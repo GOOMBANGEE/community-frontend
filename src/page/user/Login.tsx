@@ -1,22 +1,19 @@
 import { FormEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useUserStore } from "../../store/UserStore.tsx";
-import useValidateUser from "../../hook/user/useValidateUser.tsx";
+import { useUserStore } from "../../store/UserStore.ts";
+import useValidateUser from "../../hook/user/useValidateUser.ts";
 import useRenderErrorMessage from "../../hook/useRenderErrorMessage.tsx";
-import useLogin from "../../hook/user/useLogin.tsx";
+import useLogin from "../../hook/user/useLogin.ts";
+import useRefreshAccessToken from "../../hook/useRefreshAcccessToken.ts";
 
 export default function Login() {
   const { login } = useLogin();
+  const { refreshAccessToken } = useRefreshAccessToken();
   const { isInvalidEmail, isInvalidPassword } = useValidateUser();
   const { userState, setUserState } = useUserStore();
   const navigate = useNavigate();
 
   const [loginFail, setLoginFail] = useState(false);
-  const [validateState, setValidateState] = useState<ValidateUser>({
-    emailError: "",
-    nicknameError: "",
-    passwordError: "",
-  });
 
   const handleLogin = async (e: FormEvent) => {
     e.preventDefault();
@@ -24,7 +21,7 @@ export default function Login() {
     if (
       isInvalidEmail({
         value: userState.email,
-        setValidateState,
+        setValidateState: setUserState,
       })
     ) {
       return;
@@ -32,7 +29,7 @@ export default function Login() {
     if (
       isInvalidPassword({
         value: userState.password,
-        setValidateState,
+        setValidateState: setUserState,
       })
     ) {
       return;
@@ -40,6 +37,7 @@ export default function Login() {
     // 유효성검사 종료
 
     if (await login()) {
+      refreshAccessToken();
       navigate("/");
       return;
     }
@@ -59,14 +57,8 @@ export default function Login() {
               placeholder="이메일 입력"
               className="mx-auto mb-2 w-full border-2 border-gray-500 bg-black p-2 focus:bg-indigo-100 focus:text-black focus:opacity-90"
               onChange={(e) => {
-                setUserState({
-                  ...userState,
-                  email: e.target.value,
-                });
-                setValidateState({
-                  ...validateState,
-                  emailError: "",
-                });
+                setUserState({ email: e.target.value });
+                setUserState({ emailError: undefined });
                 setLoginFail(false);
               }}
             />
@@ -76,14 +68,8 @@ export default function Login() {
               placeholder="비밀번호 입력"
               className="mx-auto mb-2 w-full border-2 border-gray-500 bg-black p-2 focus:bg-indigo-100 focus:text-black focus:opacity-90"
               onChange={(e) => {
-                setUserState({
-                  ...userState,
-                  password: e.target.value,
-                });
-                setValidateState({
-                  ...validateState,
-                  passwordError: "",
-                });
+                setUserState({ password: e.target.value });
+                setUserState({ passwordError: undefined });
                 setLoginFail(false);
               }}
             />
@@ -93,8 +79,8 @@ export default function Login() {
             >
               로그인
             </button>
-            {useRenderErrorMessage(validateState.emailError)}
-            {useRenderErrorMessage(validateState.passwordError)}
+            {useRenderErrorMessage(userState.emailError)}
+            {useRenderErrorMessage(userState.passwordError)}
             {loginFail ? (
               <div className="mx-auto text-start text-base text-red-500">
                 이메일 또는 비밀번호를 확인해 주세요
