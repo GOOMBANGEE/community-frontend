@@ -1,8 +1,9 @@
-import { deleteCookie } from "../Cookie.tsx";
-import { useUserStore } from "../store/UserStore.tsx";
+import { useUserStore } from "../store/UserStore.ts";
 import { useNavigate } from "react-router-dom";
+import useLogout from "../hook/user/useLogout.ts";
 
 export default function HeaderDropdown() {
+  const { logout } = useLogout();
   const { userState } = useUserStore();
   const navigate = useNavigate();
 
@@ -10,10 +11,9 @@ export default function HeaderDropdown() {
     navigate("/user/setting");
   };
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
     // 페이지 리로드 + 쿠키삭제
-    deleteCookie("refresh_token");
-    navigate("/");
+    await logout();
     window.location.reload();
   };
 
@@ -21,7 +21,7 @@ export default function HeaderDropdown() {
     <div className="bg-buttonBlack absolute right-2 top-12 z-10 flex border border-gray-500 bg-customGray text-start">
       <div className="flex-col">
         <div className="p-4 pr-8 text-xl font-semibold">
-          {userState.nickname}
+          {userState.username}
         </div>
 
         <div className="border-t border-gray-500">

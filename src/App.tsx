@@ -3,34 +3,20 @@ import { Route, Routes, useLocation } from "react-router-dom";
 import User from "./page/user/User.tsx";
 import Header from "./component/Header.tsx";
 
-import useFetchProfile from "./hook/useFetchProfile.tsx";
-import useRefreshAccessToken from "./hook/useRefreshAcccessToken.tsx";
 import Community from "./page/community/Community.tsx";
 import { useEffect } from "react";
-import { useTokenStore } from "./store/TokenStore.tsx";
-import { getCookie } from "./Cookie.tsx";
+import useRefreshAccessToken from "./hook/useRefreshAcccessToken.ts";
 
 export default function App() {
-  const { tokenState } = useTokenStore();
-  const { fetchProfile } = useFetchProfile();
   const { refreshAccessToken } = useRefreshAccessToken();
   const location = useLocation();
   const userPage =
     location.pathname.startsWith("/user/login") ||
     location.pathname.startsWith("/user/register");
 
-  const refreshToken = getCookie("refresh_token");
   useEffect(() => {
-    if (refreshToken) {
-      void refreshAccessToken(refreshToken);
-    }
+    refreshAccessToken();
   }, []);
-
-  useEffect(() => {
-    if (tokenState.accessToken) {
-      void fetchProfile();
-    }
-  }, [tokenState.accessToken]);
 
   return (
     <>
