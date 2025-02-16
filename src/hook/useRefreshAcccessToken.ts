@@ -1,14 +1,12 @@
-import axios, { isAxiosError } from "axios";
+import axios from "axios";
 import { useEnvStore } from "../store/EnvStore.ts";
 import { useTokenStore } from "../store/TokenStore.ts";
-import { useGlobalStore } from "../store/GlobalStore.ts";
 import { useUserStore } from "../store/UserStore.ts";
 
 export default function useRefreshAccessToken() {
   const { setUserState } = useUserStore();
   const { setTokenState, setHeaderAccessToken } = useTokenStore();
   const { envState } = useEnvStore();
-  const { setGlobalState } = useGlobalStore();
 
   let accessTokenExpires: number | undefined = undefined;
   const refreshAccessToken = async () => {
@@ -25,13 +23,6 @@ export default function useRefreshAccessToken() {
       setHeaderAccessToken(accessToken);
     } catch (error) {
       setTokenState({ accessToken: undefined });
-      if (isAxiosError(error)) {
-        setGlobalState({
-          modalMessage: error.response?.data.message,
-          redirectName: "홈으로",
-          redirectUrl: "reloadHome",
-        });
-      }
     } finally {
       setTimeout(() => {
         if (accessTokenExpires) refreshAccessToken();

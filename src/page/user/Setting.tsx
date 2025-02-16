@@ -1,40 +1,32 @@
-import { useUserStore } from "../../store/UserStore.tsx";
-import useValidateUser from "../../hook/user/useValidateUser.tsx";
-import { FormEvent, useEffect, useState } from "react";
-import useResetNickname from "../../hook/user/useResetNickname.tsx";
-import useResetPassword from "../../hook/user/useResetPassword.tsx";
+import { useUserStore } from "../../store/UserStore.ts";
+import useValidateUser from "../../hook/user/useValidateUser.ts";
+import { FormEvent, useEffect } from "react";
+import useUserUpdate from "../../hook/user/useUserUpdate.ts";
 import useRenderErrorMessage from "../../hook/useRenderErrorMessage.tsx";
-import { useConfirmStore } from "../../store/ConfirmStore.tsx";
+import { useConfirmStore } from "../../store/ConfirmStore.ts";
 import ConfirmModal from "../../component/ConfirmModal.tsx";
-import useUserDelete from "../../hook/user/useUserDelete.tsx";
+import useUserDelete from "../../hook/user/useUserDelete.ts";
 
 export default function Setting() {
-  const { resetNickname } = useResetNickname();
-  const { resetPassword } = useResetPassword();
+  const { updateUser } = useUserUpdate();
   const { userDelete } = useUserDelete();
-  const { isInvalidNickname, isInvalidPassword, isInvalidConfirmPassword } =
+  const { isInvalidUsername, isInvalidPassword, isInvalidConfirmPassword } =
     useValidateUser();
 
   const { userState, setUserState } = useUserStore();
   const { confirmState, setConfirmState } = useConfirmStore();
 
-  const [validateState, setValidateState] = useState<ValidateUser>({
-    nicknameError: "",
-    passwordError: "",
-  });
-
   const handleResetNickname = (e: FormEvent) => {
     e.preventDefault();
     if (
-      isInvalidNickname({
-        value: userState.nickname,
-        setValidateState,
+      isInvalidUsername({
+        value: userState.newUsername,
+        setValidateState: setUserState,
       })
     ) {
       return;
     }
-
-    void resetNickname();
+    updateUser();
   };
 
   const handleResetPassword = async (e: FormEvent) => {
@@ -42,27 +34,26 @@ export default function Setting() {
     if (
       isInvalidPassword({
         value: userState.prevPassword,
-        setValidateState,
+        setValidateState: setUserState,
       }) ||
       isInvalidPassword({
         value: userState.password,
-        setValidateState,
+        setValidateState: setUserState,
       }) ||
       isInvalidConfirmPassword({
         password: userState.password,
         value: userState.confirmPassword,
-        setValidateState,
+        setValidateState: setUserState,
       })
     ) {
       return;
     }
-
-    void resetPassword();
+    updateUser();
   };
 
   useEffect(() => {
     if (confirmState.confirm) {
-      void userDelete();
+      userDelete();
     }
   }, [confirmState.confirm]);
 
@@ -72,17 +63,14 @@ export default function Setting() {
         <div className="mb-8 text-xl font-semibold">설정</div>
         <form className="mb-4" onSubmit={handleResetNickname}>
           <div className="mb-4 flex items-center">
-            <div className="font-light">닉네임</div>
+            <div className="font-light">유저명</div>
             <input
-              defaultValue={userState.nickname}
+              defaultValue={userState.username}
               className="ml-auto border-2 border-customGray bg-black p-2 sm:w-2/3"
               onChange={(e) => {
                 setUserState({
-                  ...userState,
-                  nickname: e.target.value,
-                });
-                setValidateState({
-                  nicknameError: "",
+                  newUsername: e.target.value,
+                  usernameError: undefined,
                 });
               }}
             />
@@ -90,7 +78,7 @@ export default function Setting() {
           <button type="submit" className="ml-auto flex bg-indigo-600 p-2 px-8">
             저장
           </button>
-          {useRenderErrorMessage(validateState.nicknameError)}
+          {useRenderErrorMessage(userState.usernameError)}
         </form>
 
         <form className="mb-4" onSubmit={handleResetPassword}>
@@ -102,11 +90,8 @@ export default function Setting() {
                 className="ml-auto w-full border-2 border-customGray bg-black p-2"
                 onChange={(e) => {
                   setUserState({
-                    ...userState,
                     prevPassword: e.target.value,
-                  });
-                  setValidateState({
-                    passwordError: "",
+                    passwordError: undefined,
                   });
                 }}
               />
@@ -124,11 +109,8 @@ export default function Setting() {
                 className="ml-auto w-full border-2 border-customGray bg-black p-2"
                 onChange={(e) => {
                   setUserState({
-                    ...userState,
                     password: e.target.value,
-                  });
-                  setValidateState({
-                    passwordError: "",
+                    passwordError: undefined,
                   });
                 }}
               />
@@ -146,11 +128,8 @@ export default function Setting() {
                 className="mb-1 w-full border-2 border-customGray bg-black p-2"
                 onChange={(e) => {
                   setUserState({
-                    ...userState,
                     confirmPassword: e.target.value,
-                  });
-                  setValidateState({
-                    passwordError: "",
+                    passwordError: undefined,
                   });
                 }}
               />
@@ -162,7 +141,7 @@ export default function Setting() {
           <button type="submit" className="ml-auto flex bg-indigo-600 p-2 px-8">
             변경
           </button>
-          {useRenderErrorMessage(validateState.passwordError)}
+          {useRenderErrorMessage(userState.passwordError)}
         </form>
 
         <button

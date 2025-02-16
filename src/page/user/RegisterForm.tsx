@@ -9,7 +9,7 @@ export default function RegisterForm() {
   const { register } = useRegister();
   const {
     isInvalidEmail,
-    isInvalidNickname,
+    isInvalidUsername,
     isInvalidPassword,
     isInvalidConfirmPassword,
   } = useValidateUser();
@@ -30,7 +30,7 @@ export default function RegisterForm() {
       return;
     }
     if (
-      isInvalidNickname({
+      isInvalidUsername({
         value: userState.username,
         setValidateState: setUserState,
       })

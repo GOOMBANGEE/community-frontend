@@ -10,6 +10,7 @@ interface UserState {
   id: string | undefined;
   email: string | undefined;
   username: string | undefined;
+  newUsername: string | undefined;
   prevPassword: string | undefined;
   password: string | undefined;
   confirmPassword: string | undefined;
@@ -25,6 +26,7 @@ const initialUserState = {
   id: undefined,
   email: undefined,
   username: undefined,
+  newUsername: undefined,
   prevPassword: undefined,
   password: undefined,
   confirmPassword: undefined,

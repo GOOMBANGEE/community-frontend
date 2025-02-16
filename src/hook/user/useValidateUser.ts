@@ -14,7 +14,7 @@ export default function useValidateUser() {
     return validator({ ...props, ...validationConfig });
   };
 
-  const isInvalidNickname = (props: ValidationProps) => {
+  const isInvalidUsername = (props: ValidationProps) => {
     const validationConfig: ValidationConfig = {
       regex: /^.{2,20}$/,
       errorField: "usernameError",
@@ -58,7 +58,7 @@ export default function useValidateUser() {
 
   return {
     isInvalidEmail,
-    isInvalidNickname,
+    isInvalidUsername,
     isInvalidPassword,
     isInvalidConfirmPassword,
     checkCodeLength,
