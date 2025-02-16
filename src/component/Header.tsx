@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { useTokenStore } from "../store/TokenStore";
+import { useTokenStore } from "../store/TokenStore.ts";
 import { useState } from "react";
 import HeaderDropdown from "./HeaderDropdown.tsx";
 

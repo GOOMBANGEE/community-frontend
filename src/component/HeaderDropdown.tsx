@@ -14,7 +14,7 @@ export default function HeaderDropdown() {
   const handleLogout = async () => {
     // 페이지 리로드 + 쿠키삭제
     await logout();
-    window.location.reload();
+    navigate("/");
   };
 
   return (

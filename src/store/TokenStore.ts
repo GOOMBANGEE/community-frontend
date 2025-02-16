@@ -8,13 +8,11 @@ interface TokenStore {
 }
 
 interface TokenState {
-  accessToken: string;
-  refreshToken: string;
+  accessToken: string | undefined;
 }
 
 const initialTokenState: TokenState = {
-  accessToken: "",
-  refreshToken: "",
+  accessToken: undefined,
 };
 
 export const useTokenStore = create<TokenStore>((set) => ({
