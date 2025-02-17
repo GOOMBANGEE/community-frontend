@@ -1,7 +1,5 @@
-import axios from "axios";
-import { useGlobalStore } from "../../store/GlobalStore.ts";
+import axios, { isAxiosError } from "axios";
 import { useEnvStore } from "../../store/EnvStore.ts";
-import { handleAxiosErrorModal } from "../handleAxiosErrorModal.ts";
 import { useUserStore } from "../../store/UserStore.ts";
 import { useTokenStore } from "../../store/TokenStore.ts";
 
@@ -9,7 +7,6 @@ export default function useLogin() {
   const { userState, setUserState } = useUserStore();
   const { envState } = useEnvStore();
   const { setHeaderAccessToken } = useTokenStore();
-  const { setGlobalState } = useGlobalStore();
 
   const login = async () => {
     const authUrl = envState.authUrl;
@@ -32,7 +29,9 @@ export default function useLogin() {
         return true;
       }
     } catch (error) {
-      handleAxiosErrorModal(error, setGlobalState);
+      if (isAxiosError(error)) {
+        setUserState({ loginError: error.response?.data?.message });
+      }
       return false;
     }
   };

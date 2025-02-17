@@ -1,4 +1,4 @@
-import { FormEvent, useState } from "react";
+import { FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import { useUserStore } from "../../store/UserStore.ts";
 import useValidateUser from "../../hook/user/useValidateUser.ts";
@@ -12,8 +12,6 @@ export default function Login() {
   const { isInvalidEmail, isInvalidPassword } = useValidateUser();
   const { userState, setUserState } = useUserStore();
   const navigate = useNavigate();
-
-  const [loginFail, setLoginFail] = useState(false);
 
   const handleLogin = async (e: FormEvent) => {
     e.preventDefault();
@@ -39,9 +37,7 @@ export default function Login() {
     if (await login()) {
       refreshAccessToken();
       navigate("/");
-      return;
     }
-    setLoginFail(true);
   };
 
   return (
@@ -57,9 +53,11 @@ export default function Login() {
               placeholder="이메일 입력"
               className="mx-auto mb-2 w-full border-2 border-gray-500 bg-black p-2 focus:bg-indigo-100 focus:text-black focus:opacity-90"
               onChange={(e) => {
-                setUserState({ email: e.target.value });
-                setUserState({ emailError: undefined });
-                setLoginFail(false);
+                setUserState({
+                  email: e.target.value,
+                  emailError: undefined,
+                  loginError: undefined,
+                });
               }}
             />
             <div className="mb-1 text-start">비밀번호</div>
@@ -68,9 +66,11 @@ export default function Login() {
               placeholder="비밀번호 입력"
               className="mx-auto mb-2 w-full border-2 border-gray-500 bg-black p-2 focus:bg-indigo-100 focus:text-black focus:opacity-90"
               onChange={(e) => {
-                setUserState({ password: e.target.value });
-                setUserState({ passwordError: undefined });
-                setLoginFail(false);
+                setUserState({
+                  password: e.target.value,
+                  passwordError: undefined,
+                  loginError: undefined,
+                });
               }}
             />
             <button
@@ -81,11 +81,7 @@ export default function Login() {
             </button>
             {useRenderErrorMessage(userState.emailError)}
             {useRenderErrorMessage(userState.passwordError)}
-            {loginFail ? (
-              <div className="mx-auto text-start text-base text-red-500">
-                이메일 또는 비밀번호를 확인해 주세요
-              </div>
-            ) : null}
+            {useRenderErrorMessage(userState.loginError)}
           </form>
 
           <div className="mx-auto flex ">

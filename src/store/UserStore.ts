@@ -20,6 +20,7 @@ interface UserState {
   usernameError: string | undefined;
   passwordError: string | undefined;
   codeError: string | undefined;
+  loginError: string | undefined;
 }
 
 const initialUserState = {
@@ -36,6 +37,7 @@ const initialUserState = {
   usernameError: undefined,
   passwordError: undefined,
   codeError: undefined,
+  loginError: undefined,
 };
 export const useUserStore = create<UserStore>((set) => ({
   userState: initialUserState,
