@@ -1,20 +1,19 @@
 import axios from "axios";
-import { useGlobalStore } from "../../store/GlobalStore.tsx";
-import { useEnvStore } from "../../store/EnvStore.tsx";
-import { handleAxiosErrorModal } from "../handleAxiosErrorModal.tsx";
-
-interface Props {
-  email: string;
-}
+import { useGlobalStore } from "../../store/GlobalStore.ts";
+import { useEnvStore } from "../../store/EnvStore.ts";
+import { handleAxiosErrorModal } from "../handleAxiosErrorModal.ts";
+import { useUserStore } from "../../store/UserStore.ts";
 
 export default function useRecover() {
+  const { userState } = useUserStore();
   const { envState } = useEnvStore();
   const { setGlobalState } = useGlobalStore();
 
-  const recover = async (props: Props) => {
+  const recover = async () => {
+    const userUrl = envState.userUrl;
     try {
-      await axios.post(`${envState.userUrl}/recover`, {
-        email: props.email,
+      await axios.post(`${userUrl}/recover`, {
+        email: userState.email,
       });
       setGlobalState({
         modalMessage: "인증 메일을 보냈습니다. 메일을 확인해주세요",

@@ -1,42 +1,47 @@
 import ErrorPage from "../ErrorPage.tsx";
-import useRecoverCheck from "../../hook/user/useRecoverCheck.tsx";
-import { useGlobalStore } from "../../store/GlobalStore.tsx";
+import useRecoverTokenCheck from "../../hook/user/useRecoverTokenCheck.ts";
+import { useGlobalStore } from "../../store/GlobalStore.ts";
 import useRenderErrorMessage from "../../hook/useRenderErrorMessage.tsx";
-import useValidateUser from "../../hook/user/useValidateUser.tsx";
-import { useUserStore } from "../../store/UserStore.tsx";
-import { FormEvent, useState } from "react";
-import useRecoverPassword from "../../hook/user/useRecoverPassword.tsx";
+import useValidateUser from "../../hook/user/useValidateUser.ts";
+import { useUserStore } from "../../store/UserStore.ts";
+import { FormEvent, useEffect, useState } from "react";
+import useRecoverPassword from "../../hook/user/useRecoverPassword.ts";
 
 export default function RecoverPassword() {
-  const isValidToken = useRecoverCheck();
+  const { recoverTokenCheck } = useRecoverTokenCheck();
   const { recoverPassword } = useRecoverPassword();
   const { isInvalidPassword, isInvalidConfirmPassword } = useValidateUser();
 
   const { userState, setUserState } = useUserStore();
   const { globalState } = useGlobalStore();
-  const [validateState, setValidateState] = useState<ValidateUser>({
-    nicknameError: "",
-    passwordError: "",
-  });
+  const [isValidToken, setIsValidToken] = useState<boolean>(false);
 
   const handleRecoverPassword = async (e: FormEvent) => {
     e.preventDefault();
     if (
       isInvalidPassword({
         value: userState.password,
-        setValidateState,
+        setValidateState: setUserState,
       }) ||
       isInvalidConfirmPassword({
         password: userState.password,
         value: userState.confirmPassword,
-        setValidateState,
+        setValidateState: setUserState,
       })
     ) {
       return;
     }
 
-    void recoverPassword();
+    recoverPassword();
   };
+
+  useEffect(() => {
+    const tokenCheck = async () => {
+      const valid = await recoverTokenCheck();
+      setIsValidToken(valid);
+    };
+    tokenCheck();
+  }, []);
 
   return (
     <>
@@ -55,11 +60,8 @@ export default function RecoverPassword() {
                       className="ml-auto border-2 border-customGray bg-black p-2 sm:w-2/3"
                       onChange={(e) => {
                         setUserState({
-                          ...userState,
                           password: e.target.value,
-                        });
-                        setValidateState({
-                          passwordError: "",
+                          passwordError: undefined,
                         });
                       }}
                     />
@@ -71,11 +73,8 @@ export default function RecoverPassword() {
                       className="ml-auto border-2 border-customGray bg-black p-2 sm:w-2/3"
                       onChange={(e) => {
                         setUserState({
-                          ...userState,
                           confirmPassword: e.target.value,
-                        });
-                        setValidateState({
-                          passwordError: "",
+                          passwordError: undefined,
                         });
                       }}
                     />
@@ -95,7 +94,7 @@ export default function RecoverPassword() {
         </>
       ) : null}
       <div className="p-4">
-        {useRenderErrorMessage(validateState.passwordError)}
+        {useRenderErrorMessage(userState.passwordError)}
       </div>
     </>
   );

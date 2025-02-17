@@ -1,8 +1,8 @@
-import { useGlobalStore } from "../../store/GlobalStore.tsx";
-import { useEnvStore } from "../../store/EnvStore.tsx";
-import { useUserStore } from "../../store/UserStore.tsx";
+import { useGlobalStore } from "../../store/GlobalStore.ts";
+import { useEnvStore } from "../../store/EnvStore.ts";
+import { useUserStore } from "../../store/UserStore.ts";
 import axios from "axios";
-import { handleAxiosErrorModal } from "../handleAxiosErrorModal.tsx";
+import { handleAxiosErrorModal } from "../handleAxiosErrorModal.ts";
 import { useParams } from "react-router-dom";
 
 export default function useRecoverPassword() {
@@ -13,10 +13,11 @@ export default function useRecoverPassword() {
 
   const recoverPassword = async () => {
     try {
-      await axios.post(`${envState.userUrl}/recover/password`, {
-        token: token,
+      await axios.post(`${envState.userUrl}/recover/password?token=${token}`, {
         password: userState.password,
+        confirmPassword: userState.confirmPassword,
       });
+
       resetUserState();
       setGlobalState({
         modalMessage: "비밀번호가 변경되었습니다",

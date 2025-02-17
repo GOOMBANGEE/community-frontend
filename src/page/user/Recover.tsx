@@ -1,28 +1,24 @@
-import { useState } from "react";
-import useValidateUser from "../../hook/user/useValidateUser.tsx";
+import useValidateUser from "../../hook/user/useValidateUser.ts";
 import useRenderErrorMessage from "../../hook/useRenderErrorMessage.tsx";
-import useRecover from "../../hook/user/useRecover.tsx";
+import useRecover from "../../hook/user/useRecover.ts";
+import { useUserStore } from "../../store/UserStore.ts";
 
 export default function Recover() {
   const { recover } = useRecover();
   const { isInvalidEmail } = useValidateUser();
-
-  const [email, setEmail] = useState<string>("");
-  const [validateState, setValidateState] = useState<ValidateUser>({
-    emailError: "",
-  });
+  const { userState, setUserState } = useUserStore();
 
   const handleRecover = () => {
     if (
       isInvalidEmail({
-        value: email,
-        setValidateState,
+        value: userState.email,
+        setValidateState: setUserState,
       })
     ) {
       return;
     }
 
-    void recover({ email });
+    recover();
   };
 
   return (
@@ -36,8 +32,7 @@ export default function Recover() {
             <input
               className="mb-1 border-2 border-gray-600 bg-black p-2"
               onChange={(e) => {
-                setEmail(e.target.value);
-                setValidateState({ emailError: "" });
+                setUserState({ email: e.target.value, emailError: undefined });
               }}
             />
             <div className="text-sm font-extralight text-gray-400">
@@ -45,7 +40,7 @@ export default function Recover() {
             </div>
           </div>
         </div>
-        {useRenderErrorMessage(validateState.emailError)}
+        {useRenderErrorMessage(userState.emailError)}
 
         <button
           className="ml-auto mt-24 flex justify-end bg-indigo-600 px-4 py-2 font-semibold"
