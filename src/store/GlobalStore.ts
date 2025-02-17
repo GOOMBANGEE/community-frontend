@@ -7,19 +7,19 @@ export interface GlobalStore {
 }
 
 interface GlobalState {
-  modalMessage: string;
-  redirectName: string;
-  redirectUrl: string;
-  errorMessage: string;
+  modalMessage: string | undefined;
+  redirectName: string | undefined;
+  redirectUrl: string | undefined;
+  errorMessage: string | undefined;
   loading: boolean;
   open: boolean;
 }
 
 const initialGlobalState: GlobalState = {
-  modalMessage: "",
-  redirectName: "",
-  redirectUrl: "",
-  errorMessage: "",
+  modalMessage: undefined,
+  redirectName: undefined,
+  redirectUrl: undefined,
+  errorMessage: undefined,
   loading: true,
   open: false,
 };

@@ -1,9 +1,9 @@
 import { useParams, useSearchParams } from "react-router-dom";
-import { useEnvStore } from "../../store/EnvStore.tsx";
-import { useGlobalStore } from "../../store/GlobalStore.tsx";
-import { handleAxiosErrorModal } from "../handleAxiosErrorModal.tsx";
+import { useEnvStore } from "../../store/EnvStore.ts";
+import { useGlobalStore } from "../../store/GlobalStore.ts";
+import { handleAxiosErrorModal } from "../handleAxiosErrorModal.ts";
 import axios from "axios";
-import { usePostStore } from "../../store/PostStore.tsx";
+import { usePostStore } from "../../store/PostStore.ts";
 import { useCommunityStore } from "../../store/CommunityStore.ts";
 
 export default function useCommunityPostList() {

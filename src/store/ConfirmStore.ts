@@ -7,12 +7,12 @@ export interface ConfirmStore {
 }
 
 interface ConfirmState {
-  modalMessage: string;
+  modalMessage: string | undefined;
   confirm: boolean;
 }
 
 const initialConfirmState: ConfirmState = {
-  modalMessage: "",
+  modalMessage: undefined,
   confirm: false,
 };
 export const useConfirmStore = create<ConfirmStore>((set) => ({

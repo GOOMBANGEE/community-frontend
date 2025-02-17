@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { useGlobalStore } from "../store/GlobalStore.tsx";
+import { useGlobalStore } from "../store/GlobalStore.ts";
 
 export default function ErrorPage() {
   const { globalState } = useGlobalStore();

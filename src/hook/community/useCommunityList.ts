@@ -1,7 +1,7 @@
-import { useGlobalStore } from "../../store/GlobalStore.tsx";
-import { useEnvStore } from "../../store/EnvStore.tsx";
+import { useGlobalStore } from "../../store/GlobalStore.ts";
+import { useEnvStore } from "../../store/EnvStore.ts";
 import axios from "axios";
-import { handleAxiosErrorModal } from "../handleAxiosErrorModal.tsx";
+import { handleAxiosErrorModal } from "../handleAxiosErrorModal.ts";
 import { useCommunityStore } from "../../store/CommunityStore.ts";
 
 export function useCommunityList() {

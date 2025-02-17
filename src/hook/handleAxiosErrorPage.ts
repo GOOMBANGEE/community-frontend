@@ -1,5 +1,5 @@
 import axios from "axios";
-import { GlobalStore } from "../store/GlobalStore.tsx";
+import { GlobalStore } from "../store/GlobalStore.ts";
 
 export function handleAxiosErrorPage(
   error: unknown,

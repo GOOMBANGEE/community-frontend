@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { useGlobalStore } from "../store/GlobalStore";
+import { useGlobalStore } from "../store/GlobalStore.ts";
 import React from "react";
 
 export default function Modal() {
