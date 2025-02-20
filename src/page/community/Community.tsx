@@ -12,7 +12,7 @@ export default function Community() {
   const { globalState } = useGlobalStore();
 
   return (
-    <div className="lg:mx-24 lg:h-full lg:bg-customBlack">
+    <div className="h-5/6 max-h-full lg:mx-24 lg:h-full lg:bg-customBlack">
       <Routes>
         <Route path="/:communityId/*" element={<CommunityHeader />} />
       </Routes>

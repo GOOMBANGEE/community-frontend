@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { usePostStore } from "../../store/PostStore.ts";
 import useRenderErrorMessage from "../../hook/useRenderErrorMessage.tsx";
 import useValidatePost from "../../hook/community/post/useValidatePost.ts";
@@ -6,6 +6,7 @@ import usePostUpdate from "../../hook/community/post/usePostUpdate.ts";
 import usePostCreate from "../../hook/community/post/usePostCreate.ts";
 import { useNavigate, useParams } from "react-router-dom";
 import { useTokenStore } from "../../store/TokenStore.ts";
+import ReactQuill from "react-quill";
 
 interface ValidatePost {
   titleError: string | undefined;
@@ -75,8 +76,9 @@ export default function PostEditor() {
     }
     // update
     if (postState.status === "update") {
-      if (await postUpdate()) {
-        navigate(-2);
+      const postId = await postUpdate();
+      if (postId) {
+        navigate(`/community/${communityId}/${postId}?page=1&commentPage=1`);
         return;
       }
     }
@@ -88,9 +90,60 @@ export default function PostEditor() {
       });
     }
   };
+  // react-quill setting
+  const quillRef = useRef<ReactQuill>(null);
+  const reactQuillModules = {
+    toolbar: {
+      container: [
+        [{ size: ["small", false, "large", "huge"] }],
+        ["bold", "italic", "underline"],
+        ["blockquote", "code-block"],
+        ["link", "image"],
+      ],
+    },
+  };
+
+  useEffect(() => {
+    const handlePaste = async (e: ClipboardEvent) => {
+      const clipboardItemList = e.clipboardData?.items;
+      if (!clipboardItemList) return;
+
+      const item = clipboardItemList[0];
+      if (!item.type.startsWith("image")) return;
+
+      // blob 객체로 이미지 가져오기
+      const blob = item.getAsFile();
+      if (!blob) return;
+
+      const reader = new FileReader();
+      reader.readAsDataURL(blob);
+      reader.onload = () => {
+        const image = new Image();
+        image.src = reader.result as string;
+        insertToEditor(image.src);
+      };
+    };
+
+    const insertToEditor = (imageUrl: string | null) => {
+      const editor = quillRef.current?.getEditor();
+      const range = editor?.getSelection();
+      if (!range) return;
+      editor?.insertEmbed(range.index, "image", imageUrl);
+    };
+
+    if (quillRef.current) {
+      const editor = quillRef.current.getEditor();
+      editor.root.addEventListener("paste", handlePaste);
+    }
+
+    document.addEventListener("paste", handlePaste);
+    return () => {
+      document.removeEventListener("paste", handlePaste);
+    };
+  }, []);
 
   return (
-    <div className="h-screen pb-60 text-white sm:px-2 lg:bg-customBlack">
+    <div className="flex h-full flex-col text-white sm:px-2 lg:bg-customBlack">
       <div className="border-b-2 border-customGray"></div>
 
       <div className="ml-2 p-2 text-lg font-extralight">
@@ -107,7 +160,7 @@ export default function PostEditor() {
             setPostState({ title: e.target.value });
             setValidateState({
               ...validateState,
-              titleError: "",
+              titleError: undefined,
             });
           }}
           placeholder={"제목"}
@@ -129,7 +182,7 @@ export default function PostEditor() {
                     setPostState({ username: e.target.value });
                     setValidateState({
                       ...validateState,
-                      usernameError: "",
+                      usernameError: undefined,
                     });
                   }}
                 />
@@ -145,7 +198,7 @@ export default function PostEditor() {
                     setPostState({ password: e.target.value });
                     setValidateState({
                       ...validateState,
-                      passwordError: "",
+                      passwordError: undefined,
                     });
                   }}
                 />
@@ -155,32 +208,34 @@ export default function PostEditor() {
         </div>
       </div>
 
-      <div className="relative mx-2 mb-4 h-1/2">
-        <textarea
-          className="mx-auto mb-4 h-full w-full rounded bg-white p-4 text-black"
-          onChange={(e) => {
-            setPostState({ content: e.target.value });
+      <div className="relative mx-2 mb-4 flex h-1/2 flex-col">
+        <ReactQuill
+          ref={quillRef}
+          className={"custom-quill h-full placeholder-white"}
+          modules={reactQuillModules}
+          onChange={(content) => {
+            setPostState({ content });
             setValidateState({
               ...validateState,
-              contentError: "",
+              contentError: undefined,
             });
           }}
           placeholder="내용을 입력해주세요"
           value={postState.content}
-        ></textarea>
+        />
       </div>
+
+      <button
+        className="ml-auto mr-2 mt-10 rounded border-2 border-customGray p-1 px-4 font-extralight"
+        onClick={handlePostButton}
+      >
+        {postState.status !== "update" ? "작성" : "수정"}
+      </button>
 
       {useRenderErrorMessage(validateState.titleError)}
       {useRenderErrorMessage(validateState.usernameError)}
       {useRenderErrorMessage(validateState.passwordError)}
       {useRenderErrorMessage(validateState.contentError)}
-
-      <button
-        className="justify-item-end mb-2 ml-auto mr-2 flex rounded border-2 border-customGray p-1 px-4 font-extralight"
-        onClick={handlePostButton}
-      >
-        {postState.status !== "update" ? "작성" : "수정"}
-      </button>
     </div>
   );
 }

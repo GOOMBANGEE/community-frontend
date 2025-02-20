@@ -3,20 +3,20 @@ import { usePostStore } from "../../../store/PostStore.ts";
 import { useEnvStore } from "../../../store/EnvStore.ts";
 import { handleAxiosErrorModal } from "../../handleAxiosErrorModal.ts";
 import { useGlobalStore } from "../../../store/GlobalStore.ts";
-import { useCommunityStore } from "../../../store/CommunityStore.ts";
+import { useParams } from "react-router-dom";
 
 export default function usePostCreate() {
-  const { communityState } = useCommunityStore();
   const { postState, resetPostState } = usePostStore();
   const { envState } = useEnvStore();
   const { setGlobalState } = useGlobalStore();
+  const { communityId } = useParams();
 
   const postCreate = async () => {
     const postUrl = envState.postUrl;
     try {
       // return: id
       const response = await axios.post(postUrl, {
-        communityId: communityState.id,
+        communityId: Number(communityId),
         title: postState.title,
         content: postState.content,
         username: postState.username,

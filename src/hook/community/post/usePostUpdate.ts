@@ -12,14 +12,14 @@ export default function usePostUpdate() {
   const postUpdate = async () => {
     const postUrl = envState.postUrl;
     try {
-      await axios.patch(`${postUrl}/${postState.id}`, {
+      const response = await axios.patch(`${postUrl}/${postState.id}`, {
         title: postState.title,
         content: postState.content,
         password: postState.password,
         creator: postState.creator,
       });
       resetPostState();
-      return true;
+      return response.data;
     } catch (error) {
       handleAxiosErrorModal(error, setGlobalState);
     }

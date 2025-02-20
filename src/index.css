@@ -1,3 +1,13 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer utilities {
+    .custom-quill .ql-container {
+        @apply border-2 border-customGray text-white placeholder-white bg-black !important;
+    }
+
+    .custom-quill .ql-toolbar {
+        @apply border-customGray bg-black !important;
+    }
+}

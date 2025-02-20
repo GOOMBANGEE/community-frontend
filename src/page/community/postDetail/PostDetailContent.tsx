@@ -1,6 +1,7 @@
 import { usePostStore } from "../../../store/PostStore.ts";
 import usePostRate from "../../../hook/community/post/usePostRate.ts";
 import useTimeFormat from "../../../hook/useTimeFormat.ts";
+import DOMPurify from "dompurify";
 
 export default function PostDetailContent() {
   const { postRate } = usePostRate();
@@ -88,9 +89,14 @@ export default function PostDetailContent() {
       </div>
       <div className="mb-2 border-b-2 border-customGray"></div>
 
-      <div className="p-2 text-sm font-light text-white">
-        <div>{postState.content}</div>
-      </div>
+      <div
+        className="p-2 text-white"
+        dangerouslySetInnerHTML={{
+          __html: DOMPurify.sanitize(
+            postState.content ? postState.content : "",
+          ),
+        }}
+      ></div>
 
       <div className="mx-auto mt-8 flex w-1/2 justify-center sm:w-1/3">
         <button
