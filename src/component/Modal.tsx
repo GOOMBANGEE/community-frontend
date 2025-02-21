@@ -3,7 +3,7 @@ import { useGlobalStore } from "../store/GlobalStore.ts";
 import React from "react";
 
 export default function Modal() {
-  const { globalState, resetGlobalState } = useGlobalStore();
+  const { globalState, setGlobalState, resetGlobalState } = useGlobalStore();
   const navigate = useNavigate();
 
   const handleRedirectButton = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -30,7 +30,7 @@ export default function Modal() {
           <button
             className="ml-auto font-semibold"
             onClick={() => {
-              resetGlobalState();
+              setGlobalState({ modalMessage: undefined });
             }}
           >
             X

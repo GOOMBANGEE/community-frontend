@@ -21,13 +21,11 @@ export default function usePostRate() {
       });
       if (props.rate) {
         setPostState({
-          ...postState,
           ratePlus: postState.ratePlus ? postState.ratePlus + 1 : 1,
         });
         return;
       }
       setPostState({
-        ...postState,
         rateMinus: postState.rateMinus ? postState.rateMinus + 1 : 1,
       });
     } catch (error) {

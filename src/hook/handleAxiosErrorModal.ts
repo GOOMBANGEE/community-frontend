@@ -10,7 +10,7 @@ export function handleAxiosErrorModal(
     setGlobalState({ modalMessage: error.response?.data.message });
 
     setTimeout(() => {
-      setGlobalState({ modalMessage: "" });
+      setGlobalState({ modalMessage: undefined });
     }, 3000);
   }
 }
