@@ -6,7 +6,7 @@ import usePostUpdate from "../../hook/community/post/usePostUpdate.ts";
 import usePostCreate from "../../hook/community/post/usePostCreate.ts";
 import { useNavigate, useParams } from "react-router-dom";
 import { useTokenStore } from "../../store/TokenStore.ts";
-import ReactQuill from "react-quill";
+import ReactQuill from "react-quill-new";
 
 interface ValidatePost {
   titleError: string | undefined;
