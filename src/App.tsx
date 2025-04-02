@@ -19,7 +19,7 @@ export default function App() {
   }, []);
 
   return (
-    <>
+    <div className={"custom-scrollbar h-screen overflow-y-auto"}>
       {!userPage && (
         <Routes>
           <Route path="/*" element={<Header />} />
@@ -30,6 +30,6 @@ export default function App() {
         <Route path="user/*" element={<User />} />
         <Route path="community/*" element={<Community />} />
       </Routes>
-    </>
+    </div>
   );
 }
