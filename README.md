@@ -37,3 +37,15 @@ npm install
 
 npm run dev
 ```
+
+### Home
+
+![home](https://github.com/user-attachments/assets/9112db91-77f8-41a2-a121-f8646167eb0a)
+
+### Community
+
+![community](https://github.com/user-attachments/assets/da697a94-d1c5-4c6f-a464-5082c009213f)
+
+### Post Detail
+
+![postDetail](https://github.com/user-attachments/assets/4deae5d2-7edc-45a6-ad83-c395d03ed69b)
