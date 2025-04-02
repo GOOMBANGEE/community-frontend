@@ -1,40 +1,39 @@
 # Community
 
-## 개요
-
 게시글, 댓글작성 게시판
 
-## 환경
+Created with [React](https://react.dev/) + [Vite](https://vite.dev/) +  [Tailwind CSS](https://tailwindcss.com/)
 
-- 리액트 18.2
-- 스프링부트 3.2
-- MySQL 8.0
+## Requirements
 
-## 프로젝트 구조
+- TypeScript
+- React 18.2
+- Node.js >= 20
+- Vite v5
+- Tailwind CSS v3
 
-| 디렉토리명              | 역할       | 비고 |
-|--------------------|----------|----|
-| community.frontend | 리액트 소스   |
-| community.backend  | 스프링부트 소스 |
+## Dependencies
 
-### 시작하기
+| Feature           | Package                                                  |
+|:------------------|:---------------------------------------------------------|
+| Build Tool        | vite                                                     |
+| Cookie Management | react-cookie                                             |
+| CSS Framework     | tailwind prettier-plugin-tailwindcss                     |
+| Date Handling     | react-datepicker, date-fns </br> @types/react-datepicker |
+| Networking        | axios                                                    |
+| Rich Text Editor  | react-quill-new, dompurify (Sanitization)                |
+| Routing           | react-router-dom                                         |
+| State Management  | zustand                                                  |
 
-```shell
+## Development
+
+```
+git clone https://github.com/GOOMBANGEE/community-frontend.git
+
+cd community-frontend
+cp example.env .env
+
 npm install
+
 npm run dev
 ```
-
-### 프론트엔드 구성
-
-- 인증(JWT)
-- 계정 관리 기능
-    - 닉네임 변경
-    - 비밀번호 변경
-    - 비밀번호 찾기
-    - 탈퇴
-- 게시글, 댓글 관리 기능
-    - 게시글, 댓글 CRUD
-    - 게시글 추천
-    - 게시글 검색
-    - 게시글, 댓글 페이지
-- 모바일, 태블릿, 데스크탑 사이즈별 css
