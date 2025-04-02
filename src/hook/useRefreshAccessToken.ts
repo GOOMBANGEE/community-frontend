@@ -18,7 +18,7 @@ export default function useRefreshAccessToken() {
 
       // accessToken 헤더에 담아서 이후 요청보낼때는 Authorization 추가
       const accessToken = response.data.accessToken;
-      accessTokenExpires = response.data.accessTokenExpires;
+      accessTokenExpires = response.data.accessTokenExpires * 1000;
       setUserState({ id: response.data.id, username: response.data.username });
       setHeaderAccessToken(accessToken);
     } catch (error) {

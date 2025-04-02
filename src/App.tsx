@@ -5,7 +5,7 @@ import Header from "./component/Header.tsx";
 
 import Community from "./page/community/Community.tsx";
 import { useEffect } from "react";
-import useRefreshAccessToken from "./hook/useRefreshAcccessToken.ts";
+import useRefreshAccessToken from "./hook/useRefreshAccessToken.ts";
 
 export default function App() {
   const { refreshAccessToken } = useRefreshAccessToken();

@@ -1,7 +1,9 @@
 import { useCommunityStore } from "../../store/CommunityStore.ts";
+import { useEnvStore } from "../../store/EnvStore.ts";
 
 export default function CommunityHeader() {
   const { communityState } = useCommunityStore();
+  const { envState } = useEnvStore();
 
   const handleClickCommunityHeader = () => {
     window.location.href = `/community/${communityState.id}?page=1`;
@@ -18,7 +20,7 @@ export default function CommunityHeader() {
         {communityState.thumbnail ? (
           <div className="flex h-full items-center">
             <img
-              src={communityState.thumbnail}
+              src={`${envState.baseUrl}/${communityState.thumbnail}`}
               alt="Community Thumbnail"
               className="w-10 rounded-full sm:w-14"
             />
